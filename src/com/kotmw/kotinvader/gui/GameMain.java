@@ -1,9 +1,10 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.managers.KeyManager;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -21,10 +22,11 @@ public class GameMain extends Stage {
     public GameMain() {
         KeyManager keyManager = new KeyManager();
         BorderPane root = new BorderPane();
-        root.setCenter(new GameContainer());
+        root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setTop(new GameStatus());
         root.setBottom(new GameRemain());
-        root.setStyle("-fx-backgroud-color: #000");
+        root.setCenter(new GameContainer());
+        root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
         scene.setOnKeyPressed(keyManager);
         scene.setOnKeyReleased(keyManager);
