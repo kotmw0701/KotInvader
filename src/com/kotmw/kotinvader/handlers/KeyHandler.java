@@ -1,9 +1,9 @@
-package com.kotmw.kotinvader.managers;
+package com.kotmw.kotinvader.handlers;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-public class KeyManager implements EventHandler<KeyEvent> {
+public class KeyHandler implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {

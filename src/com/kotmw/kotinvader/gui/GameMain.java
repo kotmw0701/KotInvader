@@ -1,6 +1,6 @@
 package com.kotmw.kotinvader.gui;
 
-import com.kotmw.kotinvader.managers.KeyManager;
+import com.kotmw.kotinvader.handlers.KeyHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -22,7 +22,7 @@ public class GameMain extends Stage {
 
 
     public GameMain() {
-        KeyManager keyManager = new KeyManager();
+        KeyHandler keyManager = new KeyHandler();
         BorderPane root = new BorderPane();
         root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setTop(new GameStatus());
