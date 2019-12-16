@@ -1,9 +1,9 @@
-package com.kotmw.kotinvader.Runner;
+package com.kotmw.kotinvader.scheduler;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class MainRunnable implements EventHandler<ActionEvent> {
+public class MainScheduleHandler implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {

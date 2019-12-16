@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 public abstract class Entity extends ImageView {
 
     private EntityType entityType;
-    private double speed;
+    private double speed, direction;
     private boolean alive;
     private int hitPoints;
 
@@ -38,6 +38,10 @@ public abstract class Entity extends ImageView {
         return speed;
     }
 
+    public double getDirection() {
+        return direction;
+    }
+
     public boolean isAlive() {
         return alive;
     }
@@ -48,5 +52,14 @@ public abstract class Entity extends ImageView {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
+
+    public void move() {
+        this.setTranslateX(this.getTranslateX() + speed * Math.cos(Math.toRadians(direction)));
+        this.setTranslateY(this.getTranslateY() + speed * Math.sin(Math.toRadians(direction)));
     }
 }
