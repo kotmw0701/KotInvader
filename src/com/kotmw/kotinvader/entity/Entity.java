@@ -6,7 +6,7 @@ public class Entity extends ImageView {
 
     private EntityType entityType;
     private double speed, direction;
-    private boolean alive;
+    public boolean alive = true;
     private int hitPoints;
 
     public Entity(String imagePath, double x, double y, EntityType entityType) {

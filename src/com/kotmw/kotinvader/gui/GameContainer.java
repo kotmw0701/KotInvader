@@ -9,6 +9,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class GameContainer extends Pane {
 
     public GameContainer(PlayStatus player) {
@@ -25,4 +28,7 @@ public class GameContainer extends Pane {
                 && entity.getTranslateY() < GameMain.MAIN_Y;
     }
 
+    public List<Entity> getEntities() {
+        return getChildren().stream().map(n -> (Entity)n).collect(Collectors.toList());
+    }
 }

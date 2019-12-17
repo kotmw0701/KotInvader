@@ -1,17 +1,18 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.entity.Entity;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
 import com.kotmw.kotinvader.handlers.MainScheduleHandler;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
