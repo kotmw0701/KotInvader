@@ -1,8 +1,12 @@
 package com.kotmw.kotinvader.entity;
 
-public class Cannon extends Entity {
+import com.kotmw.kotinvader.entity.missiles.Shooter;
 
-    public Cannon(String imagePath, double x, double y, EntityType entityType) {
-        super(imagePath, x, y, entityType);
+import java.io.File;
+
+public class Cannon extends Entity implements Shooter {
+
+    public Cannon(double x, double y) {
+        super(new File("Cannon.png").getPath(), x, y, EntityType.CANNON);
     }
 }
