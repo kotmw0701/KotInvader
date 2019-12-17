@@ -12,6 +12,6 @@ public class Cannon extends Entity implements Shooter {
 
     @Override
     public Missile shoot() {
-        return new CannonMissile(getTranslateX()+getFitWidth()/2, getTranslateY());
+        return new CannonMissile(getTranslateX()+getImage().getWidth()/2, getTranslateY());
     }
 }

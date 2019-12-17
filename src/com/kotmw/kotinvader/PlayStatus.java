@@ -5,7 +5,7 @@ import com.kotmw.kotinvader.gui.GameMain;
 
 public class PlayStatus {
 
-    private Cannon cannon;
+    private final Cannon cannon;
     private int remain;
     private int score;
 

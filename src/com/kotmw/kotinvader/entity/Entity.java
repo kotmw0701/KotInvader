@@ -2,7 +2,7 @@ package com.kotmw.kotinvader.entity;
 
 import javafx.scene.image.ImageView;
 
-public abstract class Entity extends ImageView {
+public class Entity extends ImageView {
 
     private EntityType entityType;
     private double speed, direction;
@@ -44,10 +44,6 @@ public abstract class Entity extends ImageView {
 
     public boolean isAlive() {
         return alive;
-    }
-
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
     }
 
     public void setSpeed(double speed) {

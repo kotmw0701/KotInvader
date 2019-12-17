@@ -1,7 +1,12 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.entity.Entity;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
+import com.kotmw.kotinvader.handlers.MainScheduleHandler;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class GameMain extends Stage {
 
@@ -22,7 +28,7 @@ public class GameMain extends Stage {
     public static final double MAIN_X = WINDOW_X; //メイン画面のサイズ
     public static final double MAIN_Y = 550.0;
 
-    private PlayStatus player;
+    private final PlayStatus player;
 
     private GameContainer container;
     private GameStatus status;
@@ -45,6 +51,7 @@ public class GameMain extends Stage {
         root.setCenter(container);
         root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
+        scene.getRoot().requestFocus();
         scene.setOnKeyPressed(keyManager);
         scene.setOnKeyReleased(keyManager);
 
@@ -54,6 +61,18 @@ public class GameMain extends Stage {
         this.setResizable(false);
         this.sizeToScene();
         this.show();
+
+        this.setOnCloseRequest( event -> System.exit(0) );
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0.016),
+                        new MainScheduleHandler(container)
+                )
+        );
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     public class KeyHandler implements EventHandler<KeyEvent> {
@@ -68,7 +87,16 @@ public class GameMain extends Stage {
                         break;
                     case RIGHT:
                         player.getCannon().setSpeed(5.0);
+                        player.getCannon().setDirection(0.0);
                         break;
+//                    case UP:
+//                        player.getCannon().setSpeed(5.0);
+//                        player.getCannon().setDirection(270.0);
+//                        break;
+//                    case DOWN:
+//                        player.getCannon().setSpeed(5.0);
+//                        player.getCannon().setDirection(90.0);
+//                        break;
                     case SPACE:
                         if (container.getChildren().stream().anyMatch(e -> e instanceof CannonMissile)) break;
                         container.getChildren().add(player.getCannon().shoot());
@@ -80,7 +108,6 @@ public class GameMain extends Stage {
             } else if (event.getEventType().equals(KeyEvent.KEY_RELEASED)) {
                 if (event.getCode().isArrowKey()) {
                     player.getCannon().setSpeed(0.0);
-                    player.getCannon().setDirection(0.0);
                 }
             }
         }
