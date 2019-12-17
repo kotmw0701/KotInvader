@@ -1,12 +1,17 @@
 package com.kotmw.kotinvader.entity;
 
+import com.kotmw.kotinvader.entity.missiles.CannonMissile;
+import com.kotmw.kotinvader.entity.missiles.Missile;
 import com.kotmw.kotinvader.entity.missiles.Shooter;
-
-import java.io.File;
 
 public class Cannon extends Entity implements Shooter {
 
     public Cannon(double x, double y) {
-        super(new File("Cannon.png").getPath(), x, y, EntityType.CANNON);
+        super("resources/Cannon.png", x, y, EntityType.CANNON);
+    }
+
+    @Override
+    public Missile shoot() {
+        return new CannonMissile(getTranslateX()+getFitWidth()/2, getTranslateY());
     }
 }
