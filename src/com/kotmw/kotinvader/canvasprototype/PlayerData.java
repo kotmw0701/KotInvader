@@ -1,5 +1,6 @@
-package com.kotmw.kotinvader.canvasprototype.entity;
+package com.kotmw.kotinvader.canvasprototype;
 
+import com.kotmw.kotinvader.canvasprototype.entity.Cannon;
 import com.kotmw.kotinvader.canvasprototype.gui.GameMain;
 
 public class PlayerData {

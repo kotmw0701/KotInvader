@@ -1,16 +1,15 @@
 package com.kotmw.kotinvader.canvasprototype.entity;
 
 import javafx.geometry.BoundingBox;
-import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Entity extends Image {
 
     private EntityType type;
-    private double speed, direction;
+    private double x, y, speed, direction;
     private boolean alive;
     private int hitPoints;
-    private Point2D point;
 
     protected Entity(String imagePath, EntityType type, double x, double y) {
         this(imagePath, type, x, y, 0, 0, type.getDefaultHitPoints());
@@ -23,7 +22,8 @@ public class Entity extends Image {
         this.speed = speed;
         this.direction = direction;
         this.hitPoints = hitPoints;
-        point = new Point2D(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public void hit(int damage) {
@@ -33,6 +33,14 @@ public class Entity extends Image {
 
     public EntityType getType() {
         return type;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public double getSpeed() {
@@ -51,10 +59,6 @@ public class Entity extends Image {
         return hitPoints;
     }
 
-    public Point2D getPoint() {
-        return point;
-    }
-
     public void setSpeed(double speed) {
         this.speed = speed;
     }
@@ -64,12 +68,15 @@ public class Entity extends Image {
     }
 
     public void move() {
-        this.point.add(
-                speed * Math.cos(Math.toRadians(direction)),
-                speed * Math.sin(Math.toRadians(direction)));
+        x = x + speed * Math.cos(Math.toRadians(direction));
+        y = y + speed * Math.sin(Math.toRadians(direction));
+    }
+
+    public void draw(GraphicsContext canvas) {
+        canvas.drawImage(this, x, y);
     }
 
     public BoundingBox getBoundingBox() {
-        return new BoundingBox(point.getX(), point.getY(), getWidth(), getHeight());
+        return new BoundingBox(x, y, getWidth(), getHeight());
     }
 }

@@ -1,7 +1,10 @@
 package com.kotmw.kotinvader.canvasprototype.gui;
 
-import com.kotmw.kotinvader.canvasprototype.entity.PlayerData;
+import com.kotmw.kotinvader.canvasprototype.PlayerData;
 import com.kotmw.kotinvader.canvasprototype.entity.missile.CannonMissile;
+import com.kotmw.kotinvader.canvasprototype.handlers.MainScheduleHandler;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class GameMain extends Stage {
 
@@ -60,15 +64,17 @@ public class GameMain extends Stage {
 
         this.setOnCloseRequest( event -> System.exit(0) );
 
-//        Timeline timeline = new Timeline(
-//                new KeyFrame(
-//                        Duration.seconds(0.016),
-////                        new MainScheduleHandler(container)
-//                )
-//        );
+        container.addEntities(player.getCannon());
 
-//        timeline.setCycleCount(Timeline.INDEFINITE);
-//        timeline.play();
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0.016),
+                        new MainScheduleHandler(container)
+                )
+        );
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     public class KeyHandler implements EventHandler<KeyEvent> {
@@ -99,11 +105,10 @@ public class GameMain extends Stage {
                         break;
                     default:
                         break;
-
                 }
             } else if (event.getEventType().equals(KeyEvent.KEY_RELEASED)) {
                 if (event.getCode().isArrowKey()) {
-//                    player.getCannon().setSpeed(0.0);
+                    player.getCannon().setSpeed(0.0);
                 }
             }
         }

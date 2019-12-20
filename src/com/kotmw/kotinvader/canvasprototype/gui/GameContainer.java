@@ -18,6 +18,11 @@ public class GameContainer extends Canvas {
         this.getGraphicsContext2D().setFill(Color.GRAY);
     }
 
+    public void addEntities(Entity entity) {
+        entities.add(entity);
+        entity.draw(this.getGraphicsContext2D());
+    }
+
     public List<Entity> getEntities() {
         return entities;
     }
