@@ -65,16 +65,6 @@ public class GameMain extends Stage {
         this.setOnCloseRequest( event -> System.exit(0) );
 
         container.addEntities(player.getCannon());
-
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.seconds(0.016),
-                        new MainScheduleHandler(container)
-                )
-        );
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
     }
 
     public class KeyHandler implements EventHandler<KeyEvent> {

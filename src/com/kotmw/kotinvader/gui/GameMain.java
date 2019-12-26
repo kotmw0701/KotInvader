@@ -2,7 +2,6 @@ package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
-import com.kotmw.kotinvader.handlers.MainScheduleHandler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
@@ -64,16 +63,6 @@ public class GameMain extends Stage {
         this.show();
 
         this.setOnCloseRequest( event -> System.exit(0) );
-
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.seconds(0.016),
-                        new MainScheduleHandler(container)
-                )
-        );
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
     }
 
     public class KeyHandler implements EventHandler<KeyEvent> {

@@ -1,8 +1,10 @@
 package com.kotmw.kotinvader.canvasprototype.entity;
 
+import com.kotmw.kotinvader.canvasprototype.gui.GameMain;
 import javafx.geometry.BoundingBox;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class Entity extends Image {
 
