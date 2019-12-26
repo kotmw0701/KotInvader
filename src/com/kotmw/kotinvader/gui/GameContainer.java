@@ -7,12 +7,7 @@ import com.kotmw.kotinvader.entity.Entity;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Insets;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -24,7 +19,6 @@ public class GameContainer extends Pane {
 
     public GameContainer(PlayStatus player) {
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
-        this.setBackground(new Background(new BackgroundFill(Color.web("#080808"), CornerRadii.EMPTY, Insets.EMPTY)));
 
         this.getChildren().add(player.getCannon());
 
@@ -46,7 +40,7 @@ public class GameContainer extends Pane {
     private void timerCreate() {
         timeline = new Timeline(
                 new KeyFrame(
-                        Duration.seconds(0.017),
+                        Duration.seconds(0.01),
                         event -> {
                             getEntities().forEach(entity -> {
                                 entity.move();
@@ -85,13 +79,13 @@ public class GameContainer extends Pane {
                 )
         );
         timeline.setCycleCount(6000);
-    }
-
-    private void play() {
         timeline.setOnFinished(event -> {
             timerCreate();
             play();
         });
+    }
+
+    private void play() {
         timeline.play();
     }
 }

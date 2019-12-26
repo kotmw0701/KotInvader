@@ -2,20 +2,13 @@ package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 public class GameMain extends Stage {
 
@@ -39,19 +32,24 @@ public class GameMain extends Stage {
         player = new PlayStatus();
 
         container = new GameContainer(player);
+        container.setId("container");
         status = new GameStatus();
+        status.setId("status");
         remain = new GameRemain();
+        remain.setId("remain");
 
         KeyHandler keyManager = new KeyHandler();
 
         BorderPane root = new BorderPane();
+        root.setId("root");
         root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setTop(status);
         root.setBottom(remain);
         root.setCenter(container);
-        root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
         scene.getRoot().requestFocus();
+        Application.setUserAgentStylesheet("MODENA");
+        scene.getStylesheets().addAll(getClass().getResource("/resources/main.css").toExternalForm());
         scene.setOnKeyPressed(keyManager);
         scene.setOnKeyReleased(keyManager);
 
@@ -72,11 +70,11 @@ public class GameMain extends Stage {
             if (event.getEventType().equals(KeyEvent.KEY_PRESSED)) {
                 switch (event.getCode()) {
                     case LEFT:
-                        player.getCannon().setSpeed(5.0);
+                        player.getCannon().setSpeed(2.0);
                         player.getCannon().setDirection(180);
                         break;
                     case RIGHT:
-                        player.getCannon().setSpeed(5.0);
+                        player.getCannon().setSpeed(2.0);
                         player.getCannon().setDirection(0.0);
                         break;
 //                    case UP:
