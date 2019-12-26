@@ -3,11 +3,11 @@ package com.kotmw.kotinvader.entity;
 import javafx.scene.CacheHint;
 import javafx.scene.image.ImageView;
 
-public class Entity extends ImageView {
+public abstract class Entity extends ImageView {
 
     private EntityType entityType;
     private double speed, direction;
-    public boolean alive = true;
+    private boolean alive = true;
     private int hitPoints;
 
     public Entity(String imagePath, double x, double y, EntityType entityType) {
@@ -29,7 +29,7 @@ public class Entity extends ImageView {
     public boolean hit(int damage) {
         hitPoints -= damage;
         if (hitPoints < 0)
-            alive = false;
+            alive = dead();
         return alive;
     }
 
@@ -56,6 +56,8 @@ public class Entity extends ImageView {
     public void setDirection(double direction) {
         this.direction = direction;
     }
+
+    protected abstract boolean dead();
 
     public void move() {
         this.setTranslateX(this.getTranslateX() + speed * Math.cos(Math.toRadians(direction)));
