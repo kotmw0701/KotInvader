@@ -94,18 +94,18 @@ public class GameContainer extends Pane {
 
     private void createInvaders() {
         for (int x = 0; x < 11; x++) {
-            Invader abobeInvader = null;
+            Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
                 double yPoint = 50 + y * 20, xPoint = GameMain.MAIN_X/2-150 + x*30;
                 if (y == 0) {
                     invader = new Invader(xPoint, yPoint);
                 } else if (y == 4) {
-                    invader = new Invader(xPoint, yPoint, abobeInvader, true);
+                    invader = new Invader(xPoint, yPoint, aboveInvader, true);
                 } else {
-                    invader = new Invader(xPoint, yPoint, abobeInvader);
+                    invader = new Invader(xPoint, yPoint, aboveInvader);
                 }
-                abobeInvader = invader;
+                aboveInvader = invader;
                 getChildren().add(invader);
             }
         }
