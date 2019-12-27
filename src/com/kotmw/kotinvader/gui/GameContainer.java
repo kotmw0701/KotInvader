@@ -4,6 +4,7 @@ import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.Cannon;
 import com.kotmw.kotinvader.entity.Enemy;
 import com.kotmw.kotinvader.entity.Entity;
+import com.kotmw.kotinvader.entity.Invader;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,6 +22,8 @@ public class GameContainer extends Pane {
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
         this.getChildren().add(player.getCannon());
+
+        createInvaders();
 
         timerCreate();
         play();
@@ -87,5 +90,24 @@ public class GameContainer extends Pane {
 
     private void play() {
         timeline.play();
+    }
+
+    private void createInvaders() {
+        for (int x = 0; x < 11; x++) {
+            Invader abobeInvader = null;
+            for (int y = 0; y < 5; y++) {
+                Invader invader;
+                double yPoint = 50 + y * 20, xPoint = GameMain.MAIN_X/2-150 + x*30;
+                if (y == 0) {
+                    invader = new Invader(xPoint, yPoint);
+                } else if (y == 4) {
+                    invader = new Invader(xPoint, yPoint, abobeInvader, true);
+                } else {
+                    invader = new Invader(xPoint, yPoint, abobeInvader);
+                }
+                abobeInvader = invader;
+                getChildren().add(invader);
+            }
+        }
     }
 }
