@@ -1,0 +1,16 @@
+@font-face {
+    src: url("/x14y24pxHeadUpDaisy.ttf");
+}
+
+#root {
+    -fx-background-color: black;
+}
+
+#container {
+    -fx-background-color: #080808;
+}
+
+#button {
+    -fx-font-family: 'x14y24pxHeadUpDaisy';
+    -fx-font-size: 20px;
+}
