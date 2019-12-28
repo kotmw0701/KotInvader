@@ -4,13 +4,20 @@
 
 #root {
     -fx-background-color: black;
+    -fx-font-family: 'x14y24pxHeadUpDaisy';
 }
 
 #container {
     -fx-background-color: #080808;
 }
 
-#button {
-    -fx-font-family: 'x14y24pxHeadUpDaisy';
+.button {
+    -fx-pref-height: 30px;
+    -fx-pref-width: 200px;
     -fx-font-size: 20px;
+}
+
+.title {
+    -fx-font-size: 50px;
+    -fx-text-fill: white;
 }
