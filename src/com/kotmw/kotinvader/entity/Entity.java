@@ -10,11 +10,11 @@ public abstract class Entity extends ImageView {
     private boolean alive = true;
     private int hitPoints;
 
-    public Entity(String imagePath, double x, double y, EntityType entityType) {
+    protected Entity(String imagePath, double x, double y, EntityType entityType) {
         this(imagePath, x, y, entityType, 0.0, entityType.getDefaultHitPoints());
     }
 
-    public Entity(String imagePath, double x, double y, EntityType entityType, double speed, int hitPoints) {
+    protected Entity(String imagePath, double x, double y, EntityType entityType, double speed, int hitPoints) {
         super(imagePath);
         this.setCache(true);
         this.setCacheHint(CacheHint.SPEED);

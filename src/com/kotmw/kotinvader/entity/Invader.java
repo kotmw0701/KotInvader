@@ -21,6 +21,8 @@ public class Invader extends Enemy implements Shooter {
         super("resources/Invader.png", x, y, EntityType.INVADER);
         this.abobeInvader = abobeInvader;
         this.active = active;
+
+        setSpeed(5.0);
     }
 
     private void changeActive() {
