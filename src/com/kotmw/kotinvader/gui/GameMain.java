@@ -61,8 +61,10 @@ public class GameMain extends Stage {
         container.setId("container");
         status = new GameStatus();
         status.setId("status");
+        status.getStyleClass().add("info");
         remain = new GameRemain();
         remain.setId("remain");
+        remain.getStyleClass().add("info");
 
         KeyHandler keyManager = new KeyHandler();
 
