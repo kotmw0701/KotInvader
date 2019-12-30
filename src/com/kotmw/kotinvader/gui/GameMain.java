@@ -3,17 +3,19 @@ package com.kotmw.kotinvader.gui;
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
-import java.util.jar.Manifest;
 
 public class GameMain extends Stage {
 
@@ -73,16 +75,33 @@ public class GameMain extends Stage {
 
         KeyHandler keyManager = new KeyHandler();
 
-        BorderPane root = new BorderPane();
-        root.setId("root");
+        VBox root = new VBox();
         root.setPrefSize(WINDOW_X, WINDOW_Y);
-        root.setTop(status);
-        root.setBottom(remain);
-        root.setCenter(container);
+        root.setId("box");
+        Pane pane = new Pane();
+        pane.setId("root");
+        root.getChildren().add(pane);
 
-        FadeTransition fade = new FadeTransition(Duration.seconds(2), root);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefSize(WINDOW_X, WINDOW_Y);
+        borderPane.setTop(status);
+        borderPane.setBottom(remain);
+        borderPane.setCenter(container);
+
+        ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), pane), animationY = new ScaleTransition(Duration.seconds(0.25), pane);
+        animationX.setFromX(0.001);
+        animationX.setToX(1.0);
+        animationY.setFromY(0.005);
+        animationY.setToY(1.0);
+        animationY.setInterpolator(Interpolator.EASE_OUT);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(2), borderPane);
         fade.setFromValue(0.0);
         fade.setToValue(1.0);
+
+        SequentialTransition animation = new SequentialTransition(animationX, animationY, fade);
+
+        pane.getChildren().add(borderPane);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
         scene.setFill(null);
@@ -99,8 +118,8 @@ public class GameMain extends Stage {
         this.sizeToScene();
         this.show();
 
-        fade.setOnFinished(event -> container.play());
-        fade.play();
+        animation.setOnFinished(event -> container.play());
+        animation.play();
 
         this.setOnCloseRequest( event -> System.exit(0) );
     }

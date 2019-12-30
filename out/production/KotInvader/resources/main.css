@@ -2,6 +2,10 @@
     src: url("x14y24pxHeadUpDaisy.ttf");
 }
 
+#box {
+    -fx-background-color: transparent;
+}
+
 #root {
     -fx-background-color: black;
     -fx-font-family: 'x14y24pxHeadUpDaisy';
@@ -44,14 +48,10 @@
     -fx-font-size: 35px;
 }
 
-.test1 {
-    -fx-background-color: red;
+.testClass {
+    -fx-background-color: transparent;
 }
 
-.test2 {
-    -fx-background-color: green;
-}
-
-.test3 {
-    -fx-background-color: blue;
+.testClass2 {
+    -fx-background-color: lawngreen;
 }

@@ -8,15 +8,10 @@ import com.kotmw.kotinvader.entity.Invader;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameContainer extends Pane {
@@ -50,7 +45,7 @@ public class GameContainer extends Pane {
     private int frameCounter;
 
     //――――――――――――――――――――――――――――――――――
-    private Line leftLine, rightLine;
+//    private Line leftLine, rightLine;
     //――――――――――――――――――――――――――――――――――
 
     public GameContainer(PlayStatus player) {
@@ -62,14 +57,14 @@ public class GameContainer extends Pane {
         createInvaders();
 
         //―――――――――――――――――――――――――――――――――――――――――――――
-        leftLine = new Line(0, 0, 0, 600);
-        leftLine.setStroke(Color.GREEN);
-
-        rightLine = new Line(0, 0, 0, 600);
-        rightLine.setStroke(Color.PINK);
-
-        this.getChildren().addAll(leftLine, rightLine);
-        //―――――――――――――――――――――――――――――――――――――――――――――
+//        leftLine = new Line(0, 0, 0, 600);
+//        leftLine.setStroke(Color.GREEN);
+//
+//        rightLine = new Line(0, 0, 0, 600);
+//        rightLine.setStroke(Color.PINK);
+//
+//        this.getChildren().addAll(leftLine, rightLine);
+//        //―――――――――――――――――――――――――――――――――――――――――――――
 
         timerCreate();
     }
@@ -145,7 +140,7 @@ public class GameContainer extends Pane {
                                 }
                             });
                             if (frameCounter % 30 == 0) {
-                                double rightMost = 250, leftMost = 950;
+                                double rightMost = 250, leftMost = 950 + 22;
                                 for (Entity entity : getEntities()) {
                                     if (entity instanceof Invader && entity.isAlive()) {
                                         double invaderX = entity.getTranslateX();
@@ -154,8 +149,8 @@ public class GameContainer extends Pane {
                                     }
                                 }
                                 //――――――――――――――――――――――――――――――――――
-                                leftLine.setTranslateX(leftMost);
-                                rightLine.setTranslateX(rightMost);
+//                                leftLine.setTranslateX(leftMost);
+//                                rightLine.setTranslateX(rightMost);
                                 //――――――――――――――――――――――――――――――――――
 
                                 if (!down) {

@@ -25,16 +25,16 @@ public class TestStage extends Stage {
 
         //アニメーションするNode
         Pane pane = new Pane();
-        pane.setPrefWidth(100);
-        pane.setPrefHeight(100);
+        pane.setPrefWidth(1200);
+        pane.setPrefHeight(700);
         pane.getStyleClass().add("testClass2");
 
         //拡大のアニメーション、X広がりとY広がりを順番にやりたいため2つに分割
         ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), pane), animationY = new ScaleTransition(Duration.seconds(0.25), pane);
-        animationX.setFromX(0.01);
-        animationX.setToX(12.0);
-        animationY.setFromY(0.05);
-        animationY.setToY(7.0);
+        animationX.setFromX(0.001);
+        animationX.setToX(1.0);
+        animationY.setFromY(0.005);
+        animationY.setToY(1.0);
         animationY.setInterpolator(Interpolator.EASE_OUT);
 
         SequentialTransition animation = new SequentialTransition(animationX, animationY);

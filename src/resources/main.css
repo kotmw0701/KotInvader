@@ -2,6 +2,10 @@
     src: url("x14y24pxHeadUpDaisy.ttf");
 }
 
+#box {
+    -fx-background-color: transparent;
+}
+
 #root {
     -fx-background-color: black;
     -fx-font-family: 'x14y24pxHeadUpDaisy';
@@ -46,8 +50,6 @@
 
 .testClass {
     -fx-background-color: transparent;
-    -fx-border-color: black;
-    -fx-border-width: 1px;
 }
 
 .testClass2 {
