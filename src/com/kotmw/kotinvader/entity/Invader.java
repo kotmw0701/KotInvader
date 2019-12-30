@@ -18,7 +18,7 @@ public class Invader extends Enemy implements Shooter {
     }
 
     public Invader(double x, double y, Invader abobeInvader, boolean active) {
-        super("resources/Invader.png", x, y, EntityType.INVADER);
+        super("/resources/Invader.png", x, y, EntityType.INVADER);
         this.abobeInvader = abobeInvader;
         this.active = active;
 

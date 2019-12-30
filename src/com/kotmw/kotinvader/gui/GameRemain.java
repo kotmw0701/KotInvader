@@ -17,7 +17,7 @@ public class GameRemain extends HBox {
     Image cannon;
 
     public GameRemain(PlayStatus player) {
-        cannon = new Image("resources/Cannon.png");
+        cannon = new Image(getClass().getResource("/resources/Cannon.png").toExternalForm());
         this.setPrefSize(GameMain.REMAIN_X, GameMain.REMAIN_Y);
         this.setSpacing(10);
         this.setAlignment(Pos.CENTER_LEFT);
@@ -29,6 +29,6 @@ public class GameRemain extends HBox {
     private void setRemain(int remain) {
         getChildren().clear();
         for (int i = 0; i < remain; i++)
-            this.getChildren().add(new ImageView("resources/Cannon.png"));
+            this.getChildren().add(new ImageView(getClass().getResource("/resources/Cannon.png").toExternalForm()));
     }
 }

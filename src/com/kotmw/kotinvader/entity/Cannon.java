@@ -7,7 +7,7 @@ import com.kotmw.kotinvader.entity.missiles.Shooter;
 public class Cannon extends Entity implements Shooter {
 
     public Cannon(double x, double y) {
-        super("resources/Cannon.png", x, y, EntityType.CANNON);
+        super("/resources/Cannon.png", x, y, EntityType.CANNON);
     }
 
     @Override
