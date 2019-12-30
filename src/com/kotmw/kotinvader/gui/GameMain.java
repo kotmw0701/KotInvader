@@ -83,6 +83,7 @@ public class GameMain extends Stage {
         root.getChildren().add(pane);
 
         BorderPane borderPane = new BorderPane();
+//        borderPane.setId("root");
         borderPane.setPrefSize(WINDOW_X, WINDOW_Y);
         borderPane.setTop(status);
         borderPane.setBottom(remain);
@@ -104,6 +105,7 @@ public class GameMain extends Stage {
         pane.getChildren().add(borderPane);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
+//        Scene scene = new Scene(borderPane, WINDOW_X, WINDOW_Y);
         scene.setFill(null);
         scene.getRoot().requestFocus();
         Application.setUserAgentStylesheet("MODENA");

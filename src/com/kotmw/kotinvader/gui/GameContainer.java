@@ -94,7 +94,7 @@ public class GameContainer extends Pane {
                                     case INVADER:
                                         if (frameCounter % 30 == 0) {
                                             Invader invader = (Invader) entity;
-                                            if (invader.isActive() && Math.random() > 0.99) getChildren().add(invader.shoot());
+                                            if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
                                             if (down) {
                                                 entity.setSpeed(25.0);
                                                 entity.setDirection(90);
