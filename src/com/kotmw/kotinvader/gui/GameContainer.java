@@ -16,6 +16,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameContainer extends Pane {
@@ -41,6 +42,8 @@ public class GameContainer extends Pane {
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
      */
 
+    private PlayStatus player;
+
     private Timeline timeline;
 
     private boolean invaderRight, down;
@@ -51,6 +54,7 @@ public class GameContainer extends Pane {
     //――――――――――――――――――――――――――――――――――
 
     public GameContainer(PlayStatus player) {
+        this.player = player;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
         this.getChildren().add(player.getCannon());
@@ -68,7 +72,6 @@ public class GameContainer extends Pane {
         //―――――――――――――――――――――――――――――――――――――――――――――
 
         timerCreate();
-        play();
     }
 
     public boolean isObjectInWindow(Entity entity) {
@@ -95,6 +98,8 @@ public class GameContainer extends Pane {
                                         break;
                                     case INVADER:
                                         if (frameCounter % 30 == 0) {
+                                            Invader invader = (Invader) entity;
+                                            if (invader.isActive() && Math.random() > 0.99) getChildren().add(invader.shoot());
                                             if (down) {
                                                 entity.setSpeed(25.0);
                                                 entity.setDirection(90);
@@ -115,6 +120,12 @@ public class GameContainer extends Pane {
                                                     if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
+                                                        if (player.getRemain() > 0) {
+                                                            getChildren().add(player.respawn());
+                                                            player.decreaseRemain();
+                                                        } else {
+                                                            //ゲームオーバー
+                                                        }
                                                     }
                                                 });
                                         break;
@@ -127,6 +138,7 @@ public class GameContainer extends Pane {
                                                     if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
+                                                        player.addScore(50);
                                                     }
                                                 });
                                         break;
@@ -162,7 +174,7 @@ public class GameContainer extends Pane {
         });
     }
 
-    private void play() {
+    public void play() {
         timeline.play();
     }
 

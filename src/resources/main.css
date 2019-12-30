@@ -44,14 +44,12 @@
     -fx-font-size: 35px;
 }
 
-.test1 {
-    -fx-background-color: red;
+.testClass {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
 }
 
-.test2 {
-    -fx-background-color: green;
-}
-
-.test3 {
-    -fx-background-color: blue;
+.testClass2 {
+    -fx-background-color: lawngreen;
 }

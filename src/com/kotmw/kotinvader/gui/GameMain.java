@@ -2,13 +2,18 @@ package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+
+import java.util.jar.Manifest;
 
 public class GameMain extends Stage {
 
@@ -59,10 +64,10 @@ public class GameMain extends Stage {
 
         container = new GameContainer(player);
         container.setId("container");
-        status = new GameStatus();
+        status = new GameStatus(player);
         status.setId("status");
         status.getStyleClass().add("info");
-        remain = new GameRemain();
+        remain = new GameRemain(player);
         remain.setId("remain");
         remain.getStyleClass().add("info");
 
@@ -74,7 +79,13 @@ public class GameMain extends Stage {
         root.setTop(status);
         root.setBottom(remain);
         root.setCenter(container);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(2), root);
+        fade.setFromValue(0.0);
+        fade.setToValue(1.0);
+
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
+        scene.setFill(null);
         scene.getRoot().requestFocus();
         Application.setUserAgentStylesheet("MODENA");
         scene.getStylesheets().addAll(getClass().getResource("/resources/main.css").toExternalForm());
@@ -87,6 +98,9 @@ public class GameMain extends Stage {
         this.setResizable(false);
         this.sizeToScene();
         this.show();
+
+        fade.setOnFinished(event -> container.play());
+        fade.play();
 
         this.setOnCloseRequest( event -> System.exit(0) );
     }

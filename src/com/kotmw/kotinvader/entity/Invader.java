@@ -25,6 +25,10 @@ public class Invader extends Enemy implements Shooter {
         setSpeed(5.0);
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     private void changeActive() {
         if (!isAlive()) {
             if (abobeInvader != null) abobeInvader.changeActive();
