@@ -1,6 +1,7 @@
 package com.kotmw.kotinvader.entity;
 
 import javafx.scene.CacheHint;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Entity extends ImageView {
@@ -15,7 +16,7 @@ public abstract class Entity extends ImageView {
     }
 
     protected Entity(String imagePath, double x, double y, EntityType entityType, double speed, int hitPoints) {
-        super(imagePath);
+        this.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
         this.setCache(true);
         this.setCacheHint(CacheHint.SPEED);
         this.setTranslateX(x);
