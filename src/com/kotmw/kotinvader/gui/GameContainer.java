@@ -38,6 +38,7 @@ public class GameContainer extends Pane {
      */
 
     private PlayStatus player;
+    private CoverPane cover;
 
     private Timeline timeline;
 
@@ -48,8 +49,9 @@ public class GameContainer extends Pane {
 //    private Line leftLine, rightLine;
     //――――――――――――――――――――――――――――――――――
 
-    public GameContainer(PlayStatus player) {
+    public GameContainer(PlayStatus player, CoverPane cover) {
         this.player = player;
+        this.cover = cover;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
         this.getChildren().add(player.getCannon());
@@ -64,7 +66,7 @@ public class GameContainer extends Pane {
 //        rightLine.setStroke(Color.PINK);
 //
 //        this.getChildren().addAll(leftLine, rightLine);
-//        //―――――――――――――――――――――――――――――――――――――――――――――
+        //―――――――――――――――――――――――――――――――――――――――――――――
 
         timerCreate();
     }
