@@ -28,7 +28,18 @@ public class GameMain extends Stage {
     public static final double MAIN_X = WINDOW_X; //メイン画面のサイズ
     public static final double MAIN_Y = 550.0;
 
-    /*                                            1200px
+    /*
+      VBox (box)
+       ┗Pane (root)
+         ┣BorderPane
+         ┃ ┣[Top]    BorderPane (status)
+         ┃ ┃ ┣[Left]   VBox
+         ┃ ┃ ┣[Center] VBox
+         ┃ ┃ ┗[Right]  VBox
+         ┃ ┣[Center] Pane (container)
+         ┃ ┗[Bottom] HBox (remain)
+         ┗Pane
+                                                  1200px
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
     ┃       SCORE                                HI-SCORE                                           ┃
     ┃       00000                                 00000                                             ┃
@@ -60,11 +71,16 @@ public class GameMain extends Stage {
     private GameStatus status;
     private GameRemain remain;
 
+    private CoverPane cover;
+
+    private double xOffset, yOffset;
 
     public GameMain() {
         player = new PlayStatus();
 
-        container = new GameContainer(player);
+        cover = new CoverPane();
+
+        container = new GameContainer(player, cover);
         container.setId("container");
         status = new GameStatus(player);
         status.setId("status");
@@ -80,6 +96,14 @@ public class GameMain extends Stage {
         root.setId("box");
         Pane pane = new Pane();
         pane.setId("root");
+        root.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        root.setOnMouseDragged(event -> {
+            this.setX(event.getScreenX() - xOffset);
+            this.setY(event.getScreenY() - yOffset);
+        });
         root.getChildren().add(pane);
 
         BorderPane borderPane = new BorderPane();
@@ -96,13 +120,13 @@ public class GameMain extends Stage {
         animationY.setToY(1.0);
         animationY.setInterpolator(Interpolator.EASE_OUT);
 
-        FadeTransition fade = new FadeTransition(Duration.seconds(2), borderPane);
+        FadeTransition fade = new FadeTransition(Duration.seconds(1.5), borderPane);
         fade.setFromValue(0.0);
         fade.setToValue(1.0);
 
         SequentialTransition animation = new SequentialTransition(animationX, animationY, fade);
 
-        pane.getChildren().add(borderPane);
+        pane.getChildren().addAll(borderPane, cover);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
 //        Scene scene = new Scene(borderPane, WINDOW_X, WINDOW_Y);
@@ -154,7 +178,6 @@ public class GameMain extends Stage {
                         break;
                     default:
                         break;
-
                 }
             } else if (event.getEventType().equals(KeyEvent.KEY_RELEASED)) {
                 if (event.getCode().isArrowKey()) {
