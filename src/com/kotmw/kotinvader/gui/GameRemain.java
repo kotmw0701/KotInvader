@@ -1,10 +1,12 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 public class GameRemain extends HBox {
 
@@ -21,14 +23,23 @@ public class GameRemain extends HBox {
         this.setPrefSize(GameMain.REMAIN_X, GameMain.REMAIN_Y);
         this.setSpacing(10);
         this.setAlignment(Pos.CENTER_LEFT);
-        player.remainProperty().addListener(((observable, oldValue, newValue) -> setRemain(newValue.intValue())));
+        player.remainProperty().addListener(((observable, oldValue, newValue) -> setRemain(newValue.intValue(), oldValue.intValue() < newValue.intValue())));
 
-        setRemain(3);
+        setRemain(3, false);
     }
 
-    private void setRemain(int remain) {
+    private void setRemain(int remain, boolean add) {
         getChildren().clear();
-        for (int i = 0; i < remain; i++)
-            this.getChildren().add(new ImageView(cannon));
+        for (int i = 0; i < remain; i++) {
+            ImageView imageView = new ImageView(cannon);
+            this.getChildren().add(imageView);
+            if (add && i == remain-1) {
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.1), imageView);
+                fadeTransition.setFromValue(0.0);
+                fadeTransition.setToValue(1.0);
+                fadeTransition.setCycleCount(5);
+                fadeTransition.play();
+            }
+        }
     }
 }

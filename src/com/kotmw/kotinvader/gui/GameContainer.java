@@ -43,7 +43,7 @@ public class GameContainer extends Pane {
     private Timeline timeline;
 
     private boolean invaderRight, down;
-    private int frameCounter;
+    private int frameCounter, negateCount;
 
     //――――――――――――――――――――――――――――――――――
 //    private Line leftLine, rightLine;
@@ -120,6 +120,7 @@ public class GameContainer extends Pane {
                                                         if (!player.getCannon().isAlive() && player.getRemain() > 0) {
                                                             getChildren().add(player.respawn());
                                                             player.decreaseRemain();
+                                                            negateCount = 0;
                                                         } else {
                                                             //ゲームオーバー
                                                         }
@@ -135,7 +136,12 @@ public class GameContainer extends Pane {
                                                     if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
-                                                        player.addScore(50);
+                                                        if (others instanceof InvaderMissile) {
+                                                            if (10 == ++negateCount) {
+                                                                player.increaseRemain();
+                                                                negateCount = 0;
+                                                            }
+                                                        } else player.addScore(50);
                                                     }
                                                 });
                                         break;
