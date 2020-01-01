@@ -8,7 +8,7 @@ public abstract class Entity extends ImageView {
 
     private EntityType entityType;
     private double speed, direction;
-    private boolean alive = true;
+    private boolean alive = true, invincible;
     private int hitPoints;
 
     protected Entity(String imagePath, double x, double y, EntityType entityType) {
@@ -28,10 +28,11 @@ public abstract class Entity extends ImageView {
     }
 
     public boolean hit(int damage) {
+        if (invincible) return false;
         hitPoints -= damage;
         if (hitPoints < 0)
             alive = dead();
-        return alive;
+        return true;
     }
 
     public EntityType getEntityType() {
@@ -46,6 +47,10 @@ public abstract class Entity extends ImageView {
         return direction;
     }
 
+    public boolean isInvincible() {
+        return invincible;
+    }
+
     public boolean isAlive() {
         return alive;
     }
@@ -56,6 +61,10 @@ public abstract class Entity extends ImageView {
 
     public void setDirection(double direction) {
         this.direction = direction;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
     }
 
     protected abstract boolean dead();

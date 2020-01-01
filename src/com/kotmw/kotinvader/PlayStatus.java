@@ -29,7 +29,7 @@ public class PlayStatus {
 
     public Cannon respawn() {
         if (remain < 1) return null;
-        return cannon = new Cannon(GameMain.MAIN_X/2, 500);
+        return cannon = cannon.respawn();
     }
 
     public IntegerProperty remainProperty() {

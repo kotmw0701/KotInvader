@@ -112,10 +112,10 @@ public class GameContainer extends Pane {
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Cannon /*|| e instanceof Tochica */)
                                                 .forEach(others -> {
-                                                    if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
+                                                    if (!others.isInvincible() && entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
-                                                        if (player.getRemain() > 0) {
+                                                        if (!player.getCannon().isAlive() && player.getRemain() > 0) {
                                                             getChildren().add(player.respawn());
                                                             player.decreaseRemain();
                                                         } else {

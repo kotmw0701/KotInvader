@@ -7,19 +7,19 @@ import com.kotmw.kotinvader.entity.missiles.Shooter;
 public class Invader extends Enemy implements Shooter {
 
     private boolean active;
-    private Invader abobeInvader;
+    private Invader aboveInvader;
 
     public Invader(double x, double y) {
         this(x, y, null, false);
     }
 
-    public Invader(double x, double y, Invader abobeInvader) {
-        this(x, y, abobeInvader, false);
+    public Invader(double x, double y, Invader aboveInvader) {
+        this(x, y, aboveInvader, false);
     }
 
-    public Invader(double x, double y, Invader abobeInvader, boolean active) {
+    public Invader(double x, double y, Invader aboveInvader, boolean active) {
         super("/resources/Invader.png", x, y, EntityType.INVADER);
-        this.abobeInvader = abobeInvader;
+        this.aboveInvader = aboveInvader;
         this.active = active;
 
         setSpeed(5.0);
@@ -31,18 +31,18 @@ public class Invader extends Enemy implements Shooter {
 
     private void changeActive() {
         if (!isAlive()) {
-            if (abobeInvader != null) abobeInvader.changeActive();
+            if (aboveInvader != null) aboveInvader.changeActive();
         } else active = true;
     }
 
     @Override
     public Missile shoot() {
-        return new InvaderMissile(getTranslateX()+getImage().getWidth()/2, getTranslateY()+getImage().getHeight());
+        return new InvaderMissile(getTranslateX()+getImage().getWidth()/2, getTranslateY()+(getImage().getHeight()*2));
     }
 
     @Override
     protected boolean dead() {
-        if (abobeInvader != null && active) abobeInvader.changeActive();
+        if (aboveInvader != null && active) aboveInvader.changeActive();
         return false;
     }
 }
