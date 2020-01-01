@@ -14,6 +14,8 @@ import javafx.util.Duration;
 
 public class TestStage extends Stage {
 
+    //Destroyed
+
     public TestStage() {
         //ベース(透明)
         VBox root = new VBox();
