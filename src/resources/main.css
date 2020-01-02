@@ -19,7 +19,7 @@
     -fx-text-fill: white;
 }
 
-.buttons {
+.button {
     -fx-pref-height: 50px;
     -fx-pref-width: 200px;
     -fx-font-size: 20px;
@@ -31,7 +31,7 @@
     /*transparent*/
 }
 
-.buttons:hover {
+.button:hover {
     -fx-padding: 0;
     -fx-border-width: 2px 0;
 }
@@ -52,10 +52,30 @@
     -fx-font-size: 30px;
 }
 
+#cover .label {
+    -fx-font-size: 40px;
+}
+
+#cover .result {
+    -fx-background-color: #222;
+}
+
 .testClass {
     -fx-background-color: transparent;
 }
 
 .testClass2 {
     -fx-background-color: lawngreen;
+}
+
+.test1 {
+    -fx-background-color: red;
+}
+
+.test2 {
+    -fx-background-color: green;
+}
+
+.test3 {
+    -fx-background-color: blue;
 }
