@@ -8,15 +8,15 @@
 <Pane xmlns:fx="http://javafx.com/fxml/1" id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8.0.131" fx:controller="com.kotmw.kotinvader.TitleController">
    <children>
       <Label layoutX="122.0" layoutY="24.0" styleClass="title" text="Space Invader" />
-      <Button defaultButton="true" layoutX="212.0" layoutY="130.0" mnemonicParsing="false" onAction="#onStart" styleClass="buttons" text="Start">
+      <Button defaultButton="true" layoutX="212.0" layoutY="130.0" mnemonicParsing="false" onAction="#onStart" text="Start">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button layoutX="212.0" layoutY="220.0" mnemonicParsing="false" onAction="#onSettings" styleClass="buttons" text="Settings">
+      <Button layoutX="212.0" layoutY="220.0" mnemonicParsing="false" onAction="#onSettings" text="Settings">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button layoutX="212.0" layoutY="310.0" mnemonicParsing="false" onAction="#onExit" styleClass="buttons" text="Exit">
+      <Button layoutX="212.0" layoutY="310.0" mnemonicParsing="false" onAction="#onExit" text="Exit">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>

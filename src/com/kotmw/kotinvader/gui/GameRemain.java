@@ -26,7 +26,7 @@ public class GameRemain extends HBox {
         this.setAlignment(Pos.CENTER_LEFT);
         player.remainProperty().addListener(((observable, oldValue, newValue) -> setRemain(newValue.intValue(), oldValue.intValue() < newValue.intValue())));
 
-        setRemain(3, false);
+        setRemain(player.getRemain(), false);
     }
 
     private void setRemain(int remain, boolean add) {

@@ -10,9 +10,9 @@ public class TitleController {
 
     @FXML
     private void onStart(ActionEvent actionEvent) {
-        GameMain gameMain = new GameMain();
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-        stage.close();
+        GameMain gameMain = new GameMain(stage);
+        stage.hide();
     }
 
     public void onSettings(ActionEvent actionEvent) {

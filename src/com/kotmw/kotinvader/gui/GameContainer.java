@@ -205,7 +205,7 @@ public class GameContainer extends Pane {
 
     private void gameOver() {
         timeline.stop();
-
+        cover.showResult();
     }
 
     private void createInvaders() {

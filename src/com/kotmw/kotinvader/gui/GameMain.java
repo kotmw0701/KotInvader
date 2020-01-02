@@ -39,7 +39,7 @@ public class GameMain extends Stage {
          ┃ ┃ ┗[Right]  VBox
          ┃ ┣[Center] Pane (container)
          ┃ ┗[Bottom] HBox (remain)
-         ┗Pane
+         ┗VBox (cover)
                                                   1200px
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
     ┃       SCORE                                HI-SCORE                                           ┃
@@ -77,6 +77,8 @@ public class GameMain extends Stage {
     TODO SE、BGMの実装
     */
 
+    private Stage title;
+
     private final PlayStatus player;
 
     private GameContainer container;
@@ -87,10 +89,12 @@ public class GameMain extends Stage {
 
     private double xOffset, yOffset;
 
-    public GameMain() {
+    public GameMain(Stage title) {
+        this.title = title;
         player = new PlayStatus();
 
-        cover = new CoverPane();
+        cover = new CoverPane(this);
+        cover.setId("cover");
 
         container = new GameContainer(player, cover);
         container.setId("container");
@@ -160,6 +164,12 @@ public class GameMain extends Stage {
         animation.play();
 
         this.setOnCloseRequest( event -> System.exit(0) );
+    }
+
+    @Override
+    public void close() {
+        title.show();
+        super.close();
     }
 
     public class KeyHandler implements EventHandler<KeyEvent> {
