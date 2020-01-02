@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class GameContainer extends Pane {
@@ -40,7 +41,7 @@ public class GameContainer extends Pane {
     private Timeline timeline;
 
     private boolean invaderRight, down;
-    private int frameCounter, negateCount;
+    private int frameCounter, negateCount, downCount;
 
     //――――――――――――――――――――――――――――――――――
 //    private Line leftLine, rightLine;
@@ -69,8 +70,8 @@ public class GameContainer extends Pane {
     }
 
     public boolean isObjectInWindow(Entity entity, double margin) {
-        return entity.getTranslateX() > 0-margin
-                && entity.getTranslateY() > 0-margin
+        return entity.getTranslateX() > -margin
+                && entity.getTranslateY() > -margin
                 && entity.getTranslateX() < GameMain.MAIN_X+margin
                 && entity.getTranslateY() < GameMain.MAIN_Y+margin;
     }
@@ -97,12 +98,13 @@ public class GameContainer extends Pane {
                                         entity.move();
                                         break;
                                     case INVADER:
-                                        if (frameCounter % 30 == 0) {
+                                        if (frameCounter % 50 == 0) {
                                             Invader invader = (Invader) entity;
                                             if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
                                             if (down) {
                                                 entity.setSpeed(25.0);
                                                 entity.setDirection(Entity.Direction.DOWN);
+                                                negateCount++;
                                             } else {
                                                 entity.setSpeed(5.0);
                                                 if (invaderRight) entity.setDirection(Entity.Direction.RIGHT);
@@ -124,9 +126,7 @@ public class GameContainer extends Pane {
                                                             getChildren().add(player.respawn());
                                                             player.decreaseRemain();
                                                             negateCount = 0;
-                                                        } else {
-                                                            //ゲームオーバー
-                                                        }
+                                                        } else gameOver();
                                                     }
                                                 });
                                         break;
@@ -150,13 +150,14 @@ public class GameContainer extends Pane {
                                         break;
                                 }
                             });
-                            if (frameCounter % 30 == 0) {
-                                double rightMost = 250, leftMost = 950 + 22;
+                            if (frameCounter % 50 == 0) {
+                                double rightMost = 250, leftMost = 950 + 22, bottomMost = 0;
                                 for (Entity entity : getEntities()) {
                                     if (entity instanceof Invader && entity.isAlive()) {
                                         double invaderX = entity.getTranslateX();
                                         rightMost = Math.max(rightMost, invaderX);
                                         leftMost = Math.min(leftMost, invaderX);
+                                        if(down) bottomMost = Math.max(bottomMost, entity.getTranslateY());
                                     }
                                 }
                                 //――――――――――――――――――――――――――――――――――
@@ -165,7 +166,13 @@ public class GameContainer extends Pane {
                                 //――――――――――――――――――――――――――――――――――
 
                                 if (!down) {
-                                    if (down = (250 > leftMost || 950 < rightMost)) invaderRight = !invaderRight;
+                                    if (down = (250 > leftMost || 950 < rightMost)) {
+                                        if (bottomMost >= 475) {
+                                            gameOver();
+                                            return;
+                                        }
+                                        invaderRight = !invaderRight;
+                                    }
                                 } else down = false;
                             }
 
@@ -194,6 +201,11 @@ public class GameContainer extends Pane {
 
     public void play() {
         timeline.play();
+    }
+
+    private void gameOver() {
+        timeline.stop();
+
     }
 
     private void createInvaders() {

@@ -7,6 +7,6 @@ public class InvaderMissile extends Missile {
     public InvaderMissile(double x, double y) {
         super("/resources/InvaderMissile.png", x, y, EntityType.INVADERMISSILE);
         setSpeed(3);
-        setDirection(90);
+        setDirection(Direction.DOWN);
     }
 }
