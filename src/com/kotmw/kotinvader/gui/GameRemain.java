@@ -3,6 +3,7 @@ package com.kotmw.kotinvader.gui;
 import com.kotmw.kotinvader.PlayStatus;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -12,7 +13,7 @@ public class GameRemain extends HBox {
 
     /*                                            1200px
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃　　凸 凸 凸　　　                                                                                 ┃ 50px
+    ┃  4  凸 凸 凸　　　                                                                        　　    ┃ 50px
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
      */
 
@@ -29,7 +30,8 @@ public class GameRemain extends HBox {
     }
 
     private void setRemain(int remain, boolean add) {
-        getChildren().clear();
+        this.getChildren().clear();
+        this.getChildren().add(new Label(Integer.toString(remain+1)));
         for (int i = 0; i < remain; i++) {
             ImageView imageView = new ImageView(cannon);
             this.getChildren().add(imageView);

@@ -48,6 +48,10 @@
     -fx-font-size: 35px;
 }
 
+#remain .label {
+    -fx-font-size: 30px;
+}
+
 .testClass {
     -fx-background-color: transparent;
 }
