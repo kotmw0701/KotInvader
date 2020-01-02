@@ -1,6 +1,7 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.entity.Entity;
 import com.kotmw.kotinvader.entity.missiles.CannonMissile;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -64,7 +65,6 @@ public class GameMain extends Stage {
     ┃　　凸 凸 凸　　　                                                                                 ┃
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-    TODO UFO実装
     TODO インベーダーの種類を増やす
     TODO スコアの割り当てをちゃんと設定
     TODO Tochicaを設置する
@@ -170,11 +170,11 @@ public class GameMain extends Stage {
                 switch (event.getCode()) {
                     case LEFT:
                         player.getCannon().setSpeed(2.0);
-                        player.getCannon().setDirection(180);
+                        player.getCannon().setDirection(Entity.Direction.LEFT);
                         break;
                     case RIGHT:
                         player.getCannon().setSpeed(2.0);
-                        player.getCannon().setDirection(0.0);
+                        player.getCannon().setDirection(Entity.Direction.RIGHT);
                         break;
 //                    case UP:
 //                        player.getCannon().setSpeed(5.0);

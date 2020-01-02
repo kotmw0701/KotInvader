@@ -43,6 +43,6 @@ public class Invader extends Enemy implements Shooter {
     @Override
     protected boolean dead() {
         if (aboveInvader != null && active) aboveInvader.changeActive();
-        return false;
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.kotmw.kotinvader.entity;
 
+import com.kotmw.kotinvader.gui.GameMain;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,7 +9,7 @@ public abstract class Entity extends ImageView {
 
     private EntityType entityType;
     private double speed, direction;
-    private boolean alive = true, invincible;
+    private boolean alive, invincible, leave;
     private int hitPoints;
 
     protected Entity(String imagePath, double x, double y, EntityType entityType) {
@@ -25,13 +26,16 @@ public abstract class Entity extends ImageView {
         this.entityType = entityType;
         this.speed = speed;
         this.hitPoints = hitPoints;
+
+        this.alive = true;
+        this.leave = true;
     }
 
     public boolean hit(int damage) {
         if (invincible) return false;
         hitPoints -= damage;
         if (hitPoints < 0)
-            alive = dead();
+            alive = !dead();
         return true;
     }
 
@@ -47,12 +51,16 @@ public abstract class Entity extends ImageView {
         return direction;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
     public boolean isInvincible() {
         return invincible;
     }
 
-    public boolean isAlive() {
-        return alive;
+    public boolean isLeave() {
+        return leave;
     }
 
     public void setSpeed(double speed) {
@@ -67,10 +75,27 @@ public abstract class Entity extends ImageView {
         this.invincible = invincible;
     }
 
+    public void setLeave(boolean leave) {
+        this.leave = leave;
+    }
+
     protected abstract boolean dead();
 
     public void move() {
+        if (!leave) {
+            if (direction == Direction.RIGHT && getTranslateX()+getImage().getWidth() >= GameMain.MAIN_X) return;
+            else if (direction == Direction.LEFT && getTranslateX() <= 0) return;
+            else if (direction == Direction.UP && getTranslateY() <= 0) return;
+            else if (direction == Direction.DOWN && getTranslateY()+getImage().getHeight() >= GameMain.MAIN_Y) return;
+        }
         this.setTranslateX(this.getTranslateX() + speed * Math.cos(Math.toRadians(direction)));
         this.setTranslateY(this.getTranslateY() + speed * Math.sin(Math.toRadians(direction)));
+    }
+
+    public interface Direction {
+        double RIGHT =  0.0;
+        double DOWN =   90.0;
+        double LEFT =   180.0;
+        double UP =     270.0;
     }
 }

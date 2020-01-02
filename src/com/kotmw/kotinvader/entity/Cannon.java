@@ -15,6 +15,8 @@ public class Cannon extends Entity implements Shooter {
         super("/resources/Cannon.png", x, y, EntityType.CANNON);
         this.initX = x;
         this.initY = y;
+
+        setLeave(false);
     }
 
     @Override
@@ -24,7 +26,7 @@ public class Cannon extends Entity implements Shooter {
 
     @Override
     protected boolean dead() {
-        return false;
+        return true;
     }
 
     public Cannon respawn() {

@@ -11,6 +11,6 @@ public class Missile extends Entity {
 
     @Override
     protected boolean dead() {
-        return false;
+        return true;
     }
 }
