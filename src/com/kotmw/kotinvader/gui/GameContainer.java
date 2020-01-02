@@ -1,10 +1,7 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.entity.Cannon;
-import com.kotmw.kotinvader.entity.Enemy;
-import com.kotmw.kotinvader.entity.Entity;
-import com.kotmw.kotinvader.entity.Invader;
+import com.kotmw.kotinvader.entity.*;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -71,15 +68,19 @@ public class GameContainer extends Pane {
         timerCreate();
     }
 
-    public boolean isObjectInWindow(Entity entity) {
-        return entity.getTranslateX() > 0
-                && entity.getTranslateY() > 0
-                && entity.getTranslateX() < GameMain.MAIN_X
-                && entity.getTranslateY() < GameMain.MAIN_Y;
+    public boolean isObjectInWindow(Entity entity, double margin) {
+        return entity.getTranslateX() > 0-margin
+                && entity.getTranslateY() > 0-margin
+                && entity.getTranslateX() < GameMain.MAIN_X+margin
+                && entity.getTranslateY() < GameMain.MAIN_Y+margin;
     }
 
-    public List<Entity> getEntities() {
+    private List<Entity> getEntities() {
         return getChildren().stream().filter(entity -> entity instanceof Entity).map(n -> (Entity)n).collect(Collectors.toList());
+    }
+
+    private int getInvaderCount() {
+        return (int) getChildren().stream().filter(entity -> entity instanceof Invader).count();
     }
 
     private void timerCreate() {
@@ -90,6 +91,8 @@ public class GameContainer extends Pane {
                             frameCounter++;
                             getEntities().forEach(entity -> {
                                 switch (entity.getEntityType()) {
+                                    case UFO:
+                                        if (!isObjectInWindow(entity, 20)) entity.hit(100);
                                     case CANNON:
                                         entity.move();
                                         break;
@@ -99,18 +102,18 @@ public class GameContainer extends Pane {
                                             if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
                                             if (down) {
                                                 entity.setSpeed(25.0);
-                                                entity.setDirection(90);
+                                                entity.setDirection(Entity.Direction.DOWN);
                                             } else {
                                                 entity.setSpeed(5.0);
-                                                if (invaderRight) entity.setDirection(0.0);
-                                                else entity.setDirection(180.0);
+                                                if (invaderRight) entity.setDirection(Entity.Direction.RIGHT);
+                                                else entity.setDirection(Entity.Direction.LEFT);
                                             }
                                             entity.move();
                                         }
                                         break;
                                     case INVADERMISSILE:
                                         entity.move();
-                                        if (!isObjectInWindow(entity)) entity.hit(100);
+                                        if (!isObjectInWindow(entity, 0)) entity.hit(100);
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Cannon /*|| e instanceof Tochica */)
                                                 .forEach(others -> {
@@ -129,7 +132,7 @@ public class GameContainer extends Pane {
                                         break;
                                     case CANNONMISSILE:
                                         entity.move();
-                                        if (!isObjectInWindow(entity)) entity.hit(100);
+                                        if (!isObjectInWindow(entity, 20)) entity.hit(100);
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Enemy || e instanceof InvaderMissile)
                                                 .forEach(others -> {
@@ -175,6 +178,18 @@ public class GameContainer extends Pane {
             timerCreate();
             play();
         });
+
+        Timeline ufoTimeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(25),
+                        event -> {
+                            if (getInvaderCount() < 8) return;
+                            getChildren().add(new UFO());
+                        }
+                )
+        );
+        ufoTimeline.setCycleCount(Timeline.INDEFINITE);
+        ufoTimeline.play();
     }
 
     public void play() {
