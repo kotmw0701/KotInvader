@@ -8,25 +8,32 @@ public class Invader extends Enemy implements Shooter {
 
     private boolean active;
     private Invader aboveInvader;
+    private int invaderType;
 
-    public Invader(double x, double y) {
-        this(x, y, null, false);
+    public Invader(double x, double y, int num) {
+        this(x, y, null, false, num);
     }
 
-    public Invader(double x, double y, Invader aboveInvader) {
-        this(x, y, aboveInvader, false);
+    public Invader(double x, double y, Invader aboveInvader, int num) {
+        this(x, y, aboveInvader, false, num);
     }
 
-    public Invader(double x, double y, Invader aboveInvader, boolean active) {
-        super("/resources/Invader.png", x, y, EntityType.INVADER);
+    public Invader(double x, double y, Invader aboveInvader, boolean active, int num) {
+        super("/resources/Invader"+num+".png", x, y, EntityType.INVADER);
         this.aboveInvader = aboveInvader;
         this.active = active;
+        this.invaderType = num;
 
+        setScore(num*10);
         setSpeed(5.0);
     }
 
     public boolean isActive() {
         return active;
+    }
+
+    public int getInvaderType() {
+        return invaderType;
     }
 
     private void changeActive() {

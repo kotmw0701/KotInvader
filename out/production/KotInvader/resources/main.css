@@ -52,12 +52,16 @@
     -fx-font-size: 30px;
 }
 
-#cover .label {
-    -fx-font-size: 40px;
-}
-
 #cover .result {
     -fx-background-color: #222;
+}
+
+#cover .bonus {
+    -fx-font-size: 20px;
+}
+
+.result .label {
+    -fx-font-size: 40px;
 }
 
 .testClass {

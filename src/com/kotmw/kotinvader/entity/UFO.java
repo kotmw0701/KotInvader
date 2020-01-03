@@ -11,6 +11,7 @@ public class UFO extends Enemy {
 
         setTranslateX(random > 0.5 ? 0 : GameMain.MAIN_X);
 
+        setScore(100);
         setSpeed(1.2);
         setDirection(random > 0.5 ? 0 : 180);
     }
