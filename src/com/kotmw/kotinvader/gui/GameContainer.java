@@ -41,7 +41,7 @@ public class GameContainer extends Pane {
     private Timeline timeline;
 
     private boolean invaderRight, down;
-    private int frameCounter, negateCount, downCount;
+    private int frameCounter, negateCount, invaderSpeed;
 
     //――――――――――――――――――――――――――――――――――
 //    private Line leftLine, rightLine;
@@ -50,6 +50,7 @@ public class GameContainer extends Pane {
     public GameContainer(PlayStatus player, CoverPane cover) {
         this.player = player;
         this.cover = cover;
+        this.invaderSpeed = 50;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
         this.getChildren().add(player.getCannon());
@@ -98,13 +99,12 @@ public class GameContainer extends Pane {
                                         entity.move();
                                         break;
                                     case INVADER:
-                                        if (frameCounter % 50 == 0) {
+                                        if (frameCounter % invaderSpeed == 0) {
                                             Invader invader = (Invader) entity;
                                             if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
                                             if (down) {
-                                                entity.setSpeed(25.0);
+                                                entity.setSpeed(16.0);
                                                 entity.setDirection(Entity.Direction.DOWN);
-                                                negateCount++;
                                             } else {
                                                 entity.setSpeed(5.0);
                                                 if (invaderRight) entity.setDirection(Entity.Direction.RIGHT);
@@ -150,7 +150,7 @@ public class GameContainer extends Pane {
                                         break;
                                 }
                             });
-                            if (frameCounter % 50 == 0) {
+                            if (frameCounter % invaderSpeed == 0) {
                                 double rightMost = 250, leftMost = 950 + 22, bottomMost = 0;
                                 for (Entity entity : getEntities()) {
                                     if (entity instanceof Invader && entity.isAlive()) {
@@ -167,7 +167,7 @@ public class GameContainer extends Pane {
 
                                 if (!down) {
                                     if (down = (250 > leftMost || 950 < rightMost)) {
-                                        if (bottomMost >= 475) {
+                                        if (bottomMost >= 476) {
                                             gameOver();
                                             return;
                                         }
@@ -177,6 +177,10 @@ public class GameContainer extends Pane {
                             }
 
                             getChildren().removeIf(e -> e instanceof Entity && !((Entity)e).isAlive());
+
+                            int invaderCount = getInvaderCount();
+                            if (invaderCount > 0) invaderSpeed = invaderCount > 10 ? invaderCount - 5 : invaderCount;
+                            else invaderSpeed = 50;
                         }
                 )
         );
@@ -213,7 +217,7 @@ public class GameContainer extends Pane {
             Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
-                double yPoint = 50 + y * 25, xPoint = GameMain.MAIN_X/2-150 + x*30;
+                double yPoint = 60 + y * 32, xPoint = GameMain.MAIN_X/2-150 + x*30;
                 if (y == 0) {
                     invader = new Invader(xPoint, yPoint);
                 } else if (y == 4) {

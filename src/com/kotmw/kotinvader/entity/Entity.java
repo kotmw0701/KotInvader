@@ -31,12 +31,11 @@ public abstract class Entity extends ImageView {
         this.leave = true;
     }
 
-    public boolean hit(int damage) {
-        if (invincible) return false;
+    public void hit(int damage) {
+        if (invincible) return;
         hitPoints -= damage;
         if (hitPoints < 0)
             alive = !dead();
-        return true;
     }
 
     public EntityType getEntityType() {
