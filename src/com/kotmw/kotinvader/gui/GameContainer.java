@@ -5,6 +5,7 @@ import com.kotmw.kotinvader.entity.*;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -68,6 +69,18 @@ public class GameContainer extends Pane {
         //―――――――――――――――――――――――――――――――――――――――――――――
 
         timerCreate();
+
+        Timeline ufoTimeline = new Timeline(
+                new KeyFrame(
+                        new Duration(25000),
+                        event -> {
+                            if (getInvaderCount() < 8) return;
+                            getChildren().add(new UFO());
+                        }
+                )
+        );
+        ufoTimeline.setCycleCount(Timeline.INDEFINITE);
+        ufoTimeline.play();
     }
 
     public boolean isObjectInWindow(Entity entity, double margin) {
@@ -189,18 +202,6 @@ public class GameContainer extends Pane {
             timerCreate();
             play();
         });
-
-        Timeline ufoTimeline = new Timeline(
-                new KeyFrame(
-                        Duration.seconds(25),
-                        event -> {
-                            if (getInvaderCount() < 8) return;
-                            getChildren().add(new UFO());
-                        }
-                )
-        );
-        ufoTimeline.setCycleCount(Timeline.INDEFINITE);
-        ufoTimeline.play();
     }
 
     public void play() {
