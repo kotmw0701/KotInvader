@@ -6,17 +6,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class CoverPane extends VBox {
+public class CoverPane extends Pane {
 
     private GameMain root;
 
     public CoverPane(GameMain gameMain) {
         this.root = gameMain;
         this.setPrefSize(GameMain.WINDOW_X, GameMain.WINDOW_Y);
-        this.setFillWidth(false);
-        this.setAlignment(Pos.CENTER);
     }
 
     public void showResult() {
@@ -24,6 +23,7 @@ public class CoverPane extends VBox {
         container.getStyleClass().add("result");
         container.setPrefSize(500, GameMain.WINDOW_Y);
         container.setPadding(new Insets(20));
+        container.setTranslateX((GameMain.WINDOW_X-container.getPrefWidth())/2);
 
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
