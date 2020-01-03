@@ -3,8 +3,7 @@ package com.kotmw.kotinvader.gui;
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.entity.*;
 import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -152,12 +151,25 @@ public class GameContainer extends Pane {
                                                     if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
-                                                        if (others instanceof InvaderMissile) {
-                                                            if (10 == ++negateCount) {
-                                                                player.increaseRemain();
-                                                                negateCount = 0;
-                                                            }
-                                                        } else player.addScore(50);
+                                                        switch (others.getEntityType()) {
+                                                            case INVADER:
+                                                                if (getInvaderCount() <= 1 && ((Invader)others).getInvaderType() == 1)
+                                                                    addScore(others, 1000, true);
+                                                                else addScore(others, 0, false);
+                                                                break;
+                                                            case UFO:
+                                                                addScore(others, 0, true);
+                                                                break;
+                                                            case INVADERMISSILE:
+                                                                if (10 == ++negateCount) {
+                                                                    player.increaseRemain();
+                                                                    negateCount = 0;
+                                                                }
+                                                                break;
+                                                            default:
+                                                                addScore(others, 0, false);
+                                                                break;
+                                                        }
                                                     }
                                                 });
                                         break;
@@ -204,6 +216,29 @@ public class GameContainer extends Pane {
         });
     }
 
+    public void addScore(Entity killed, int amount, boolean bonus) {
+        if (killed instanceof Enemy)
+            amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
+        else if (amount == 0) return;
+        player.addScore(amount);
+        if (bonus) {
+            Label label = new Label(String.valueOf(amount));
+            label.getStyleClass().add("bonus");
+            cover.getChildren().add(label);
+            TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(1), label);
+            translateAnimation.setFromX(killed.getTranslateX());
+            translateAnimation.setFromY(killed.getTranslateY()+100);
+            translateAnimation.setToX(killed.getTranslateX());
+            translateAnimation.setToY(killed.getTranslateY()+100-20);
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), label);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            ParallelTransition transition = new ParallelTransition(translateAnimation, fadeTransition);
+            transition.setOnFinished(event -> cover.getChildren().remove(label));
+            transition.play();
+        }
+    }
+
     public void play() {
         timeline.play();
     }
@@ -220,11 +255,13 @@ public class GameContainer extends Pane {
                 Invader invader;
                 double yPoint = 60 + y * 32, xPoint = GameMain.MAIN_X/2-150 + x*30;
                 if (y == 0) {
-                    invader = new Invader(xPoint, yPoint);
+                    invader = new Invader(xPoint, yPoint, 3);
                 } else if (y == 4) {
-                    invader = new Invader(xPoint, yPoint, aboveInvader, true);
+                    invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
+                } else if (y == 3) {
+                    invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
                 } else {
-                    invader = new Invader(xPoint, yPoint, aboveInvader);
+                    invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 }
                 aboveInvader = invader;
                 getChildren().add(invader);
