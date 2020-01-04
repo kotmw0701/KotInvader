@@ -69,6 +69,10 @@
     -fx-font-size: 40px;
 }
 
+.result .button {
+    -fx-pref-width: 100px;
+}
+
 .testClass {
     -fx-background-color: transparent;
 }

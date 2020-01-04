@@ -34,6 +34,7 @@ public class CoverPane extends Pane {
 
         HBox menu = new HBox();
         menu.setAlignment(Pos.CENTER_RIGHT);
+        menu.setSpacing(20);
         Button title = new Button("Title"), exit = new Button("Exit");
         title.setOnAction(event -> root.close());
         exit.setOnAction(event -> System.exit(0));
