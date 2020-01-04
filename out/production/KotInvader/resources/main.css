@@ -56,11 +56,12 @@
     -fx-background-color: #222;
 }
 
-#cover .bonus {
+.bonus {
     -fx-font-size: 20px;
 }
 
-#cover .rainbow {
+.bonus .rainbow {
+    -fx-font-size: 30px;
     -fx-text-fill: linear-gradient(to right,red,orange,yellow,green,aqua,blue,purple);
 }
 

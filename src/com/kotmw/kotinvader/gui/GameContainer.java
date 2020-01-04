@@ -40,8 +40,8 @@ public class GameContainer extends Pane {
 
     private Timeline timeline;
 
-    private boolean invaderRight, down;
-    private int frameCounter, negateCount, invaderSpeed;
+    private boolean invaderRight, down, rainbow;
+    private int frameCounter, negateCount, invaderSpeed, limitCount;
 
     //――――――――――――――――――――――――――――――――――
 //    private Line leftLine, rightLine;
@@ -153,8 +153,7 @@ public class GameContainer extends Pane {
                                                         others.hit(10);
                                                         switch (others.getEntityType()) {
                                                             case INVADER:
-                                                                if (getInvaderCount() <= 1 && ((Invader)others).getInvaderType() == 1)
-                                                                    addScore(others, 1000, true);
+                                                                if (rainbow) addScore(others, 500, true);
                                                                 else addScore(others, 0, false);
                                                                 break;
                                                             case UFO:
@@ -175,20 +174,31 @@ public class GameContainer extends Pane {
                                         break;
                                 }
                             });
+
+                            getChildren().removeIf(e -> e instanceof Entity && !((Entity)e).isAlive());
+
                             if (frameCounter % invaderSpeed == 0) {
+
                                 double rightMost = 250, leftMost = 950 + 22, bottomMost = 0;
+                                Invader lastInvader = null;
                                 for (Entity entity : getEntities()) {
                                     if (entity instanceof Invader && entity.isAlive()) {
+                                        lastInvader = (Invader) entity;
                                         double invaderX = entity.getTranslateX();
                                         rightMost = Math.max(rightMost, invaderX);
                                         leftMost = Math.min(leftMost, invaderX);
-                                        if(down) bottomMost = Math.max(bottomMost, entity.getTranslateY());
+                                        if (down) bottomMost = Math.max(bottomMost, entity.getTranslateY());
                                     }
                                 }
+
+                                if (limitCount == 2 && bottomMost > GameMain.MAIN_Y) gameOver();
+
                                 //――――――――――――――――――――――――――――――――――
 //                                leftLine.setTranslateX(leftMost);
 //                                rightLine.setTranslateX(rightMost);
                                 //――――――――――――――――――――――――――――――――――
+
+                                if (getInvaderCount() <= 1 && lastInvader.getInvaderType() == 1) rainbow = true;
 
                                 if (!down) {
                                     if (down = (250 > leftMost || 950 < rightMost)) {
@@ -196,16 +206,15 @@ public class GameContainer extends Pane {
                                             gameOver();
                                             return;
                                         }
+                                        if (invaderRight && rainbow) limitCount++;
                                         invaderRight = !invaderRight;
                                     }
-                                } else down = false;
+                                } else if (limitCount < 2) down = false;
                             }
-
-                            getChildren().removeIf(e -> e instanceof Entity && !((Entity)e).isAlive());
 
                             int invaderCount = getInvaderCount();
                             if (invaderCount > 0) invaderSpeed = invaderCount > 10 ? invaderCount - 5 : invaderCount;
-                            else invaderSpeed = 50;
+                            else clear();
                         }
                 )
         );
@@ -221,26 +230,16 @@ public class GameContainer extends Pane {
             amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
         else if (amount == 0) return;
         player.addScore(amount);
-        if (bonus) {
-            Label label = new Label(String.valueOf(amount));
-            label.getStyleClass().add("bonus");
-            cover.getChildren().add(label);
-            TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(1), label);
-            translateAnimation.setFromX(killed.getTranslateX());
-            translateAnimation.setFromY(killed.getTranslateY()+100);
-            translateAnimation.setToX(killed.getTranslateX());
-            translateAnimation.setToY(killed.getTranslateY()+100-20);
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), label);
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            ParallelTransition transition = new ParallelTransition(translateAnimation, fadeTransition);
-            transition.setOnFinished(event -> cover.getChildren().remove(label));
-            transition.play();
-        }
+        if (bonus) cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount, (killed instanceof Invader));
     }
 
     public void play() {
         timeline.play();
+    }
+
+    public void clear() {
+        player.addScore(1000);
+        timeline.stop();
     }
 
     private void gameOver() {
