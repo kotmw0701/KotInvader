@@ -254,7 +254,7 @@ public class GameContainer extends Pane {
             Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
-                double yPoint = 60 + y * 32, xPoint = GameMain.MAIN_X/2-150 + x*30;
+                double yPoint = 60 + y * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
                 if (y == 0) {
                     invader = new Invader(xPoint, yPoint, 3);
                 } else if (y == 4) {

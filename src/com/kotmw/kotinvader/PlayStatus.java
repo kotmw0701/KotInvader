@@ -19,7 +19,7 @@ public class PlayStatus {
     private StringProperty scoreProperty;
 
     public PlayStatus() {
-        cannon = new Cannon(GameMain.MAIN_X/2, 500);
+        cannon = new Cannon(GameMain.MAIN_X/2-15, 500);
         remain = 3;
     }
 
