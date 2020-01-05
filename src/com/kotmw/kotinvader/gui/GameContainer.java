@@ -263,11 +263,11 @@ public class GameContainer extends Pane {
         player.addScore(1000);
         if (fullChain) {
             player.addScore(500);
-            cover.showScore(500, 50, 500, "FullChain");
+            cover.showScore(430, 50, 500, "FullChain");
         }
         if (zeroDeath) {
             player.addScore(500);
-            cover.showScore(700, 50, 500, "ZeroDeath");
+            cover.showScore(600, 50, 500, "ZeroDeath");
         }
         timeline.stop();
     }

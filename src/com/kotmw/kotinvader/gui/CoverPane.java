@@ -3,6 +3,7 @@ package com.kotmw.kotinvader.gui;
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +24,7 @@ public class CoverPane extends Pane {
     public void showResult() {
         BorderPane container = new BorderPane();
         container.getStyleClass().add("result");
+        container.setCursor(Cursor.DEFAULT);
         container.setPrefSize(500, GameMain.WINDOW_Y);
         container.setPadding(new Insets(20));
         container.setTranslateX((GameMain.WINDOW_X-container.getPrefWidth())/2);

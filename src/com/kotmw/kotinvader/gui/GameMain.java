@@ -9,6 +9,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -67,13 +69,13 @@ public class GameMain extends Stage {
 
     (仮)
     TODO スコアの割り当てをちゃんと設定
+    TODO Tochicaを設置する
 
     (バグ)
     TODO インベーダーの弾が2発同時に当たった時に無敵時間が発生しない
 
-    TODO Tochicaを設置する
     TODO 設定画面
-        TODO フルスクリーン、仮想フルスクリーン、ウィンドウモードの実装
+        TODO 仮想フルスクリーン、ウィンドウモードの実装
         TODO SE、BGMの有無
     TODO GUI系の調整、追加
         TODO レベル開始前のアニメーション
@@ -112,18 +114,11 @@ public class GameMain extends Stage {
         KeyHandler keyManager = new KeyHandler();
 
         VBox root = new VBox();
+        root.setAlignment(Pos.CENTER);
         root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setId("box");
         Pane pane = new Pane();
         pane.setId("root");
-        root.setOnMousePressed(event -> {
-            xOffset = event.getSceneX();
-            yOffset = event.getSceneY();
-        });
-        root.setOnMouseDragged(event -> {
-            this.setX(event.getScreenX() - xOffset);
-            this.setY(event.getScreenY() - yOffset);
-        });
         root.getChildren().add(pane);
 
         BorderPane borderPane = new BorderPane();
@@ -157,6 +152,17 @@ public class GameMain extends Stage {
         scene.setOnKeyPressed(keyManager);
         scene.setOnKeyReleased(keyManager);
 
+        root.setOnMousePressed(event -> {
+            root.setCursor(Cursor.MOVE);
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        root.setOnMouseReleased(event -> root.setCursor(Cursor.NONE));
+        root.setOnMouseDragged(event -> {
+            this.setX(event.getScreenX() - xOffset);
+            this.setY(event.getScreenY() - yOffset);
+        });
+        root.setCursor(Cursor.NONE);
         this.setScene(scene);
         this.initStyle(StageStyle.TRANSPARENT);
         this.setTitle("Invader | Play!");
