@@ -56,6 +56,9 @@ public class GameContainer extends Pane {
 
         createInvaders();
 
+        Tochica tochica = new Tochica(200, 200);
+        tochica.setBlocks(this);
+
         //―――――――――――――――――――――――――――――――――――――――――――――
 //        leftLine = new Line(0, 0, 0, 600);
 //        leftLine.setStroke(Color.GREEN);
