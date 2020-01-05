@@ -8,6 +8,7 @@ import javafx.animation.*;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,8 @@ public class GameContainer extends Pane {
     private PlayStatus player;
     private CoverPane cover;
 
+    private List<Tochica> tochicaList;
+
     private Timeline timeline;
 
     private boolean invaderRight, down, rainbow;
@@ -55,10 +58,7 @@ public class GameContainer extends Pane {
         this.getChildren().add(player.getCannon());
 
         createInvaders();
-
-        Tochica tochica = new Tochica(200, 200);
-        tochica.setBlocks(this);
-
+        createTochica();
         //―――――――――――――――――――――――――――――――――――――――――――――
 //        leftLine = new Line(0, 0, 0, 600);
 //        leftLine.setStroke(Color.GREEN);
@@ -130,6 +130,11 @@ public class GameContainer extends Pane {
                                     case INVADERMISSILE:
                                         entity.move();
                                         if (!isObjectInWindow(entity, 0)) entity.hit(100);
+                                        tochicaList.forEach(tochica -> {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity)) {
+                                                entity.hit(10);
+                                            }
+                                        });
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Cannon /*|| e instanceof Tochica */)
                                                 .forEach(others -> {
@@ -147,6 +152,11 @@ public class GameContainer extends Pane {
                                     case CANNONMISSILE:
                                         entity.move();
                                         if (!isObjectInWindow(entity, 20)) entity.hit(100);
+                                        tochicaList.forEach(tochica -> {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity)) {
+                                                entity.hit(10);
+                                            }
+                                        });
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Enemy || e instanceof InvaderMissile)
                                                 .forEach(others -> {
@@ -247,6 +257,19 @@ public class GameContainer extends Pane {
     private void gameOver() {
         timeline.stop();
         cover.showResult();
+    }
+
+    /*
+    Tochica : 40
+    Separate : 40
+     */
+    private void createTochica() {
+        tochicaList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Tochica tochica = new Tochica(i*80+460, 400);
+            tochica.setBlocks(this);
+            tochicaList.add(tochica);
+        }
     }
 
     private void createInvaders() {

@@ -1,5 +1,6 @@
 package com.kotmw.kotinvader.gameobjects.block;
 
+import com.kotmw.kotinvader.gameobjects.entity.Entity;
 import com.kotmw.kotinvader.gui.GameContainer;
 import javafx.geometry.BoundingBox;
 import javafx.scene.paint.Color;
@@ -52,6 +53,19 @@ public class BlockSet {
             for (Block x : y)
                 if (x != null)
                     container.getChildren().add(x);
+    }
+
+    public boolean hit(Entity entity) {
+        for (int i = 0; i < blocks.length; i++) {            //y
+            for (int j = 0; j < blocks[0].length; j++) {     //x
+                if (blocks[i][j] != null && blocks[i][j].getBoundsInParent().intersects(entity.getBoundsInParent())) {
+                    if (blocks[i][j].getFill() == Color.TRANSPARENT) continue;
+                    blocks[i][j].setFill(Color.TRANSPARENT);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public double getX() {
