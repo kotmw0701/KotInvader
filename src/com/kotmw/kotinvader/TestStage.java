@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -21,11 +22,13 @@ public class TestStage extends Stage {
     //Destroyed
 
     public TestStage() {
+        Screen screen = Screen.getPrimary();
+
         //ベース(透明)
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
-        root.setPrefWidth(1200);
-        root.setPrefHeight(700);
+        root.setPrefWidth(screen.getBounds().getWidth());
+        root.setPrefHeight(screen.getBounds().getHeight());
         root.setFillWidth(false);
         root.getStyleClass().add("testClass");
 

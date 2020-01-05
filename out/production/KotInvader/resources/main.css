@@ -78,7 +78,8 @@
 }
 
 .testClass {
-    -fx-background-color: transparent;
+    -fx-background-color: #08080850;
+    -fx-border-color: black;
 }
 
 .testClass2 {
