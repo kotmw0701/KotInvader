@@ -1,8 +1,8 @@
-package com.kotmw.kotinvader.entity;
+package com.kotmw.kotinvader.gameobjects.entity;
 
-import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
-import com.kotmw.kotinvader.entity.missiles.Missile;
-import com.kotmw.kotinvader.entity.missiles.Shooter;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.Shooter;
 
 public class Invader extends Enemy implements Shooter {
 

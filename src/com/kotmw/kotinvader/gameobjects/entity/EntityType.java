@@ -1,4 +1,4 @@
-package com.kotmw.kotinvader.entity;
+package com.kotmw.kotinvader.gameobjects.entity;
 
 public enum EntityType {
     UNKNOWN(-1, 0),

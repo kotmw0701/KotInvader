@@ -1,4 +1,4 @@
-package com.kotmw.kotinvader.entity;
+package com.kotmw.kotinvader.gameobjects.entity;
 
 import com.kotmw.kotinvader.gui.GameMain;
 import javafx.scene.CacheHint;

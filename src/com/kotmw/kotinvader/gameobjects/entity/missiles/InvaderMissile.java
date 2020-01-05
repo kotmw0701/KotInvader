@@ -1,6 +1,6 @@
-package com.kotmw.kotinvader.entity.missiles;
+package com.kotmw.kotinvader.gameobjects.entity.missiles;
 
-import com.kotmw.kotinvader.entity.EntityType;
+import com.kotmw.kotinvader.gameobjects.entity.EntityType;
 
 public class InvaderMissile extends Missile {
 

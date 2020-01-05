@@ -1,4 +1,4 @@
-package com.kotmw.kotinvader.entity;
+package com.kotmw.kotinvader.gameobjects.entity;
 
 public abstract class Enemy extends Entity {
 
