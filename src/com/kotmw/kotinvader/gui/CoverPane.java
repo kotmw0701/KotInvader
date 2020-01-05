@@ -48,17 +48,44 @@ public class CoverPane extends Pane {
         getChildren().add(container);
     }
 
-    public void showScore(double x, double y, int amount, boolean rainbow) {
+    public void showScore(double x, double y, int amount) {
+        showScore(x, y, amount, null);
+    }
+
+    public void showScore(double x, double y, int amount, String text) {
         VBox box = new VBox();
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("bonus");
-        if (rainbow) {
-            Label rainbowLabel = new Label("RAINBOW!");
-            rainbowLabel.getStyleClass().add("rainbow");
-            box.getChildren().add(rainbowLabel);
+        if (text != null && !text.trim().isEmpty()) {
+            Label label = new Label(text);
+            label.getStyleClass().add("bonusTitle");
+            box.getChildren().add(label);
         }
         box.getChildren().add(new Label(String.valueOf(amount)));
         this.getChildren().add(box);
+        Transition transition = text == null || text.trim().isEmpty() ? _bonusBaseAnimation(x, y, box) : new SequentialTransition(_bonusBaseAnimation(x, y, box), new PauseTransition(Duration.seconds(0.5)));
+        transition.setOnFinished(event -> this.getChildren().remove(box));
+        transition.play();
+    }
+
+    public void rainbow(double x, double y, int amount) {
+        VBox box = new VBox();
+        box.setAlignment(Pos.TOP_CENTER);
+        box.getStyleClass().add("bonus");
+        Label rainbowLabel = new Label("RAINBOW!");
+        rainbowLabel.getStyleClass().add("rainbow");
+        box.getChildren().addAll(rainbowLabel, new Label(String.valueOf(amount)));
+        this.getChildren().add(box);
+        FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
+        flash.setFromValue(0.0);
+        flash.setToValue(1.0);
+        flash.setCycleCount(3);
+        Transition transition = new SequentialTransition(_bonusBaseAnimation(x, y, box), new PauseTransition(Duration.seconds(0.2)), flash);
+        transition.setOnFinished(event -> this.getChildren().remove(box));
+        transition.play();
+    }
+
+    private ParallelTransition _bonusBaseAnimation(double x, double y, VBox box) {
         TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(1), box);
         translateAnimation.setFromX(x);
         translateAnimation.setFromY(y+100);
@@ -68,15 +95,6 @@ public class CoverPane extends Pane {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), box);
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
-        Transition transition = new ParallelTransition(translateAnimation, fadeTransition);
-        if (rainbow) {
-            FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
-            flash.setFromValue(0.0);
-            flash.setToValue(1.0);
-            flash.setCycleCount(3);
-            transition = new SequentialTransition(transition, new PauseTransition(Duration.seconds(0.2)), flash);
-        }
-        transition.setOnFinished(event -> this.getChildren().remove(box));
-        transition.play();
+        return new ParallelTransition(translateAnimation, fadeTransition);
     }
 }

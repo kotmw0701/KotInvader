@@ -60,6 +60,10 @@
     -fx-font-size: 20px;
 }
 
+.bonusTitle {
+    -fx-font-size: 30px;
+}
+
 .bonus .rainbow {
     -fx-font-size: 30px;
     -fx-text-fill: linear-gradient(to right,red,orange,yellow,green,aqua,blue,purple);
