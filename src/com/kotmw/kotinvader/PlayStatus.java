@@ -1,6 +1,6 @@
 package com.kotmw.kotinvader;
 
-import com.kotmw.kotinvader.entity.Cannon;
+import com.kotmw.kotinvader.gameobjects.entity.Cannon;
 import com.kotmw.kotinvader.gui.GameMain;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

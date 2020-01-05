@@ -68,14 +68,14 @@ public class CoverPane extends Pane {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), box);
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
-        Transition transition;
+        Transition transition = new ParallelTransition(translateAnimation, fadeTransition);
         if (rainbow) {
-           FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
+            FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
             flash.setFromValue(0.0);
             flash.setToValue(1.0);
             flash.setCycleCount(3);
-            transition = new SequentialTransition(new ParallelTransition(translateAnimation, fadeTransition), new PauseTransition(Duration.seconds(0.2)), flash);
-        } else transition = new ParallelTransition(translateAnimation, fadeTransition);
+            transition = new SequentialTransition(transition, new PauseTransition(Duration.seconds(0.2)), flash);
+        }
         transition.setOnFinished(event -> this.getChildren().remove(box));
         transition.play();
     }
