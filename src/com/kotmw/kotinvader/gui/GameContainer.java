@@ -1,15 +1,14 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.entity.*;
-import com.kotmw.kotinvader.entity.missiles.InvaderMissile;
+import com.kotmw.kotinvader.gameobjects.block.Tochica;
+import com.kotmw.kotinvader.gameobjects.entity.*;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import javafx.animation.*;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class GameContainer extends Pane {
@@ -198,7 +197,7 @@ public class GameContainer extends Pane {
 //                                rightLine.setTranslateX(rightMost);
                                 //――――――――――――――――――――――――――――――――――
 
-                                if (getInvaderCount() <= 1 && lastInvader.getInvaderType() == 1) rainbow = true;
+                                if (getInvaderCount() == 1 && lastInvader.getInvaderType() == 1) rainbow = true;
 
                                 if (!down) {
                                     if (down = (250 > leftMost || 950 < rightMost)) {

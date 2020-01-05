@@ -1,8 +1,8 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.entity.Entity;
-import com.kotmw.kotinvader.entity.missiles.CannonMissile;
+import com.kotmw.kotinvader.gameobjects.entity.Entity;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.CannonMissile;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
