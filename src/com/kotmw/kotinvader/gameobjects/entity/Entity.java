@@ -13,10 +13,10 @@ public abstract class Entity extends ImageView {
     private int hitPoints;
 
     protected Entity(String imagePath, double x, double y, EntityType entityType) {
-        this(imagePath, x, y, entityType, 0.0, entityType.getDefaultHitPoints());
+        this(imagePath, x, y, entityType, 0.0, 0.0, entityType.getDefaultHitPoints());
     }
 
-    protected Entity(String imagePath, double x, double y, EntityType entityType, double speed, int hitPoints) {
+    protected Entity(String imagePath, double x, double y, EntityType entityType, double speed, double direction, int hitPoints) {
         this.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
         this.setCache(true);
         this.setCacheHint(CacheHint.SPEED);
@@ -25,6 +25,7 @@ public abstract class Entity extends ImageView {
 
         this.entityType = entityType;
         this.speed = speed;
+        this.direction = direction;
         this.hitPoints = hitPoints;
 
         this.alive = true;
@@ -34,7 +35,7 @@ public abstract class Entity extends ImageView {
     public void hit(int damage) {
         if (invincible) return;
         hitPoints -= damage;
-        if (hitPoints < 0)
+        if (hitPoints <= 0)
             alive = !dead();
     }
 

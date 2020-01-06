@@ -149,7 +149,9 @@ public class GameContainer extends Pane {
                                                 getChildren().add(player.respawn());
                                                 player.decreaseRemain();
                                                 negateCount = 0;
-                                            } else gameOver();
+                                            }
+
+                                            if (player.getRemain() < 1) gameOver();
                                         }
                                         break;
                                     case CANNONMISSILE:
@@ -166,7 +168,7 @@ public class GameContainer extends Pane {
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Enemy || e instanceof InvaderMissile)
                                                 .forEach(others -> {
-                                                    if (entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
+                                                    if (!others.isInvincible() && entity.getBoundsInParent().intersects(others.getBoundsInParent())) {
                                                         entity.hit(10);
                                                         others.hit(10);
                                                         switch (others.getEntityType()) {
