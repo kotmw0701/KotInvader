@@ -63,7 +63,7 @@ public class CoverPane extends Pane {
             label.getStyleClass().add("bonusTitle");
             box.getChildren().add(label);
         }
-        box.getChildren().add(new Label(String.valueOf(amount)));
+        box.getChildren().add(new Label("+"+ amount));
         this.getChildren().add(box);
         Transition transition = text == null || text.trim().isEmpty() ? _bonusBaseAnimation(x, y, box) : new SequentialTransition(_bonusBaseAnimation(x, y, box), new PauseTransition(Duration.seconds(0.5)));
         transition.setOnFinished(event -> this.getChildren().remove(box));
