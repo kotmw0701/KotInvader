@@ -144,14 +144,14 @@ public class GameContainer extends Pane {
                                         if (!cannon.isInvincible() && entity.getBoundsInParent().intersects(cannon.getBoundsInParent())) {
                                             entity.hit(10);
                                             cannon.hit(10);
+                                            if (player.getRemain() < 1) gameOver();
+
                                             if (!player.getCannon().isAlive() && player.getRemain() > 0) {
 //                                                zeroDeath = false;
                                                 getChildren().add(player.respawn());
                                                 player.decreaseRemain();
                                                 negateCount = 0;
                                             }
-
-                                            if (player.getRemain() < 1) gameOver();
                                         }
                                         break;
                                     case CANNONMISSILE:

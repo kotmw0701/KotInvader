@@ -31,7 +31,7 @@ public class GameRemain extends HBox {
 
     private void setRemain(int remain, boolean add) {
         this.getChildren().clear();
-        this.getChildren().add(new Label(Integer.toString(remain+1)));
+        this.getChildren().add(new Label(Integer.toString(remain)));
         for (int i = 0; i < remain; i++) {
             ImageView imageView = new ImageView(cannon);
             this.getChildren().add(imageView);

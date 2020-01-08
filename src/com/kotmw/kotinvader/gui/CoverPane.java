@@ -32,7 +32,7 @@ public class CoverPane extends Pane {
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
 
-        VBox scoreData = new VBox();
+        VBox scoreData = new VBox(); //460, 546
 
         HBox menu = new HBox();
         menu.setAlignment(Pos.CENTER_RIGHT);
