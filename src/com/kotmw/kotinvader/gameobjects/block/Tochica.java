@@ -3,7 +3,7 @@ package com.kotmw.kotinvader.gameobjects.block;
 public class Tochica extends BlockSet{
 
     //x20 y16
-    static final int[][] model = {
+    static final byte[][] model = {
             {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
             {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0},
             {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
