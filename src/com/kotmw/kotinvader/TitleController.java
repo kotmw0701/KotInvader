@@ -17,10 +17,10 @@ import java.util.ResourceBundle;
 
 public class TitleController implements Initializable {
 
-    public Label title;
-    public Pane start;
-    public Pane settings;
-    public Pane exit;
+    @FXML
+    private Label title;
+    @FXML
+    private Pane start, settings, exit;
 //    public VBox animContainer;
 
     /*
@@ -35,21 +35,45 @@ public class TitleController implements Initializable {
                      Fade      → |
                                   Translate → |
                                   Fade      → |
+
+    SequentialTransition
+     - PauseTransition
+     - FadeTransition
+     - TranslateTransition
+     - ParallelTransition
+        - ParallelTransition
+          - TranslateTransition
+          - FadeTransition
+          - TranslateTransition
+          - FadeTransition
+        - ParallelTransition
+          - TranslateTransition
+          - FadeTransition
+          - TranslateTransition
+          - FadeTransition
+        - ParallelTransition
+          - TranslateTransition
+          - FadeTransition
+          - TranslateTransition
+          - FadeTransition
      */
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         Pane[] panes = new Pane[]{start, settings, exit};
         Transition[] buttonAnimations = new Transition[3];
         for (int p = 0; p < 3; p++) {
             Pane pane = panes[p];
-            Transition[] transitions = new Transition[2];
+            pane.setOpacity(0.0);
+            Transition[] transitions = new Transition[4];
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.1), pane);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
             for (int i = 0; i < 2; i++) {
                 Region region = new Region();
-                region.setOnMouseClicked(event -> region.getStyleClass().forEach(System.out::println));
                 TranslateTransition slide = new TranslateTransition(Duration.seconds(0.5), region);
+                slide.setInterpolator(Interpolator.SPLINE(0.55, 0.055, 0.675, 0.19)); //easeInCubic
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), region);
                 fadeTransition.setFromValue(1.0);
                 fadeTransition.setToValue(0.0);
@@ -63,15 +87,16 @@ public class TitleController implements Initializable {
                     slide.setToX(200.0);
                 }
                 pane.getChildren().add(region);
-                transitions[i] = new ParallelTransition(slide, fadeTransition); //片扉
+                transitions[i*2] = slide;
+                transitions[i*2+1] = fadeTransition; //片扉
             }
-            buttonAnimations[p] = new ParallelTransition(transitions); //両開きのアニメーション
+            buttonAnimations[p] = new SequentialTransition(fadeIn, new ParallelTransition(transitions)); //両開きのアニメーション
         }
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.8), title);
         translateTransition.setFromY(130.0);
         translateTransition.setToY(0.0);
-        translateTransition.setInterpolator(Interpolator.SPLINE(0.215, 0.61, 0.355, 1));
+        translateTransition.setInterpolator(Interpolator.SPLINE(0.215, 0.61, 0.355, 1)); //easeOutCubic
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), title);
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
