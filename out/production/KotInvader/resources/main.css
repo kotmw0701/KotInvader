@@ -40,6 +40,23 @@
     -fx-font-size: 50px;
 }
 
+.left {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 50px;
+    -fx-background-color: black;
+    -fx-border-color: white;
+    -fx-border-width: 0 2px 0 0;
+}
+
+.right {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 50px;
+    -fx-background-color: black;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 0 2px;
+    -fx-translate-x: 100px;
+}
+
 .info {
     -fx-padding: 0 20px;
 }
