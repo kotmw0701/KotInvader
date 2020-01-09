@@ -97,6 +97,6 @@ public class CoverPane extends Pane {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), box);
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
-        return new ParallelTransition(translateAnimation, fadeTransition);
+        return new ParallelTransition(translateAnimation, fadeTransition, new PauseTransition(Duration.seconds(1)));
     }
 }
