@@ -10,7 +10,7 @@ import java.util.List;
 
 public class BlockSet {
 
-    private final List<Block> blockList;
+    protected final List<Block> blockList;
 
     private double x, y;
     private double width, height;
@@ -22,16 +22,14 @@ public class BlockSet {
     }
 
     public BlockSet(double x, double y, int widthCount, int heightCount, int hitPoint) {
-        if (widthCount < 1) widthCount = 1;
-        if (heightCount < 1) heightCount = 1;
         this.x = x;
         this.y = y;
         this.width = widthCount*2;
         this.height = heightCount*2;
         this.boundingBox = new BoundingBox(x, y, width, height);
         this.blockList = new ArrayList<>(widthCount*heightCount);
-        for (int i = 1; i < height; i++) {
-            for (int j = 1; j < width; j++) {
+        for (int i = 0; i <= heightCount; i++) {
+            for (int j = 0; j <= widthCount; j++) {
                 this.blockList.add(new Block(j*2+x, i*2+y, 2, 2, hitPoint));
             }
         }
@@ -64,14 +62,14 @@ public class BlockSet {
 //                block.hit(damage);
                 double centerX = block.getTranslateX();
                 double centerY = block.getTranslateY();
-                for (Block target : blockList) {
+                for (Block target : this.blockList) {
                     double distance = Math.pow(centerX - target.getTranslateX(), 2) + Math.pow(centerY - target.getTranslateY(), 2);
                     if (distance < 1) target.hit(damage);
                     else if (distance < 2.5) target.hit(damage*0.9);
                     else if (distance < 5.0) target.hit(damage*0.75);
                     else if (distance < 10) target.hit(damage*0.5);
                 }
-
+                this.blockList.removeIf(target -> target.getFill() == Color.TRANSPARENT);
                 return true;
             }
         }

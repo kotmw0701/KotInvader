@@ -7,7 +7,6 @@ public class Block extends Rectangle {
 
     private final int baseHitPoint;
     private double hitPoint;
-    private boolean destroy;
 
     protected Block(double x, double y, double w, double h, int hitPoint) {
         super(w, h, Color.GREEN);

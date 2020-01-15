@@ -40,6 +40,7 @@ public class GameContainer extends Pane {
 
     private PlayStatus player;
     private CoverPane cover;
+    private Floor floor;
 
     private List<BlockSet> tochicaList;
     private boolean rainbow, zeroDeath, fullChain;
@@ -116,8 +117,11 @@ public class GameContainer extends Pane {
                                 switch (entity.getEntityType()) {
                                     case UFO:
                                         if (!isObjectInWindow(entity, 20)) entity.hit(100);
-                                    case CANNON:
                                         entity.move();
+                                        break;
+                                    case CANNON:
+                                        if (floor.hasFloor(entity) || entity.isInvincible())
+                                            entity.move();
                                         break;
                                     case INVADER:
                                         if (frameCounter % invaderSpeed == 0) {
@@ -292,7 +296,7 @@ public class GameContainer extends Pane {
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
-        Floor floor = new Floor(0, 520, 600, 50);
+        floor = new Floor(0, 520, 600, 40);
         floor.setBlocks(this);
         tochicaList.add(floor);
     }
