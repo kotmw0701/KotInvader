@@ -1,6 +1,8 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.gameobjects.block.BlockSet;
+import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
@@ -39,7 +41,7 @@ public class GameContainer extends Pane {
     private PlayStatus player;
     private CoverPane cover;
 
-    private List<Tochica> tochicaList;
+    private List<BlockSet> tochicaList;
     private boolean rainbow, zeroDeath, fullChain;
 
     private Timeline timeline;
@@ -136,7 +138,7 @@ public class GameContainer extends Pane {
                                         entity.move();
                                         if (!isObjectInWindow(entity, 0)) entity.hit(100);
                                         tochicaList.forEach(tochica -> {
-                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity)) {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10)) {
                                                 entity.hit(10);
                                             }
                                         });
@@ -161,7 +163,7 @@ public class GameContainer extends Pane {
                                             entity.hit(100);
                                         }
                                         tochicaList.forEach(tochica -> {
-                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity)) {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10)) {
                                                 entity.hit(10);
                                             }
                                         });

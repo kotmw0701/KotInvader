@@ -23,6 +23,6 @@ public class Tochica extends BlockSet{
     };
 
     public Tochica(double x, double y) {
-        super(x, y, model);
+        super(x, y, 20, model);
     }
 }
