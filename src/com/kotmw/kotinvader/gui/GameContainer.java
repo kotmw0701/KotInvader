@@ -292,6 +292,9 @@ public class GameContainer extends Pane {
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
+        Floor floor = new Floor(0, 520, 600, 50);
+        floor.setBlocks(this);
+        tochicaList.add(floor);
     }
 
     private void createInvaders() {
