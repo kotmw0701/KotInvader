@@ -33,7 +33,7 @@ public class GameMain extends Stage {
 
     /*
       VBox (box)
-       ┗Pane (root)
+       ┗Pane (root) -> StackPane
          ┣BorderPane
          ┃ ┣[Top]    BorderPane (status)
          ┃ ┃ ┣[Left]   VBox

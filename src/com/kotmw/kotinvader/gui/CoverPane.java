@@ -6,13 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-public class CoverPane extends Pane {
+public class CoverPane extends StackPane {
 
     private GameMain root;
 
@@ -25,9 +22,8 @@ public class CoverPane extends Pane {
         BorderPane container = new BorderPane();
         container.getStyleClass().add("result");
         container.setCursor(Cursor.DEFAULT);
-        container.setPrefSize(500, GameMain.WINDOW_Y);
         container.setPadding(new Insets(20));
-        container.setTranslateX((GameMain.WINDOW_X-container.getPrefWidth())/2);
+        StackPane.setMargin(container, new Insets(0, GameMain.MAIN_X/4, 0, GameMain.MAIN_X/4));
 
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
