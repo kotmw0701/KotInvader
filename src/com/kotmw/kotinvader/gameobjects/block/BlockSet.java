@@ -59,15 +59,12 @@ public class BlockSet {
         for (Block block : this.blockList) {
             if (block.getBoundsInParent().intersects(entity.getBoundsInParent())) {
                 if (block.getFill() == Color.TRANSPARENT) continue;
-//                block.hit(damage);
-                double centerX = block.getTranslateX();
-                double centerY = block.getTranslateY();
                 for (Block target : this.blockList) {
-                    double distance = Math.pow(centerX - target.getTranslateX(), 2) + Math.pow(centerY - target.getTranslateY(), 2);
+                    double distance = Math.sqrt(Math.pow(block.getTranslateX() - target.getTranslateX(), 2)
+                            + Math.pow(block.getTranslateY() - target.getTranslateY(), 2));
                     if (distance < 1) target.hit(damage);
-                    else if (distance < 2.5) target.hit(damage*0.9);
-                    else if (distance < 5.0) target.hit(damage*0.75);
-                    else if (distance < 10) target.hit(damage*0.5);
+                    else if (distance < 2.5) target.hit(damage*0.5);
+                    else if (distance < 5.0) target.hit(damage*0.25);
                 }
                 this.blockList.removeIf(target -> target.getFill() == Color.TRANSPARENT);
                 return true;

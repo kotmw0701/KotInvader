@@ -4,7 +4,7 @@ import com.kotmw.kotinvader.gameobjects.entity.Entity;
 
 public class Floor extends BlockSet {
 
-    private final double reach = 12.0;
+    private final double reach = 10.0;
 
     public Floor(double x, double y, int widthCount, int hitPoint) {
         super(x, y, widthCount, 0, hitPoint);
