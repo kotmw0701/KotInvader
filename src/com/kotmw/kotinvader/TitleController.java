@@ -77,6 +77,7 @@ public class TitleController implements Initializable {
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), region);
                 fadeTransition.setFromValue(1.0);
                 fadeTransition.setToValue(0.0);
+                fadeTransition.setOnFinished(event -> region.setVisible(false));
                 if (i == 0) {
                     region.getStyleClass().add("left");
                     slide.setFromX(0.0);
