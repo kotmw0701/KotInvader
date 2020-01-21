@@ -98,7 +98,7 @@ public class GameMain extends Stage {
         player = new PlayStatus();
 
         cover = new CoverPane(this);
-        cover.setId("cover");
+        cover.setId("root");
 
         container = new GameContainer(player, cover);
         container.setId("container");
@@ -115,9 +115,7 @@ public class GameMain extends Stage {
         root.setAlignment(Pos.CENTER);
         root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setId("box");
-        StackPane stackPane = new StackPane();
-        stackPane.setId("root");
-        root.getChildren().add(stackPane);
+        root.getChildren().add(cover);
 
         BorderPane borderPane = new BorderPane();
 //        borderPane.setId("root");
@@ -126,7 +124,7 @@ public class GameMain extends Stage {
         borderPane.setBottom(remain);
         borderPane.setCenter(container);
 
-        ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), stackPane), animationY = new ScaleTransition(Duration.seconds(0.25), stackPane);
+        ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), cover), animationY = new ScaleTransition(Duration.seconds(0.25), cover);
         animationX.setFromX(0.001);
         animationX.setToX(1.0);
         animationY.setFromY(0.005);
@@ -139,7 +137,7 @@ public class GameMain extends Stage {
 
         SequentialTransition animation = new SequentialTransition(animationX, animationY, fade);
 
-        stackPane.getChildren().addAll(borderPane, cover);
+        cover.getChildren().add(borderPane);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
 //        Scene scene = new Scene(borderPane, WINDOW_X, WINDOW_Y);

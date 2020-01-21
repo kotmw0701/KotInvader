@@ -92,7 +92,7 @@ public class GameContainer extends Pane {
         this.getChildren().add(player.getCannon());
 
         createInvaders(level);
-        createTochica();
+        createTochica(level);
         this.down = false;
         this.rainbow = false;
         this.fullChain = true;
@@ -282,7 +282,6 @@ public class GameContainer extends Pane {
     }
 
     public void clear() {
-        System.out.println("clear");
         player.addScore(1000);
         if (fullChain) {
             player.addScore(500);
@@ -294,9 +293,11 @@ public class GameContainer extends Pane {
         }
         timeline.stop();
 
-        PauseTransition transition = new PauseTransition(Duration.seconds(2.0));
+        cover.nextLevel(++level+1);
+
+        PauseTransition transition = new PauseTransition(Duration.seconds(3.0));
         transition.setOnFinished(event -> {
-            initGame(++level);
+            initGame(level);
             play();
         });
         transition.play();
@@ -311,14 +312,14 @@ public class GameContainer extends Pane {
     Tochica : 40
     Separate : 40
      */
-    private void createTochica() {
+    private void createTochica(int level) {
         tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Tochica tochica = new Tochica(i*80+460, 400);
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
-        floor = new Floor(0, 520, 600, 40);
+        floor = new Floor(level*100, 520, 600-(level*100), 40);
         floor.setBlocks(this);
         tochicaList.add(floor);
     }

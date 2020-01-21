@@ -69,7 +69,7 @@
     -fx-font-size: 30px;
 }
 
-#cover .result {
+#root .result {
     -fx-background-color: #222;
 }
 
@@ -92,6 +92,11 @@
 
 .result .button {
     -fx-pref-width: 100px;
+}
+
+.levelTitle {
+    -fx-font-size: 72px;
+
 }
 
 .testClass {

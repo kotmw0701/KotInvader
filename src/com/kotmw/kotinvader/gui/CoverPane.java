@@ -9,9 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-public class CoverPane extends Pane {
+public class CoverPane extends StackPane {
 
     private GameMain root;
+    private Pane freePane;
 
     public CoverPane(GameMain gameMain) {
         this.root = gameMain;
@@ -22,9 +23,8 @@ public class CoverPane extends Pane {
         BorderPane container = new BorderPane();
         container.getStyleClass().add("result");
         container.setCursor(Cursor.DEFAULT);
-        container.setPrefSize(500, GameMain.WINDOW_Y);
         container.setPadding(new Insets(20));
-        container.setTranslateX((GameMain.WINDOW_X-container.getPrefWidth())/2);
+        StackPane.setMargin(container, new Insets(0, GameMain.MAIN_X/4, 0, GameMain.MAIN_X/4));
 
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
@@ -47,11 +47,28 @@ public class CoverPane extends Pane {
         getChildren().add(container);
     }
 
+    public void nextLevel(int level) {
+        Label label = new Label("Level "+level);
+        label.getStyleClass().add("levelTitle");
+        getChildren().add(label);
+        TranslateTransition transition1 = new TranslateTransition(Duration.seconds(0.75), label);
+        transition1.setFromY(GameMain.WINDOW_Y);
+        transition1.setToY(0.0);
+        transition1.setInterpolator(Interpolator.SPLINE(0.215, 0.61, 0.355, 1));
+        TranslateTransition transition2 = new TranslateTransition(Duration.seconds(0.75), label);
+        transition2.setFromY(0.0);
+        transition2.setToY(-GameMain.WINDOW_Y);
+        transition2.setInterpolator(Interpolator.SPLINE(0.55, 0.055, 0.675, 0.19));
+        SequentialTransition sequentialTransition = new SequentialTransition(transition1, new PauseTransition(Duration.seconds(1.5)), transition2);
+        sequentialTransition.play();
+    }
+
     public void showScore(double x, double y, int amount) {
         showScore(x, y, amount, null);
     }
 
     public void showScore(double x, double y, int amount, String text) {
+        if (freePane == null) this.getChildren().add(freePane = new Pane());
         VBox box = new VBox();
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("bonus");
@@ -61,9 +78,11 @@ public class CoverPane extends Pane {
             box.getChildren().add(label);
         }
         box.getChildren().add(new Label("+"+ amount));
-        this.getChildren().add(box);
+        this.freePane.getChildren().add(box);
+        box.setTranslateX(x);
+        box.setTranslateY(y);
         Transition transition = text == null || text.trim().isEmpty() ? _bonusBaseAnimation(x, y, box) : new SequentialTransition(_bonusBaseAnimation(x, y, box), new PauseTransition(Duration.seconds(0.5)));
-        transition.setOnFinished(event -> this.getChildren().remove(box));
+        transition.setOnFinished(event -> this.freePane.getChildren().remove(box));
         transition.play();
     }
 
@@ -74,13 +93,13 @@ public class CoverPane extends Pane {
         Label rainbowLabel = new Label("RAINBOW!");
         rainbowLabel.getStyleClass().add("rainbow");
         box.getChildren().addAll(rainbowLabel, new Label(String.valueOf(amount)));
-        this.getChildren().add(box);
+        this.freePane.getChildren().add(box);
         FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
         flash.setFromValue(0.0);
         flash.setToValue(1.0);
         flash.setCycleCount(3);
         Transition transition = new SequentialTransition(_bonusBaseAnimation(x, y, box), new PauseTransition(Duration.seconds(0.2)), flash);
-        transition.setOnFinished(event -> this.getChildren().remove(box));
+        transition.setOnFinished(event -> this.freePane.getChildren().remove(box));
         transition.play();
     }
 
