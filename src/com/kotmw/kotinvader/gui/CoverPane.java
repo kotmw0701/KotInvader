@@ -87,6 +87,7 @@ public class CoverPane extends StackPane {
     }
 
     public void rainbow(double x, double y, int amount) {
+        if (freePane == null) this.getChildren().add(freePane = new Pane());
         VBox box = new VBox();
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("bonus");
