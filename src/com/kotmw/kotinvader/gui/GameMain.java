@@ -14,7 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -33,15 +33,17 @@ public class GameMain extends Stage {
 
     /*
       VBox (box)
-       ┗Pane (root) -> StackPane
-         ┣BorderPane
-         ┃ ┣[Top]    BorderPane (status)
-         ┃ ┃ ┣[Left]   VBox
-         ┃ ┃ ┣[Center] VBox
-         ┃ ┃ ┗[Right]  VBox
-         ┃ ┣[Center] Pane (container)
-         ┃ ┗[Bottom] HBox (remain)
-         ┗VBox (cover)
+       ┣StackPane (root)
+       ┃┗BorderPane
+       ┃　 ┣[Top]    BorderPane (status)
+       ┃　 ┃ ┣[Left]   VBox
+       ┃　 ┃ ┣[Center] VBox
+       ┃　 ┃ ┗[Right]  VBox
+       ┃　 ┣[Center] Pane (container)
+       ┃　 ┗[Bottom] HBox (remain)
+       ┗CoverPane
+
+
                                                   1200px
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
     ┃       SCORE                                HI-SCORE                                           ┃
@@ -66,10 +68,6 @@ public class GameMain extends Stage {
     ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
     ┃  4  凸 凸 凸　　　                                                                        　　    ┃
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
-    (仮)
-    TODO スコアの割り当てをちゃんと設定
-    TODO Tochicaを設置する
 
     (バグ)
     TODO インベーダーの弾が2発同時に当たった時に無敵時間が発生しない
@@ -117,9 +115,9 @@ public class GameMain extends Stage {
         root.setAlignment(Pos.CENTER);
         root.setPrefSize(WINDOW_X, WINDOW_Y);
         root.setId("box");
-        Pane pane = new Pane();
-        pane.setId("root");
-        root.getChildren().add(pane);
+        StackPane stackPane = new StackPane();
+        stackPane.setId("root");
+        root.getChildren().add(stackPane);
 
         BorderPane borderPane = new BorderPane();
 //        borderPane.setId("root");
@@ -128,7 +126,7 @@ public class GameMain extends Stage {
         borderPane.setBottom(remain);
         borderPane.setCenter(container);
 
-        ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), pane), animationY = new ScaleTransition(Duration.seconds(0.25), pane);
+        ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), stackPane), animationY = new ScaleTransition(Duration.seconds(0.25), stackPane);
         animationX.setFromX(0.001);
         animationX.setToX(1.0);
         animationY.setFromY(0.005);
@@ -141,7 +139,7 @@ public class GameMain extends Stage {
 
         SequentialTransition animation = new SequentialTransition(animationX, animationY, fade);
 
-        pane.getChildren().addAll(borderPane, cover);
+        stackPane.getChildren().addAll(borderPane, cover);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
 //        Scene scene = new Scene(borderPane, WINDOW_X, WINDOW_Y);

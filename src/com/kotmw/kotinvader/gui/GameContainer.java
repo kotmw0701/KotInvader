@@ -7,6 +7,7 @@ import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -41,6 +42,7 @@ public class GameContainer extends Pane {
     private PlayStatus player;
     private CoverPane cover;
     private Floor floor;
+    private int level;
 
     private List<BlockSet> tochicaList;
     private boolean rainbow, zeroDeath, fullChain;
@@ -57,16 +59,10 @@ public class GameContainer extends Pane {
     public GameContainer(PlayStatus player, CoverPane cover) {
         this.player = player;
         this.cover = cover;
-        this.invaderSpeed = 50;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
-        this.getChildren().add(player.getCannon());
 
-        createInvaders();
-        createTochica();
-
-        fullChain = true;
-        zeroDeath = true;
+        initGame(level = 0);
         //―――――――――――――――――――――――――――――――――――――――――――――
 //        leftLine = new Line(0, 0, 0, 600);
 //        leftLine.setStroke(Color.GREEN);
@@ -76,8 +72,6 @@ public class GameContainer extends Pane {
 //
 //        this.getChildren().addAll(leftLine, rightLine);
         //―――――――――――――――――――――――――――――――――――――――――――――
-
-        timerCreate();
 
         Timeline ufoTimeline = new Timeline(
                 new KeyFrame(
@@ -90,6 +84,24 @@ public class GameContainer extends Pane {
         );
         ufoTimeline.setCycleCount(Timeline.INDEFINITE);
         ufoTimeline.play();
+    }
+
+    private void initGame(int level) {
+        this.getChildren().clear();
+
+        this.getChildren().add(player.getCannon());
+
+        createInvaders(level);
+        createTochica();
+        this.down = false;
+        this.rainbow = false;
+        this.fullChain = true;
+        this.zeroDeath = true;
+        this.invaderSpeed = 50;
+        this.limitCount = 0;
+        this.negateCount = 0;
+
+        timerCreate();
     }
 
     public boolean isObjectInWindow(Entity entity, double margin) {
@@ -112,6 +124,7 @@ public class GameContainer extends Pane {
                 new KeyFrame(
                         Duration.seconds(0.01),
                         event -> {
+                            if (invaderSpeed < 0) invaderSpeed = 1;
                             frameCounter++;
                             getEntities().forEach(entity -> {
                                 switch (entity.getEntityType()) {
@@ -201,7 +214,9 @@ public class GameContainer extends Pane {
                                 }
                             });
 
+                            int beforeCount = getInvaderCount();
                             getChildren().removeIf(e -> e instanceof Entity && !((Entity)e).isAlive());
+                            int invaderCount = getInvaderCount();
 
                             if (frameCounter % invaderSpeed == 0) {
 
@@ -238,9 +253,9 @@ public class GameContainer extends Pane {
                                 } else if (limitCount < 2) down = false;
                             }
 
-                            int invaderCount = getInvaderCount();
-                            if (invaderCount > 0) invaderSpeed = invaderCount > 10 ? invaderCount - 5 : invaderCount;
-                            else clear();
+                            if (invaderCount < 50)
+                                invaderSpeed -= (beforeCount - invaderCount);
+                            if (invaderCount == 0) clear();
                         }
                 )
         );
@@ -278,6 +293,13 @@ public class GameContainer extends Pane {
             cover.showScore(600, 50, 500, "ZeroDeath");
         }
         timeline.stop();
+
+        PauseTransition transition = new PauseTransition(Duration.seconds(2.0));
+        transition.setOnFinished(event -> {
+            initGame(++level);
+            play();
+        });
+        transition.play();
     }
 
     private void gameOver() {
@@ -301,12 +323,12 @@ public class GameContainer extends Pane {
         tochicaList.add(floor);
     }
 
-    private void createInvaders() {
+    private void createInvaders(int level) {
         for (int x = 0; x < 11; x++) {
             Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
-                double yPoint = 60 + y * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
+                double yPoint = 60 + (y+level) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
                 if (y == 0) {
                     invader = new Invader(xPoint, yPoint, 3);
                 } else if (y == 4) {
@@ -317,7 +339,7 @@ public class GameContainer extends Pane {
                     invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 }
                 aboveInvader = invader;
-                getChildren().add(invader);
+                this.getChildren().add(invader);
             }
         }
     }

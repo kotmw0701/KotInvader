@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-public class CoverPane extends StackPane {
+public class CoverPane extends Pane {
 
     private GameMain root;
 
@@ -22,8 +22,9 @@ public class CoverPane extends StackPane {
         BorderPane container = new BorderPane();
         container.getStyleClass().add("result");
         container.setCursor(Cursor.DEFAULT);
+        container.setPrefSize(500, GameMain.WINDOW_Y);
         container.setPadding(new Insets(20));
-        StackPane.setMargin(container, new Insets(0, GameMain.MAIN_X/4, 0, GameMain.MAIN_X/4));
+        container.setTranslateX((GameMain.WINDOW_X-container.getPrefWidth())/2);
 
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
