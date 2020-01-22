@@ -1,6 +1,9 @@
 package com.kotmw.kotinvader.gameobjects.entity;
 
+import com.kotmw.kotinvader.event.MissileHitEvent;
 import com.kotmw.kotinvader.gui.GameMain;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,7 +35,12 @@ public abstract class Entity extends ImageView {
         this.leave = true;
     }
 
+    public void setOnHitEvent(EventHandler<MissileHitEvent> value) {
+        this.addEventHandler(MissileHitEvent.MISSILE_HIT, value);
+    }
+
     public void hit(int damage) {
+        this.fireEvent(new MissileHitEvent());
         if (invincible) return;
         hitPoints -= damage;
         if (hitPoints <= 0)

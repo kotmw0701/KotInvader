@@ -21,6 +21,7 @@ public class PlayStatus {
     public PlayStatus() {
         cannon = new Cannon(GameMain.MAIN_X/2-15, 500);
         remain = 3;
+        cannon.setOnHitEvent(event -> System.out.println("HIT!"));
     }
 
     public Cannon getCannon() {

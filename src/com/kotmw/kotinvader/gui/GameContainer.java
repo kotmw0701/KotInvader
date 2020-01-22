@@ -1,6 +1,7 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.event.MissileHitEvent;
 import com.kotmw.kotinvader.gameobjects.block.BlockSet;
 import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
@@ -10,6 +11,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -62,6 +65,7 @@ public class GameContainer extends Pane {
         this.cover = cover;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
+        this.setOnKeyPressed(event -> {});
 
         initGame(level = 0);
         //―――――――――――――――――――――――――――――――――――――――――――――
@@ -105,7 +109,7 @@ public class GameContainer extends Pane {
         timerCreate();
     }
 
-    public boolean isObjectInWindow(Entity entity, double margin) {
+    private boolean isObjectInWindow(Entity entity, double margin) {
         return entity.getTranslateX() > -margin
                 && entity.getTranslateY() > -margin
                 && entity.getTranslateX() < GameMain.MAIN_X+margin
@@ -267,7 +271,7 @@ public class GameContainer extends Pane {
         });
     }
 
-    public void addScore(Entity killed, int amount, boolean bonus) {
+    private void addScore(Entity killed, int amount, boolean bonus) {
         if (killed instanceof Enemy)
             amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
         else if (amount == 0) return;
@@ -282,7 +286,7 @@ public class GameContainer extends Pane {
         timeline.play();
     }
 
-    public void clear() {
+    private void clear() {
         player.addScore(1000);
         if (fullChain) {
             player.addScore(500);
@@ -294,9 +298,9 @@ public class GameContainer extends Pane {
         }
         timeline.stop();
         cover.nextLevel(++level+1);
-        PauseTransition before = new PauseTransition(Duration.seconds(2.0));
+        PauseTransition before = new PauseTransition(Duration.seconds(1.0));
         before.setOnFinished(event -> initGame(level));
-        PauseTransition after = new PauseTransition(Duration.seconds(1.0));
+        PauseTransition after = new PauseTransition(Duration.seconds(2.0));
         after.setOnFinished(event -> play());
         new ParallelTransition(before, after).play();
     }
@@ -328,15 +332,10 @@ public class GameContainer extends Pane {
             for (int y = 0; y < 5; y++) {
                 Invader invader;
                 double yPoint = 60 + (y+level) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
-                if (y == 0) {
-                    invader = new Invader(xPoint, yPoint, 3);
-                } else if (y == 4) {
-                    invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
-                } else if (y == 3) {
-                    invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
-                } else {
-                    invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
-                }
+                if (y == 0) invader = new Invader(xPoint, yPoint, 3);
+                else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
+                else if (y == 3) invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
+                else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
                 this.getChildren().add(invader);
             }
