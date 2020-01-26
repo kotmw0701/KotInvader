@@ -122,7 +122,7 @@ public class GameContainer extends Pane {
     }
 
     private void timerCreate() {
-        timeline = new Timeline(
+        this.timeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(0.01),
                         event -> {
@@ -201,7 +201,7 @@ public class GameContainer extends Pane {
                                                                 addScore(others, 0, true);
                                                                 break;
                                                             case INVADERMISSILE:
-                                                                if (10 == ++negateCount) {
+                                                                if (5 == ++negateCount) {
                                                                     player.increaseRemain();
                                                                     negateCount = 0;
                                                                 }
@@ -261,8 +261,8 @@ public class GameContainer extends Pane {
                         }
                 )
         );
-        timeline.setCycleCount(6000);
-        timeline.setOnFinished(event -> {
+        this.timeline.setCycleCount(6000);
+        this.timeline.setOnFinished(event -> {
             timerCreate();
             play();
         });
@@ -272,10 +272,10 @@ public class GameContainer extends Pane {
         if (killed instanceof Enemy)
             amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
         else if (amount == 0) return;
-        player.addScore(amount);
+        this.player.addScore(amount);
         if (bonus) {
-            if (rainbow) cover.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
-            else cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
+            if (this.rainbow) this.cover.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
+            else this.cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
         }
     }
 
@@ -284,27 +284,27 @@ public class GameContainer extends Pane {
     }
 
     private void clear() {
-        player.addScore(1000);
-        if (fullChain) {
-            player.addScore(500);
-            cover.showScore(430, 50, 500, "FullChain");
+        this.player.addScore(1000);
+        if (this.fullChain) {
+            this.player.addScore(500);
+            this.cover.showScore(430, 50, 500, "FullChain");
         }
-        if (zeroDeath) {
-            player.addScore(500);
-            cover.showScore(600, 50, 500, "ZeroDeath");
+        if (this.zeroDeath) {
+            this.player.addScore(500);
+            this.cover.showScore(600, 50, 500, "ZeroDeath");
         }
-        timeline.stop();
-        cover.nextLevel(++level+1);
+        this.timeline.stop();
+        this.cover.nextLevel(++this.level+1);
         PauseTransition before = new PauseTransition(Duration.seconds(1.0));
-        before.setOnFinished(event -> initGame(level));
-        PauseTransition after = new PauseTransition(Duration.seconds(2.0));
+        before.setOnFinished(event -> initGame(this.level));
+        PauseTransition after = new PauseTransition(Duration.seconds(3.0));
         after.setOnFinished(event -> play());
         new ParallelTransition(before, after).play();
     }
 
     private void gameOver() {
-        timeline.stop();
-        cover.showResult();
+        this.timeline.stop();
+        this.cover.showResult();
     }
 
     /*
@@ -312,15 +312,15 @@ public class GameContainer extends Pane {
     Separate : 40
      */
     private void createTochica(int level) {
-        tochicaList = new ArrayList<>();
+        this.tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Tochica tochica = new Tochica(i*80+460, 400);
             tochica.setBlocks(this);
-            tochicaList.add(tochica);
+            this.tochicaList.add(tochica);
         }
-        floor = new Floor(level*100, 520, 600-(level*100), 40);
-        floor.setBlocks(this);
-        tochicaList.add(floor);
+        this.floor = new Floor(level*100, 520, 600-(level*100), 40);
+        this.floor.setBlocks(this);
+        this.tochicaList.add(this.floor);
     }
 
     private void createInvaders(int level) {

@@ -1,19 +1,14 @@
 package com.kotmw.kotinvader.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
 
 public class Resource {
 
@@ -28,7 +23,7 @@ public class Resource {
         if (root != null) {
             switch (root.getProtocol()) {
                 case "file":
-                    resources = Arrays.asList(new File(root.getFile()).list());
+                    resources = Arrays.asList(Objects.requireNonNull(new File(root.getFile()).list()));
                     break;
                 case "jar":
                     try (JarFile jarFile = ((JarURLConnection) root.openConnection()).getJarFile()) {

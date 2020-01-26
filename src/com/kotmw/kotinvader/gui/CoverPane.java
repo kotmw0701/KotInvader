@@ -44,13 +44,19 @@ public class CoverPane extends StackPane {
         container.setCenter(scoreData);
         container.setBottom(menu);
 
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), container);
+        translateTransition.setFromY(-GameMain.WINDOW_Y);
+        translateTransition.setToY(0);
+        translateTransition.setInterpolator(Interpolator.SPLINE(0.215, 0.61, 0.355, 1));
+        translateTransition.play();
+
         getChildren().add(container);
     }
 
     public void nextLevel(int level) {
         Label label = new Label("Level "+level);
         label.getStyleClass().add("levelTitle");
-        getChildren().add(label);
+        this.getChildren().add(label);
         TranslateTransition transition1 = new TranslateTransition(Duration.seconds(0.75), label);
         transition1.setFromY(GameMain.WINDOW_Y);
         transition1.setToY(0.0);
