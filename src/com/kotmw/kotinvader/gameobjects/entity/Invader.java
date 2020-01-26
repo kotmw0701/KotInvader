@@ -3,6 +3,8 @@ package com.kotmw.kotinvader.gameobjects.entity;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Shooter;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.paint.Color;
 
 public class Invader extends Enemy implements Shooter {
 
@@ -24,6 +26,11 @@ public class Invader extends Enemy implements Shooter {
         this.active = active;
         this.invaderType = num;
 
+        if (num == 1) setColor(Color.PURPLE);
+        else if (num == 2) setColor(Color.RED);
+        else if (num == 3) setColor(Color.AQUA);
+        double width = getImage().getWidth()/2;
+        setViewPorts(new Rectangle2D(0, 0, width, 16), new Rectangle2D(width, 0, width, 16));
         setScore(num*10);
         setSpeed(5.0);
     }

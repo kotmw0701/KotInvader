@@ -1,9 +1,12 @@
 package com.kotmw.kotinvader.gameobjects.entity;
 
 import com.kotmw.kotinvader.gui.GameMain;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public abstract class Entity extends ImageView {
 
@@ -11,6 +14,8 @@ public abstract class Entity extends ImageView {
     private double speed, direction;
     private boolean alive, invincible, leave;
     private int hitPoints;
+    private Rectangle2D[] viewPorts;
+    private int viewPortCount;
 
     protected Entity(String imagePath, double x, double y, EntityType entityType) {
         this(imagePath, x, y, entityType, 0.0, 0.0, entityType.getDefaultHitPoints());
@@ -79,9 +84,25 @@ public abstract class Entity extends ImageView {
         this.leave = leave;
     }
 
+    public void setViewPorts(Rectangle2D... viewPorts) {
+        this.viewPorts = viewPorts;
+        this.viewPortCount = 1;
+        this.setViewport(viewPorts[0]);
+    }
+
+    public void setColor(Color color) {
+        double hue = color.getHue();
+        if (hue > 180.0) hue -= 360.0;
+        this.setEffect(new ColorAdjust(hue/180, color.getSaturation(), 0.0, 1.0));
+    }
+
     protected abstract boolean dead();
 
     public void move() {
+        if (viewPorts != null) {
+            if (viewPortCount >= viewPorts.length) viewPortCount = 0;
+            this.setViewport(viewPorts[viewPortCount++]);
+        }
         if (!leave) {
             if (direction == Direction.RIGHT && getTranslateX()+getImage().getWidth() >= GameMain.MAIN_X) return;
             else if (direction == Direction.LEFT && getTranslateX() <= 0) return;
