@@ -1,7 +1,6 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.event.MissileHitEvent;
 import com.kotmw.kotinvader.gameobjects.block.BlockSet;
 import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
@@ -11,8 +10,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
