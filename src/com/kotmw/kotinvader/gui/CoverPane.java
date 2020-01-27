@@ -7,6 +7,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class CoverPane extends StackPane {
@@ -56,7 +58,29 @@ public class CoverPane extends StackPane {
     public void nextLevel(int level) {
         Label label = new Label("Level "+level);
         label.getStyleClass().add("levelTitle");
-        this.getChildren().add(label);
+        label.setTranslateY(GameMain.WINDOW_Y);
+
+        HBox hBox = new HBox();
+        ParallelTransition transition = new ParallelTransition();
+
+        for (int i = 0; i < 12; i++) {
+            Rectangle rectangle = new Rectangle(100, 700, Color.web("#7A7C7D"));
+            rectangle.setTranslateY(700);
+
+            TranslateTransition beforeTransition = new TranslateTransition(Duration.seconds(0.5), rectangle);
+            beforeTransition.setFromY(700.0);
+            beforeTransition.setToY(0.0);
+            beforeTransition.setInterpolator(Interpolator.SPLINE(0.39, 0.575, 0.565, 1));
+            TranslateTransition afterTransition = new TranslateTransition(Duration.seconds(0.5), rectangle);
+            afterTransition.setFromY(0.0);
+            afterTransition.setToY(-700.0);
+            afterTransition.setInterpolator(Interpolator.SPLINE(0.47, 0, 0.745, 0.715));
+            transition.getChildren().add(new SequentialTransition(new PauseTransition(Duration.seconds(0.05*i)), beforeTransition, new PauseTransition(Duration.seconds(2.0)), afterTransition));
+
+            hBox.getChildren().add(rectangle);
+        }
+
+        this.getChildren().addAll(hBox, label);
         TranslateTransition transition1 = new TranslateTransition(Duration.seconds(0.75), label);
         transition1.setFromY(GameMain.WINDOW_Y);
         transition1.setToY(0.0);
@@ -65,8 +89,8 @@ public class CoverPane extends StackPane {
         transition2.setFromY(0.0);
         transition2.setToY(-GameMain.WINDOW_Y);
         transition2.setInterpolator(Interpolator.SPLINE(0.55, 0.055, 0.675, 0.19));
-        SequentialTransition sequentialTransition = new SequentialTransition(transition1, new PauseTransition(Duration.seconds(1.5)), transition2);
-        sequentialTransition.play();
+        ParallelTransition parallelTransition = new ParallelTransition(transition, new SequentialTransition(new PauseTransition(Duration.seconds(0.25)), transition1, new PauseTransition(Duration.seconds(1.5)), transition2));
+        parallelTransition.play();
     }
 
     public void showScore(double x, double y, int amount) {

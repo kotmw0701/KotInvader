@@ -6,10 +6,7 @@ import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
-import javafx.animation.KeyFrame;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
@@ -294,12 +291,13 @@ public class GameContainer extends Pane {
             this.cover.showScore(600, 50, 500, "ZeroDeath");
         }
         this.timeline.stop();
-        this.cover.nextLevel(++this.level+1);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2.0));
+        pause.setOnFinished(event -> this.cover.nextLevel(++this.level+1));
         PauseTransition before = new PauseTransition(Duration.seconds(1.0));
         before.setOnFinished(event -> initGame(this.level));
         PauseTransition after = new PauseTransition(Duration.seconds(3.0));
         after.setOnFinished(event -> play());
-        new ParallelTransition(before, after).play();
+        new SequentialTransition(pause, before, after).play();
     }
 
     private void gameOver() {
