@@ -14,7 +14,7 @@ public class Floor extends BlockSet {
         double x = entity.getTranslateX();
         double y = entity.getTranslateY()+20;
         if (entity.getDirection() == Entity.Direction.RIGHT)
-            return this.blockList.stream().anyMatch(target -> Math.sqrt(Math.pow(x - target.getTranslateX()+entity.getImage().getWidth(), 2) + Math.pow(y - target.getTranslateY(), 2)) < reach);
+            return this.blockList.stream().anyMatch(target -> Math.sqrt(Math.pow(x - target.getTranslateX()+entity.getWidth(), 2) + Math.pow(y - target.getTranslateY(), 2)) < reach);
         else if (entity.getDirection() == Entity.Direction.LEFT)
             return this.blockList.stream().anyMatch(target -> Math.sqrt(Math.pow(x - target.getTranslateX(), 2) + Math.pow(y - target.getTranslateY(), 2)) < reach);
         return true;

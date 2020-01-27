@@ -51,7 +51,7 @@ public class Invader extends Enemy implements Shooter {
 
     @Override
     public Missile shoot() {
-        return new InvaderMissile(getTranslateX()+getImage().getWidth()/2, getTranslateY()+(getImage().getHeight()*2));
+        return new InvaderMissile(getTranslateX()+this.getWidth()/2, getTranslateY()+(this.getHeight()*2));
     }
 
     @Override

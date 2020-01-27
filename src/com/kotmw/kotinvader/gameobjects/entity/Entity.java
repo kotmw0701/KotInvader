@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 public abstract class Entity extends ImageView {
 
     private EntityType entityType;
-    private double speed, direction;
+    private double width, height, speed, direction;
     private boolean alive, invincible, leave;
     private int hitPoints;
     private Rectangle2D[] viewPorts;
@@ -32,6 +32,8 @@ public abstract class Entity extends ImageView {
         this.speed = speed;
         this.direction = direction;
         this.hitPoints = hitPoints;
+        this.width = getImage().getWidth();
+        this.height = getImage().getHeight();
 
         this.alive = true;
         this.leave = true;
@@ -46,6 +48,14 @@ public abstract class Entity extends ImageView {
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 
     public double getSpeed() {
@@ -85,14 +95,21 @@ public abstract class Entity extends ImageView {
     }
 
     public void setViewPorts(Rectangle2D... viewPorts) {
+        this.width = viewPorts[0].getWidth();
+        this.height = viewPorts[0].getHeight();
         this.viewPorts = viewPorts;
         this.viewPortCount = 1;
         this.setViewport(viewPorts[0]);
     }
 
+    //0.0~1.0
+    //-1.0~1.0
     public void setColor(Color color) {
         double hue = color.getHue();
+        double brightness = color.getBrightness()*2;
         if (hue > 180.0) hue -= 360.0;
+
+        System.out.printf("%-15s: Hue=%f, Saturation=%f, Brightness=%f, Contrast=%f\n", this.entityType.toString(), hue/180, color.getSaturation(), brightness-2.0, 1.0);
         this.setEffect(new ColorAdjust(hue/180, color.getSaturation(), 0.0, 1.0));
     }
 
@@ -104,7 +121,7 @@ public abstract class Entity extends ImageView {
             this.setViewport(viewPorts[viewPortCount++]);
         }
         if (!leave) {
-            if (direction == Direction.RIGHT && getTranslateX()+getImage().getWidth() >= GameMain.MAIN_X) return;
+            if (direction == Direction.RIGHT && getTranslateX()+this.getWidth() >= GameMain.MAIN_X) return;
             else if (direction == Direction.LEFT && getTranslateX() <= 0) return;
             else if (direction == Direction.UP && getTranslateY() <= 0) return;
             else if (direction == Direction.DOWN && getTranslateY()+getImage().getHeight() >= GameMain.MAIN_Y) return;
