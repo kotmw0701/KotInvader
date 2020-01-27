@@ -1,6 +1,8 @@
 package com.kotmw.kotinvader.gui;
 
 import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -55,7 +57,7 @@ public class CoverPane extends StackPane {
         getChildren().add(container);
     }
 
-    public void nextLevel(int level) {
+    public void nextLevel(int level, EventHandler<ActionEvent> onFinished) {
         Label label = new Label("Level "+level);
         label.getStyleClass().add("levelTitle");
         label.setTranslateY(GameMain.WINDOW_Y);
@@ -90,6 +92,7 @@ public class CoverPane extends StackPane {
         transition2.setToY(-GameMain.WINDOW_Y);
         transition2.setInterpolator(Interpolator.SPLINE(0.55, 0.055, 0.675, 0.19));
         ParallelTransition parallelTransition = new ParallelTransition(transition, new SequentialTransition(new PauseTransition(Duration.seconds(0.25)), transition1, new PauseTransition(Duration.seconds(1.5)), transition2));
+        parallelTransition.setOnFinished(onFinished);
         parallelTransition.play();
     }
 

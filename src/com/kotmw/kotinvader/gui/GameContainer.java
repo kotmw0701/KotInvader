@@ -292,12 +292,10 @@ public class GameContainer extends Pane {
         }
         this.timeline.stop();
         PauseTransition pause = new PauseTransition(Duration.seconds(2.0));
-        pause.setOnFinished(event -> this.cover.nextLevel(++this.level+1));
+        pause.setOnFinished(event -> this.cover.nextLevel(++this.level+1, event1 -> play()));
         PauseTransition before = new PauseTransition(Duration.seconds(1.0));
         before.setOnFinished(event -> initGame(this.level));
-        PauseTransition after = new PauseTransition(Duration.seconds(3.0));
-        after.setOnFinished(event -> play());
-        new SequentialTransition(pause, before, after).play();
+        new SequentialTransition(pause, before).play();
     }
 
     private void gameOver() {
