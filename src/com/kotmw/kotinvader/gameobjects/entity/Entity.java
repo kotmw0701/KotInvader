@@ -109,7 +109,7 @@ public abstract class Entity extends ImageView {
         double brightness = color.getBrightness()*2;
         if (hue > 180.0) hue -= 360.0;
 
-        System.out.printf("%-15s: Hue=%f, Saturation=%f, Brightness=%f, Contrast=%f\n", this.entityType.toString(), hue/180, color.getSaturation(), brightness-2.0, 1.0);
+//        System.out.printf("%-15s: Hue=%f, Saturation=%f, Brightness=%f, Contrast=%f\n", this.entityType.toString(), hue/180, color.getSaturation(), brightness-2.0, 1.0);
         this.setEffect(new ColorAdjust(hue/180, color.getSaturation(), 0.0, 1.0));
     }
 

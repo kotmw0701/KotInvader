@@ -55,7 +55,7 @@ public class GameContainer extends Pane {
     private Timeline timeline;
 
     private boolean invaderRight, down;
-    private int frameCounter, negateCount, invaderSpeed, limitCount, stockLine = 3;
+    private int frameCounter, negateCount, invaderSpeed, limitCount, stockLine;
     private Invader[] abobes;
 
     //――――――――――――――――――――――――――――――――――
@@ -109,7 +109,7 @@ public class GameContainer extends Pane {
         this.limitCount = 0;
         this.negateCount = 0;
 
-//        if (level > 5) stockLine = level - 5;
+        if (level > 5) stockLine = level - 5;
 
         timerCreate();
     }
@@ -245,8 +245,8 @@ public class GameContainer extends Pane {
                                 if (limitCount == 2 && bottomMost > GameMain.MAIN_Y) gameOver();
 
                                 //――――――――――――――――――――――――――――――――――
-                                leftLine.setTranslateX(leftMost);
-                                rightLine.setTranslateX(rightMost);
+//                                leftLine.setTranslateX(leftMost);
+//                                rightLine.setTranslateX(rightMost);
                                 //――――――――――――――――――――――――――――――――――
 
                                 if (getInvaderCount() == 1 && lastInvader.getInvaderType() == 1) rainbow = true;
@@ -365,20 +365,26 @@ public class GameContainer extends Pane {
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-                Label label = new Label();
-                if (invader.isActive()) label.getStyleClass().add("active");
-                label.translateXProperty().bind(invader.translateXProperty().add(8));
-                label.translateYProperty().bind(invader.translateYProperty());
-                label.textProperty().bind(invader.activeProperty().asString());
-                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
-                label.opacityProperty().bind(invader.opacityProperty());
-                this.getChildren().addAll(invader, label);
+//                Label label = new Label();
+//                if (invader.isActive()) label.getStyleClass().add("active");
+//                label.translateXProperty().bind(invader.translateXProperty().add(8));
+//                label.translateYProperty().bind(invader.translateYProperty());
+//                label.textProperty().bind(invader.activeProperty().asString());
+//                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
+//                label.opacityProperty().bind(invader.opacityProperty());
+                this.getChildren().add(invader);
             }
         }
         return abobes;
     }
 
     private Invader[] addInvader(int type, Invader[] abobes, double base) {
+        for (int i = 0; i < 11; i++) {
+            if (abobes[i].isAlive()) {
+                base = abobes[i].getTranslateX() - i*30;
+                break;
+            }
+        }
         Invader[] nextAbobes = new Invader[11];
         double adjust = type == 1 ? -4 : type == 3 ? 0 : -2;
         for (int x = 0; x < 11; x++) {
@@ -386,14 +392,14 @@ public class GameContainer extends Pane {
             double yPoint = 60;
             Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, yPoint, type);
             abobes[x].setAboveInvader(invader);
-            Label label = new Label();
-            if (invader.isActive()) label.getStyleClass().add("active");
-            label.translateXProperty().bind(invader.translateXProperty().add(8));
-            label.translateYProperty().bind(invader.translateYProperty());
-            label.textProperty().bind(invader.activeProperty().asString());
-            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
-            label.opacityProperty().bind(invader.opacityProperty());
-            this.getChildren().addAll(invader, label);
+//            Label label = new Label();
+//            if (invader.isActive()) label.getStyleClass().add("active");
+//            label.translateXProperty().bind(invader.translateXProperty().add(8));
+//            label.translateYProperty().bind(invader.translateYProperty());
+//            label.textProperty().bind(invader.activeProperty().asString());
+//            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
+//            label.opacityProperty().bind(invader.opacityProperty());
+            this.getChildren().addAll(invader);
         }
         return nextAbobes;
     }
