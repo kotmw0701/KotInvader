@@ -47,6 +47,7 @@ public class GameContainer extends Pane {
     private CoverPane cover;
     private Floor floor;
     private int level;
+//    private boolean pause;
 
     private List<BlockSet> tochicaList;
     private boolean rainbow, zeroDeath, fullChain;
@@ -66,7 +67,7 @@ public class GameContainer extends Pane {
         this.cover = cover;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
-        this.setOnKeyPressed(event -> {});
+//        this.pause = false;
 
         initGame(level = 0);
         //―――――――――――――――――――――――――――――――――――――――――――――
@@ -261,7 +262,7 @@ public class GameContainer extends Pane {
                                     }
                                 } else if (limitCount < 2) {
                                     if (stockLine-- > 0) {
-                                        this.abobes = addInvader(3, this.abobes, invaderRight ? rightMost : leftMost, invaderRight);
+                                        this.abobes = addInvader(3, this.abobes, GameMain.MAIN_X/2-158);
                                         invaderSpeed += 11;
                                     }
                                     down = false;
@@ -272,7 +273,7 @@ public class GameContainer extends Pane {
                                 invaderSpeed -= (beforeCount - invaderCount);
                             if (invaderCount == 0) {
                                 if (stockLine-- > 0) {
-                                    addInvader(3, this.abobes, GameMain.MAIN_X/2-158, false);
+                                    addInvader(3, this.abobes, GameMain.MAIN_X/2-158);
                                     invaderSpeed += 11;
                                 }
                                 else clear();
@@ -297,6 +298,12 @@ public class GameContainer extends Pane {
             else this.cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
         }
     }
+
+//    public void pause() {
+//        if (pause) timeline.play();
+//        else timeline.pause();
+//        pause = !pause;
+//    }
 
     public void play() {
         timeline.play();
@@ -371,12 +378,11 @@ public class GameContainer extends Pane {
         return abobes;
     }
 
-    private Invader[] addInvader(int type, Invader[] abobes, double most, boolean invaderRight) {
-        System.out.println(most);
+    private Invader[] addInvader(int type, Invader[] abobes, double base) {
         Invader[] nextAbobes = new Invader[11];
         double adjust = type == 1 ? -4 : type == 3 ? 0 : -2;
         for (int x = 0; x < 11; x++) {
-            double xPoint = most - (invaderRight ? 300 : 0) + x*30;
+            double xPoint = base + x*30;
             double yPoint = 60;
             Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, yPoint, type);
             abobes[x].setAboveInvader(invader);

@@ -180,6 +180,8 @@ public class GameMain extends Stage {
 
     public class KeyHandler implements EventHandler<KeyEvent> {
 
+//        private int count = 0;
+
         @Override
         public void handle(KeyEvent event) {
             if (event.getEventType().equals(KeyEvent.KEY_PRESSED)) {
@@ -204,6 +206,10 @@ public class GameMain extends Stage {
                         if (container.getChildren().stream().anyMatch(e -> e instanceof CannonMissile)) break;
                         container.getChildren().add(player.getCannon().shoot());
                         break;
+//                    case F1:
+//                        cover.nextLevel(count++, event1 -> {});
+//                    case ESCAPE:
+//                        container.pause();
                     default:
                         break;
                 }
