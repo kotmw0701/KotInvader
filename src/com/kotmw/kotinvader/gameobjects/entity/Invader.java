@@ -3,12 +3,14 @@ package com.kotmw.kotinvader.gameobjects.entity;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Shooter;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 
 public class Invader extends Enemy implements Shooter {
 
-    private boolean active;
+    private BooleanProperty activeProperty;
     private Invader aboveInvader;
     private int invaderType;
 
@@ -23,7 +25,7 @@ public class Invader extends Enemy implements Shooter {
     public Invader(double x, double y, Invader aboveInvader, boolean active, int num) {
         super("/resources/Invader"+num+".png", x, y, EntityType.INVADER);
         this.aboveInvader = aboveInvader;
-        this.active = active;
+        this.activeProperty = new SimpleBooleanProperty(active);
         this.invaderType = num;
 
         if (num == 1) setColor(Color.PURPLE);
@@ -35,18 +37,28 @@ public class Invader extends Enemy implements Shooter {
         setSpeed(5.0);
     }
 
+    public BooleanProperty activeProperty() {
+        return activeProperty;
+    }
+
     public boolean isActive() {
-        return active;
+        return activeProperty.get();
     }
 
     public int getInvaderType() {
         return invaderType;
     }
 
+    public void setAboveInvader(Invader aboveInvader) {
+        if (this.aboveInvader != null) return;
+        this.aboveInvader = aboveInvader;
+        if (!this.isAlive() && isActive()) aboveInvader.changeActive();
+    }
+
     private void changeActive() {
         if (!isAlive()) {
             if (aboveInvader != null) aboveInvader.changeActive();
-        } else active = true;
+        } else activeProperty.set(true);
     }
 
     @Override
@@ -56,7 +68,8 @@ public class Invader extends Enemy implements Shooter {
 
     @Override
     protected boolean dead() {
-        if (aboveInvader != null && active) aboveInvader.changeActive();
+        this.setOpacity(0.0);
+        if (aboveInvader != null && isActive()) aboveInvader.changeActive();
         return true;
     }
 }

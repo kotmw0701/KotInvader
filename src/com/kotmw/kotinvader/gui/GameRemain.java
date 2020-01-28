@@ -4,6 +4,7 @@ import com.kotmw.kotinvader.PlayStatus;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -34,6 +35,7 @@ public class GameRemain extends HBox {
         this.getChildren().add(new Label(Integer.toString(remain)));
         for (int i = 0; i < remain; i++) {
             ImageView imageView = new ImageView(cannon);
+            imageView.setEffect(new ColorAdjust(1.0,1.0, 0.0, 1.0));
             this.getChildren().add(imageView);
             if (add && i == remain-1) {
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.1), imageView);

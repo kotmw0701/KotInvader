@@ -73,6 +73,10 @@
     -fx-background-color: #222;
 }
 
+.active {
+    -fx-text-fill: green;
+}
+
 .bonus {
     -fx-font-size: 20px;
 }

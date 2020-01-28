@@ -1,14 +1,19 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
-import com.kotmw.kotinvader.gameobjects.block.Block;
 import com.kotmw.kotinvader.gameobjects.block.BlockSet;
 import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -49,7 +54,7 @@ public class GameContainer extends Pane {
     private Timeline timeline;
 
     private boolean invaderRight, down;
-    private int frameCounter, negateCount, invaderSpeed, limitCount;
+    private int frameCounter, negateCount, invaderSpeed, limitCount, stockLine = 3;
     private Invader[] abobes;
 
     //――――――――――――――――――――――――――――――――――
@@ -94,7 +99,7 @@ public class GameContainer extends Pane {
 
         this.abobes = createInvaders(level);
         this.tochicaList = createTochica(level);
-        this.tochicaList.add(createFloor(level));
+        this.tochicaList.add(this.floor = createFloor(level));
         this.down = false;
         this.rainbow = false;
         this.fullChain = true;
@@ -102,6 +107,8 @@ public class GameContainer extends Pane {
         this.invaderSpeed = 50;
         this.limitCount = 0;
         this.negateCount = 0;
+
+//        if (level > 5) stockLine = level - 5;
 
         timerCreate();
     }
@@ -126,7 +133,7 @@ public class GameContainer extends Pane {
                 new KeyFrame(
                         Duration.seconds(0.01),
                         event -> {
-                            if (invaderSpeed < 0) invaderSpeed = 1;
+                            if (invaderSpeed < 1) invaderSpeed = 1;
                             frameCounter++;
                             getEntities().forEach(entity -> {
                                 switch (entity.getEntityType()) {
@@ -143,7 +150,7 @@ public class GameContainer extends Pane {
                                             Invader invader = (Invader) entity;
                                             if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
                                             if (down) {
-                                                entity.setSpeed(16.0);
+                                                entity.setSpeed(32.0);
                                                 entity.setDirection(Entity.Direction.DOWN);
                                             } else {
                                                 entity.setSpeed(5.0);
@@ -237,14 +244,14 @@ public class GameContainer extends Pane {
                                 if (limitCount == 2 && bottomMost > GameMain.MAIN_Y) gameOver();
 
                                 //――――――――――――――――――――――――――――――――――
-//                                leftLine.setTranslateX(leftMost);
-//                                rightLine.setTranslateX(rightMost);
+                                leftLine.setTranslateX(leftMost);
+                                rightLine.setTranslateX(rightMost);
                                 //――――――――――――――――――――――――――――――――――
 
                                 if (getInvaderCount() == 1 && lastInvader.getInvaderType() == 1) rainbow = true;
 
                                 if (!down) {
-                                    if (down = (250 > leftMost || 950 < rightMost)) {
+                                    if (down = ((!invaderRight && 250 > leftMost) || (invaderRight && 950 < rightMost))) {
                                         if (bottomMost >= 476) {
                                             gameOver();
                                             return;
@@ -252,12 +259,24 @@ public class GameContainer extends Pane {
                                         if (invaderRight && rainbow) limitCount++;
                                         invaderRight = !invaderRight;
                                     }
-                                } else if (limitCount < 2) down = false;
+                                } else if (limitCount < 2) {
+                                    if (stockLine-- > 0) {
+                                        this.abobes = addInvader(3, this.abobes, invaderRight ? rightMost : leftMost, invaderRight);
+                                        invaderSpeed += 11;
+                                    }
+                                    down = false;
+                                }
                             }
 
                             if (invaderCount < 50)
                                 invaderSpeed -= (beforeCount - invaderCount);
-                            if (invaderCount == 0) clear();
+                            if (invaderCount == 0) {
+                                if (stockLine-- > 0) {
+                                    addInvader(3, this.abobes, GameMain.MAIN_X/2-158, false);
+                                    invaderSpeed += 11;
+                                }
+                                else clear();
+                            }
                         }
                 )
         );
@@ -321,7 +340,7 @@ public class GameContainer extends Pane {
     }
 
     private Floor createFloor(int level) {
-        Floor floor = new Floor(level*100, 520, 600-(level*100), 40);
+        Floor floor = new Floor((level < 5 ? level : 4)*100, 520, 600-((level < 5 ? level : 4)*100), 40);
         floor.setBlocks(this);
         return floor;
     }
@@ -332,15 +351,44 @@ public class GameContainer extends Pane {
             Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
-                double yPoint = 60 + (y+(level < 6 ? level : 0)) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
+                double yPoint = 60 + (y+(level < 5 ? level : 0)) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
+                if (x == 0 || x == 10) System.out.println(xPoint);
                 if (y == 0) abobes[x] = invader = new Invader(xPoint, yPoint, 3);
                 else if (y == 3) invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-                this.getChildren().add(invader);
+                Label label = new Label();
+                if (invader.isActive()) label.getStyleClass().add("active");
+                label.translateXProperty().bind(invader.translateXProperty().add(8));
+                label.translateYProperty().bind(invader.translateYProperty());
+                label.textProperty().bind(invader.activeProperty().asString());
+                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
+                label.opacityProperty().bind(invader.opacityProperty());
+                this.getChildren().addAll(invader, label);
             }
         }
         return abobes;
+    }
+
+    private Invader[] addInvader(int type, Invader[] abobes, double most, boolean invaderRight) {
+        System.out.println(most);
+        Invader[] nextAbobes = new Invader[11];
+        double adjust = type == 1 ? -4 : type == 3 ? 0 : -2;
+        for (int x = 0; x < 11; x++) {
+            double xPoint = most - (invaderRight ? 300 : 0) + x*30;
+            double yPoint = 60;
+            Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, yPoint, type);
+            abobes[x].setAboveInvader(invader);
+            Label label = new Label();
+            if (invader.isActive()) label.getStyleClass().add("active");
+            label.translateXProperty().bind(invader.translateXProperty().add(8));
+            label.translateYProperty().bind(invader.translateYProperty());
+            label.textProperty().bind(invader.activeProperty().asString());
+            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
+            label.opacityProperty().bind(invader.opacityProperty());
+            this.getChildren().addAll(invader, label);
+        }
+        return nextAbobes;
     }
 }

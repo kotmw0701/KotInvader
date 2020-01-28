@@ -64,9 +64,10 @@ public class CoverPane extends StackPane {
 
         HBox hBox = new HBox();
         ParallelTransition transition = new ParallelTransition();
+        transition.setOnFinished(event -> this.getChildren().remove(hBox));
 
         for (int i = 0; i < 12; i++) {
-            Rectangle rectangle = new Rectangle(100, 700, Color.web("#7A7C7D"));
+            Rectangle rectangle = new Rectangle(100, 700, i%2 == 0 ? Color.BLACK : level < 5 ? Color.web("#7A7C7D") : Color.FIREBRICK);
             rectangle.setTranslateY(700);
 
             TranslateTransition beforeTransition = new TranslateTransition(Duration.seconds(0.5), rectangle);
@@ -91,6 +92,7 @@ public class CoverPane extends StackPane {
         transition2.setFromY(0.0);
         transition2.setToY(-GameMain.WINDOW_Y);
         transition2.setInterpolator(Interpolator.SPLINE(0.55, 0.055, 0.675, 0.19));
+        transition2.setOnFinished(event -> this.getChildren().remove(label));
         ParallelTransition parallelTransition = new ParallelTransition(transition, new SequentialTransition(new PauseTransition(Duration.seconds(0.25)), transition1, new PauseTransition(Duration.seconds(1.5)), transition2));
         parallelTransition.setOnFinished(onFinished);
         parallelTransition.play();
