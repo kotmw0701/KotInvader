@@ -1,6 +1,7 @@
 package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.gameobjects.block.Block;
 import com.kotmw.kotinvader.gameobjects.block.BlockSet;
 import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
@@ -49,6 +50,7 @@ public class GameContainer extends Pane {
 
     private boolean invaderRight, down;
     private int frameCounter, negateCount, invaderSpeed, limitCount;
+    private Invader[] abobes;
 
     //――――――――――――――――――――――――――――――――――
 //    private Line leftLine, rightLine;
@@ -90,8 +92,9 @@ public class GameContainer extends Pane {
 
         this.getChildren().add(player.getCannon());
 
-        createInvaders(level);
-        createTochica(level);
+        this.abobes = createInvaders(level);
+        this.tochicaList = createTochica(level);
+        this.tochicaList.add(createFloor(level));
         this.down = false;
         this.rainbow = false;
         this.fullChain = true;
@@ -191,11 +194,11 @@ public class GameContainer extends Pane {
                                                         others.hit(10);
                                                         switch (others.getEntityType()) {
                                                             case INVADER:
-                                                                if (rainbow) addScore(others, 500, true);
-                                                                else addScore(others, 0, false);
+                                                                if (rainbow) addScore(others, 500, true, true);
+                                                                else addScore(others, 0, false, false);
                                                                 break;
                                                             case UFO:
-                                                                addScore(others, 0, true);
+                                                                addScore(others, 0, true, false);
                                                                 break;
                                                             case INVADERMISSILE:
                                                                 if (5 == ++negateCount) {
@@ -204,7 +207,7 @@ public class GameContainer extends Pane {
                                                                 }
                                                                 break;
                                                             default:
-                                                                addScore(others, 0, false);
+                                                                addScore(others, 0, false, false);
                                                                 break;
                                                         }
                                                     }
@@ -265,13 +268,13 @@ public class GameContainer extends Pane {
         });
     }
 
-    private void addScore(Entity killed, int amount, boolean bonus) {
+    private void addScore(Entity killed, int amount, boolean bonus, boolean rainbow) {
         if (killed instanceof Enemy)
             amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
         else if (amount == 0) return;
         this.player.addScore(amount);
         if (bonus) {
-            if (this.rainbow) this.cover.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
+            if (rainbow) this.cover.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
             else this.cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
         }
     }
@@ -307,31 +310,37 @@ public class GameContainer extends Pane {
     Tochica : 40
     Separate : 40
      */
-    private void createTochica(int level) {
-        this.tochicaList = new ArrayList<>();
+    private List<BlockSet> createTochica(int level) {
+        List<BlockSet> tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Tochica tochica = new Tochica(i*80+460, 400);
             tochica.setBlocks(this);
-            this.tochicaList.add(tochica);
+            tochicaList.add(tochica);
         }
-        this.floor = new Floor(level*100, 520, 600-(level*100), 40);
-        this.floor.setBlocks(this);
-        this.tochicaList.add(this.floor);
+        return tochicaList;
     }
 
-    private void createInvaders(int level) {
+    private Floor createFloor(int level) {
+        Floor floor = new Floor(level*100, 520, 600-(level*100), 40);
+        floor.setBlocks(this);
+        return floor;
+    }
+
+    private Invader[] createInvaders(int level) {
+        Invader[] abobes = new Invader[11];
         for (int x = 0; x < 11; x++) {
             Invader aboveInvader = null;
             for (int y = 0; y < 5; y++) {
                 Invader invader;
-                double yPoint = 60 + (y+level) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
-                if (y == 0) invader = new Invader(xPoint, yPoint, 3);
-                else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
+                double yPoint = 60 + (y+(level < 6 ? level : 0)) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
+                if (y == 0) abobes[x] = invader = new Invader(xPoint, yPoint, 3);
                 else if (y == 3) invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
+                else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
                 this.getChildren().add(invader);
             }
         }
+        return abobes;
     }
 }
