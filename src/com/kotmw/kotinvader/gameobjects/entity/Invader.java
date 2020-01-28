@@ -12,6 +12,7 @@ public class Invader extends Enemy implements Shooter {
 
     private BooleanProperty activeProperty;
     private Invader aboveInvader;
+    private InvaderMissile missile;
     private int invaderType;
 
     public Invader(double x, double y, int num) {
@@ -63,7 +64,8 @@ public class Invader extends Enemy implements Shooter {
 
     @Override
     public Missile shoot() {
-        return new InvaderMissile(getTranslateX()+this.getWidth()/2, getTranslateY()+(this.getHeight()*2));
+        if (missile != null && missile.isAlive()) return null;
+        return missile = new InvaderMissile(getTranslateX()+this.getWidth()/2, getTranslateY()+(this.getHeight()*2));
     }
 
     @Override

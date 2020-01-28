@@ -6,6 +6,7 @@ import com.kotmw.kotinvader.gameobjects.block.Floor;
 import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -149,7 +150,10 @@ public class GameContainer extends Pane {
                                     case INVADER:
                                         if (frameCounter % invaderSpeed == 0) {
                                             Invader invader = (Invader) entity;
-                                            if (invader.isActive() && Math.random() > 0.95) getChildren().add(invader.shoot());
+                                            if (invader.isActive() && Math.random() > 0.98) {
+                                                Missile missile = invader.shoot();
+                                                if (missile != null) getChildren().add(missile);
+                                            }
                                             if (down) {
                                                 entity.setSpeed(32.0);
                                                 entity.setDirection(Entity.Direction.DOWN);
@@ -359,7 +363,6 @@ public class GameContainer extends Pane {
             for (int y = 0; y < 5; y++) {
                 Invader invader;
                 double yPoint = 60 + (y+(level < 5 ? level : 0)) * 32, xPoint = GameMain.MAIN_X/2-158 + x*30;
-                if (x == 0 || x == 10) System.out.println(xPoint);
                 if (y == 0) abobes[x] = invader = new Invader(xPoint, yPoint, 3);
                 else if (y == 3) invader = new Invader(xPoint-4, yPoint, aboveInvader, 1);
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);

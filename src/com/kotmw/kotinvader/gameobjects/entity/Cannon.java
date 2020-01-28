@@ -12,6 +12,7 @@ public class Cannon extends Entity implements Shooter {
 
     private double initX;
     private double initY;
+    private CannonMissile missile;
 
     public Cannon(double x, double y) {
         super("/resources/Cannon.png", x, y, EntityType.CANNON);
@@ -24,7 +25,8 @@ public class Cannon extends Entity implements Shooter {
 
     @Override
     public Missile shoot() {
-        return new CannonMissile(getTranslateX()+this.getWidth()/2, getTranslateY()-this.getHeight()/2);
+        if (missile != null && missile.isAlive()) return null;
+        return missile = new CannonMissile(getTranslateX()+this.getWidth()/2, getTranslateY()-this.getHeight()/2);
     }
 
     @Override

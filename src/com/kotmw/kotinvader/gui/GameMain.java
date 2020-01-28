@@ -2,7 +2,7 @@ package com.kotmw.kotinvader.gui;
 
 import com.kotmw.kotinvader.PlayStatus;
 import com.kotmw.kotinvader.gameobjects.entity.Entity;
-import com.kotmw.kotinvader.gameobjects.entity.missiles.CannonMissile;
+import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
@@ -12,11 +12,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -203,8 +200,8 @@ public class GameMain extends Stage {
 //                        player.getCannon().setDirection(90.0);
 //                        break;
                     case SPACE:
-                        if (container.getChildren().stream().anyMatch(e -> e instanceof CannonMissile)) break;
-                        container.getChildren().add(player.getCannon().shoot());
+                        Missile missile = player.getCannon().shoot();
+                        if (missile != null) container.getChildren().add(missile);
                         break;
 //                    case F1:
 //                        cover.nextLevel(count++, event1 -> {});
