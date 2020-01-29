@@ -62,14 +62,14 @@ public class TitleController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Pane[] panes = new Pane[]{start, settings, exit};
-        Transition[] buttonAnimations = new Transition[3];
+        ParallelTransition buttonParallel = new ParallelTransition();
         for (int p = 0; p < 3; p++) {
             Pane pane = panes[p];
             pane.setOpacity(0.0);
-            Transition[] transitions = new Transition[4];
             FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.1), pane);
             fadeIn.setFromValue(0.0);
             fadeIn.setToValue(1.0);
+            ParallelTransition parallelTransition = new ParallelTransition();
             for (int i = 0; i < 2; i++) {
                 Region region = new Region();
                 TranslateTransition slide = new TranslateTransition(Duration.seconds(0.5), region);
@@ -88,10 +88,9 @@ public class TitleController implements Initializable {
                     slide.setToX(200.0);
                 }
                 pane.getChildren().add(region);
-                transitions[i*2] = slide;
-                transitions[i*2+1] = fadeTransition; //片扉
+                parallelTransition.getChildren().addAll(slide, fadeTransition);
             }
-            buttonAnimations[p] = new SequentialTransition(fadeIn, new ParallelTransition(transitions)); //両開きのアニメーション
+            buttonParallel.getChildren().add(new SequentialTransition(fadeIn, parallelTransition));
         }
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.8), title);
@@ -105,7 +104,7 @@ public class TitleController implements Initializable {
                 new PauseTransition(Duration.seconds(0.5)),
                 fadeTransition,
                 translateTransition,
-                new ParallelTransition(buttonAnimations));
+                buttonParallel);
         sequentialTransition.play();
     }
 

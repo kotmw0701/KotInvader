@@ -128,7 +128,7 @@ public class CoverPane extends StackPane {
         box.getStyleClass().add("bonus");
         Label rainbowLabel = new Label("RAINBOW!");
         rainbowLabel.getStyleClass().add("rainbow");
-        box.getChildren().addAll(rainbowLabel, new Label(String.valueOf(amount)));
+        box.getChildren().addAll(rainbowLabel, new Label("+"+ amount));
         this.freePane.getChildren().add(box);
         FadeTransition flash = new FadeTransition(Duration.seconds(0.1), box);
         flash.setFromValue(0.0);

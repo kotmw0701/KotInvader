@@ -57,9 +57,8 @@ public class Invader extends Enemy implements Shooter {
     }
 
     private void changeActive() {
-        if (!isAlive()) {
-            if (aboveInvader != null) aboveInvader.changeActive();
-        } else activeProperty.set(true);
+        if (!isAlive() && aboveInvader != null) aboveInvader.changeActive();
+        else activeProperty.set(true);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Tochica extends BlockSet{
             {1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
     };
 
-    public Tochica(double x, double y) {
-        super(x, y, 20, model);
+    public Tochica(double x, double y, int hitPoint) {
+        super(x, y, hitPoint, model);
     }
 }

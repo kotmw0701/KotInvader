@@ -75,7 +75,6 @@ public class GameMain extends Stage {
         TODO 仮想フルスクリーン、ウィンドウモードの実装
         TODO SE、BGMの有無
     TODO GUI系の調整、追加
-        TODO レベル開始前のアニメーション
         TODO 背景画像
     TODO SE、BGMの実装
     */

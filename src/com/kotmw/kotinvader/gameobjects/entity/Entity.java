@@ -1,6 +1,7 @@
 package com.kotmw.kotinvader.gameobjects.entity;
 
 import com.kotmw.kotinvader.gui.GameMain;
+import com.sun.istack.internal.NotNull;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.ColorAdjust;

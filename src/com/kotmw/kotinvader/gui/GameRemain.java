@@ -18,7 +18,7 @@ public class GameRemain extends HBox {
     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
      */
 
-    Image cannon;
+    private Image cannon;
 
     public GameRemain(PlayStatus player) {
         cannon = new Image(getClass().getResource("/resources/Cannon.png").toExternalForm());

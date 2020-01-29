@@ -7,14 +7,10 @@ import com.kotmw.kotinvader.gameobjects.block.Tochica;
 import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
-import javafx.scene.control.Label;
+import javafx.animation.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -95,6 +91,7 @@ public class GameContainer extends Pane {
     }
 
     private void initGame(int level) {
+        if (timeline != null) timeline.stop();
         this.getChildren().clear();
 
         this.getChildren().add(player.getCannon());
@@ -110,7 +107,7 @@ public class GameContainer extends Pane {
         this.limitCount = 0;
         this.negateCount = 0;
 
-        if (level > 5) stockLine = level - 5;
+//        if (level > 10) stockLine = level - 10;
 
         timerCreate();
     }
@@ -148,12 +145,14 @@ public class GameContainer extends Pane {
                                             entity.move();
                                         break;
                                     case INVADER:
-                                        if (frameCounter % invaderSpeed == 0) {
+                                        if (frameCounter % 25 == 0) {
                                             Invader invader = (Invader) entity;
                                             if (invader.isActive() && Math.random() > 0.98) {
                                                 Missile missile = invader.shoot();
                                                 if (missile != null) getChildren().add(missile);
                                             }
+                                        }
+                                        if (frameCounter % invaderSpeed == 0) {
                                             if (down) {
                                                 entity.setSpeed(32.0);
                                                 entity.setDirection(Entity.Direction.DOWN);
@@ -169,9 +168,8 @@ public class GameContainer extends Pane {
                                         entity.move();
                                         if (!isObjectInWindow(entity, 0)) entity.hit(100);
                                         tochicaList.forEach(tochica -> {
-                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10)) {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10))
                                                 entity.hit(10);
-                                            }
                                         });
                                         Cannon cannon = player.getCannon();
                                         if (!cannon.isInvincible() && entity.getBoundsInParent().intersects(cannon.getBoundsInParent())) {
@@ -180,7 +178,7 @@ public class GameContainer extends Pane {
                                             if (player.getRemain() < 1) gameOver();
 
                                             if (!player.getCannon().isAlive() && player.getRemain() > 0) {
-//                                                zeroDeath = false;
+                                                zeroDeath = false;
                                                 getChildren().add(player.respawn());
                                                 player.decreaseRemain();
                                                 negateCount = 0;
@@ -190,13 +188,12 @@ public class GameContainer extends Pane {
                                     case CANNONMISSILE:
                                         entity.move();
                                         if (!isObjectInWindow(entity, 20)) {
-//                                            fullChain = false;
+                                            fullChain = false;
                                             entity.hit(100);
                                         }
                                         tochicaList.forEach(tochica -> {
-                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10)) {
+                                            if (entity.getBoundsInParent().intersects(tochica.getBoundingBox()) && tochica.hit(entity, 10))
                                                 entity.hit(10);
-                                            }
                                         });
                                         getEntities().stream()
                                                 .filter(e -> e instanceof Enemy || e instanceof InvaderMissile)
@@ -343,7 +340,7 @@ public class GameContainer extends Pane {
     private List<BlockSet> createTochica(int level) {
         List<BlockSet> tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            Tochica tochica = new Tochica(i*80+460, 400);
+            Tochica tochica = new Tochica(i*80+460, 400, level < 5 ? 20 : 20 - (level%5*4));
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
@@ -351,7 +348,7 @@ public class GameContainer extends Pane {
     }
 
     private Floor createFloor(int level) {
-        Floor floor = new Floor((level < 5 ? level : 4)*100, 520, 600-((level < 5 ? level : 4)*100), 40);
+        Floor floor = new Floor((level < 5 ? level : 4)*100, 520, 600-((level < 5 ? level : 4)*100), level < 5 ? 40 : 40 - (level%5*6));
         floor.setBlocks(this);
         return floor;
     }
@@ -368,14 +365,14 @@ public class GameContainer extends Pane {
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-//                Label label = new Label();
-//                if (invader.isActive()) label.getStyleClass().add("active");
-//                label.translateXProperty().bind(invader.translateXProperty().add(8));
-//                label.translateYProperty().bind(invader.translateYProperty());
-//                label.textProperty().bind(invader.activeProperty().asString());
-//                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
-//                label.opacityProperty().bind(invader.opacityProperty());
-                this.getChildren().add(invader);
+                Rectangle rectangle = new Rectangle(invader.getWidth(), invader.getHeight(), Color.TRANSPARENT);
+                if (invader.isActive()) rectangle.setStroke(Color.RED);
+                else rectangle.setStroke(Color.GREEN);
+                rectangle.translateXProperty().bind(invader.translateXProperty());
+                rectangle.translateYProperty().bind(invader.translateYProperty());
+                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
+                rectangle.opacityProperty().bind(invader.opacityProperty());
+                this.getChildren().addAll(invader, rectangle);
             }
         }
         return abobes;
@@ -390,20 +387,28 @@ public class GameContainer extends Pane {
         }
         Invader[] nextAbobes = new Invader[11];
         double adjust = type == 1 ? -4 : type == 3 ? 0 : -2;
+        ParallelTransition transition = new ParallelTransition();
         for (int x = 0; x < 11; x++) {
             double xPoint = base + x*30;
             double yPoint = 60;
-            Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, yPoint, type);
+            Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, -10, type);
             abobes[x].setAboveInvader(invader);
-//            Label label = new Label();
-//            if (invader.isActive()) label.getStyleClass().add("active");
-//            label.translateXProperty().bind(invader.translateXProperty().add(8));
-//            label.translateYProperty().bind(invader.translateYProperty());
-//            label.textProperty().bind(invader.activeProperty().asString());
-//            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) label.getStyleClass().add("active");});
-//            label.opacityProperty().bind(invader.opacityProperty());
-            this.getChildren().addAll(invader);
+            Rectangle rectangle = new Rectangle(invader.getWidth(), invader.getHeight(), Color.TRANSPARENT);
+            if (invader.isActive()) rectangle.setStroke(Color.RED);
+            else rectangle.setStroke(Color.GREEN);
+            rectangle.translateXProperty().bind(invader.translateXProperty());
+            rectangle.translateYProperty().bind(invader.translateYProperty());
+            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
+            rectangle.opacityProperty().bind(invader.opacityProperty());
+            this.getChildren().addAll(invader, rectangle);
+
+            TranslateTransition fall = new TranslateTransition(Duration.seconds(0.5), invader);
+            fall.setFromY(-110);
+            fall.setToY(yPoint);
+            fall.setInterpolator(Interpolator.EASE_OUT);
+            transition.getChildren().add(fall);
         }
+        transition.play();
         return nextAbobes;
     }
 }
