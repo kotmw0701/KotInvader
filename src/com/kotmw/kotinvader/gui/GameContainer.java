@@ -92,6 +92,9 @@ public class GameContainer extends Pane {
 
     private void initGame(int level) {
         if (timeline != null) timeline.stop();
+        this.getChildren().stream()
+                .filter(node -> node instanceof Missile || node instanceof Enemy)
+                .forEach(entity -> ((Entity)entity).hit(1000));
         this.getChildren().clear();
 
         this.getChildren().add(player.getCannon());
@@ -239,7 +242,7 @@ public class GameContainer extends Pane {
                                         double invaderX = entity.getTranslateX();
                                         rightMost = Math.max(rightMost, invaderX);
                                         leftMost = Math.min(leftMost, invaderX);
-                                        if (down) bottomMost = Math.max(bottomMost, entity.getTranslateY());
+                                        bottomMost = Math.max(bottomMost, entity.getTranslateY());
                                     }
                                 }
 
@@ -365,14 +368,8 @@ public class GameContainer extends Pane {
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-                Rectangle rectangle = new Rectangle(invader.getWidth(), invader.getHeight(), Color.TRANSPARENT);
-                if (invader.isActive()) rectangle.setStroke(Color.RED);
-                else rectangle.setStroke(Color.GREEN);
-                rectangle.translateXProperty().bind(invader.translateXProperty());
-                rectangle.translateYProperty().bind(invader.translateYProperty());
-                invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
-                rectangle.opacityProperty().bind(invader.opacityProperty());
-                this.getChildren().addAll(invader, rectangle);
+                this.cover.invaderDebug(invader);
+                this.getChildren().add(invader);
             }
         }
         return abobes;
@@ -393,14 +390,8 @@ public class GameContainer extends Pane {
             double yPoint = 60;
             Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, -10, type);
             abobes[x].setAboveInvader(invader);
-            Rectangle rectangle = new Rectangle(invader.getWidth(), invader.getHeight(), Color.TRANSPARENT);
-            if (invader.isActive()) rectangle.setStroke(Color.RED);
-            else rectangle.setStroke(Color.GREEN);
-            rectangle.translateXProperty().bind(invader.translateXProperty());
-            rectangle.translateYProperty().bind(invader.translateYProperty());
-            invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
-            rectangle.opacityProperty().bind(invader.opacityProperty());
-            this.getChildren().addAll(invader, rectangle);
+            this.cover.invaderDebug(invader);
+            this.getChildren().add(invader);
 
             TranslateTransition fall = new TranslateTransition(Duration.seconds(0.5), invader);
             fall.setFromY(-110);

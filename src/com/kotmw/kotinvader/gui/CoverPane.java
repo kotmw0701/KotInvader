@@ -1,11 +1,13 @@
 package com.kotmw.kotinvader.gui;
 
+import com.kotmw.kotinvader.gameobjects.entity.Invader;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -18,9 +20,11 @@ public class CoverPane extends StackPane {
     private GameMain root;
     private Pane freePane;
 
-    public CoverPane(GameMain gameMain) {
+    public CoverPane(GameMain gameMain, Node... children) {
+        super(children);
         this.root = gameMain;
         this.setPrefSize(GameMain.WINDOW_X, GameMain.WINDOW_Y);
+        this.getChildren().add(freePane = new Pane());
     }
 
     public void showResult() {
@@ -103,7 +107,6 @@ public class CoverPane extends StackPane {
     }
 
     public void showScore(double x, double y, int amount, String text) {
-        if (freePane == null) this.getChildren().add(freePane = new Pane());
         VBox box = new VBox();
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("bonus");
@@ -122,7 +125,6 @@ public class CoverPane extends StackPane {
     }
 
     public void rainbow(double x, double y, int amount) {
-        if (freePane == null) this.getChildren().add(freePane = new Pane());
         VBox box = new VBox();
         box.setAlignment(Pos.TOP_CENTER);
         box.getStyleClass().add("bonus");
@@ -150,5 +152,16 @@ public class CoverPane extends StackPane {
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(1.0);
         return new ParallelTransition(translateAnimation, fadeTransition, new PauseTransition(Duration.seconds(1)));
+    }
+
+    public void invaderDebug(Invader invader) {
+        Rectangle rectangle = new Rectangle(invader.getWidth(), invader.getHeight(), Color.TRANSPARENT);
+        if (invader.isActive()) rectangle.setStroke(Color.RED);
+        else rectangle.setStroke(Color.GREEN);
+        rectangle.translateXProperty().bind(invader.translateXProperty());
+        rectangle.translateYProperty().bind(invader.translateYProperty().add(100));
+        invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
+        rectangle.opacityProperty().bind(invader.opacityProperty());
+        this.freePane.getChildren().add(rectangle);
     }
 }

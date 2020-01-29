@@ -31,16 +31,18 @@ public class GameMain extends Stage {
     public static final double MAIN_Y = 550.0;
 
     /*
-      VBox (box)
-       ┗StackPane (root)
+      VBox (root)
+       ┗StackPane (cover)
        　┣BorderPane
        　┃ ┣[Top]    BorderPane (status)
        　┃ ┃ ┣[Left]   VBox
        　┃ ┃ ┣[Center] VBox
        　┃ ┃ ┗[Right]  VBox
-       　┃ ┣[Center] Pane (container)
+       　┃ ┣[Center] StackPane
+       　┃ 　 ┣Pane (container)
+       　┃ 　 ┗Pane (float)※移動先
        　┃ ┗[Bottom] HBox (remain)
-       　┗Pane
+       　┗Pane ※移動
 
 
                                                   1200px
@@ -95,9 +97,13 @@ public class GameMain extends Stage {
         this.title = title;
         player = new PlayStatus();
 
-        cover = new CoverPane(this);
-        cover.setId("root");
+        KeyHandler keyManager = new KeyHandler();
 
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefSize(WINDOW_X, WINDOW_Y);
+
+        cover = new CoverPane(this, borderPane);
+        cover.setId("root");
         container = new GameContainer(player, cover);
         container.setId("container");
         status = new GameStatus(player);
@@ -107,19 +113,14 @@ public class GameMain extends Stage {
         remain.setId("remain");
         remain.getStyleClass().add("info");
 
-        KeyHandler keyManager = new KeyHandler();
-
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        root.setPrefSize(WINDOW_X, WINDOW_Y);
-        root.setId("box");
-        root.getChildren().add(cover);
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setPrefSize(WINDOW_X, WINDOW_Y);
         borderPane.setTop(status);
         borderPane.setBottom(remain);
         borderPane.setCenter(container);
+
+        VBox root = new VBox(cover);
+        root.setAlignment(Pos.CENTER);
+        root.setPrefSize(WINDOW_X, WINDOW_Y);
+        root.setId("box");
 
         ScaleTransition animationX = new ScaleTransition(Duration.seconds(0.25), cover), animationY = new ScaleTransition(Duration.seconds(0.25), cover);
         animationX.setFromX(0.001);
@@ -133,8 +134,6 @@ public class GameMain extends Stage {
         fade.setToValue(1.0);
 
         SequentialTransition animation = new SequentialTransition(animationX, animationY, fade);
-
-        cover.getChildren().add(borderPane);
 
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
         scene.setFill(null);
