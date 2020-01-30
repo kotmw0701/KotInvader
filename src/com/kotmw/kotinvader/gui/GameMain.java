@@ -34,16 +34,15 @@ public class GameMain extends Stage {
     /*
       VBox (root)
        ┗StackPane (cover)
-       　┣BorderPane
-       　┃ ┣[Top]    BorderPane (status)
-       　┃ ┃ ┣[Left]   VBox
-       　┃ ┃ ┣[Center] VBox
-       　┃ ┃ ┗[Right]  VBox
-       　┃ ┣[Center] StackPane
-       　┃ ┃ ┣Pane (container)
-       　┃ ┃ ┗Pane (float)※移動先
-       　┃ ┗[Bottom] HBox (remain)
-       　┗Pane ※移動
+       　┗BorderPane
+       　　 ┣[Top]    BorderPane (status)
+       　　 ┃ ┣[Left]   VBox
+       　　 ┃ ┣[Center] VBox
+       　　 ┃ ┗[Right]  VBox
+       　　 ┣[Center] StackPane
+       　　 ┃ ┣Pane (container)
+       　　 ┃ ┗Pane (float)※移動先
+       　　 ┗[Bottom] HBox (remain)
 
 
                                                   1200px
@@ -75,7 +74,6 @@ public class GameMain extends Stage {
     TODO インベーダーの弾が2発同時に当たった時に無敵時間が発生しない
 
     TODO 設定画面
-        TODO 仮想フルスクリーン、ウィンドウモードの実装
         TODO SE、BGMの有無
     TODO GUI系の調整、追加
         TODO 背景画像

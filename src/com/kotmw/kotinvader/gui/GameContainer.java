@@ -9,8 +9,6 @@ import com.kotmw.kotinvader.gameobjects.entity.missiles.InvaderMissile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import javafx.animation.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
