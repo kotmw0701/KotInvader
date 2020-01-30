@@ -42,6 +42,7 @@ public class GameContainer extends Pane {
 
     private PlayStatus player;
     private CoverPane cover;
+    private FloatsContainer floats;
     private Floor floor;
     private int level;
 //    private boolean pause;
@@ -59,8 +60,9 @@ public class GameContainer extends Pane {
 //    private Line leftLine, rightLine;
     //――――――――――――――――――――――――――――――――――
 
-    public GameContainer(PlayStatus player, CoverPane cover) {
+    public GameContainer(PlayStatus player, CoverPane cover, FloatsContainer floats) {
         this.player = player;
+        this.floats = floats;
         this.cover = cover;
         this.setPrefSize(GameMain.MAIN_X, GameMain.MAIN_Y);
 
@@ -298,8 +300,8 @@ public class GameContainer extends Pane {
         else if (amount == 0) return;
         this.player.addScore(amount);
         if (bonus) {
-            if (rainbow) this.cover.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
-            else this.cover.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
+            if (rainbow) this.floats.rainbow(killed.getTranslateX(), killed.getTranslateY(), amount);
+            else this.floats.showScore(killed.getTranslateX(), killed.getTranslateY(), amount);
         }
     }
 
@@ -317,11 +319,11 @@ public class GameContainer extends Pane {
         this.player.addScore(1000);
         if (this.fullChain) {
             this.player.addScore(500);
-            this.cover.showScore(430, 50, 500, "FullChain");
+            this.floats.showScore(430, 50, 500, "FullChain");
         }
         if (this.zeroDeath) {
             this.player.addScore(500);
-            this.cover.showScore(600, 50, 500, "ZeroDeath");
+            this.floats.showScore(600, 50, 500, "ZeroDeath");
         }
         this.timeline.stop();
         PauseTransition pause = new PauseTransition(Duration.seconds(2.0));
@@ -368,7 +370,7 @@ public class GameContainer extends Pane {
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-                this.cover.invaderDebug(invader);
+                this.floats.invaderDebug(invader);
                 this.getChildren().add(invader);
             }
         }
@@ -390,7 +392,7 @@ public class GameContainer extends Pane {
             double yPoint = 60;
             Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, -10, type);
             abobes[x].setAboveInvader(invader);
-            this.cover.invaderDebug(invader);
+            this.floats.invaderDebug(invader);
             this.getChildren().add(invader);
 
             TranslateTransition fall = new TranslateTransition(Duration.seconds(0.5), invader);

@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -39,8 +40,8 @@ public class GameMain extends Stage {
        　┃ ┃ ┣[Center] VBox
        　┃ ┃ ┗[Right]  VBox
        　┃ ┣[Center] StackPane
-       　┃ 　 ┣Pane (container)
-       　┃ 　 ┗Pane (float)※移動先
+       　┃ ┃ ┣Pane (container)
+       　┃ ┃ ┗Pane (float)※移動先
        　┃ ┗[Bottom] HBox (remain)
        　┗Pane ※移動
 
@@ -102,9 +103,11 @@ public class GameMain extends Stage {
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_X, WINDOW_Y);
 
+
+        FloatsContainer floats = new FloatsContainer();
         cover = new CoverPane(this, borderPane);
         cover.setId("root");
-        container = new GameContainer(player, cover);
+        container = new GameContainer(player, cover, floats);
         container.setId("container");
         status = new GameStatus(player);
         status.setId("status");
@@ -113,9 +116,11 @@ public class GameMain extends Stage {
         remain.setId("remain");
         remain.getStyleClass().add("info");
 
+        StackPane stackPane = new StackPane(container, floats);
+
         borderPane.setTop(status);
         borderPane.setBottom(remain);
-        borderPane.setCenter(container);
+        borderPane.setCenter(stackPane);
 
         VBox root = new VBox(cover);
         root.setAlignment(Pos.CENTER);
