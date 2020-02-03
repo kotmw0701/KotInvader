@@ -65,6 +65,10 @@
             </Button>
          </children>
       </VBox>
-      <VBox visible="false" />
+      <VBox alignment="TOP_CENTER" visible="false">
+         <children>
+            <Label fx:id="title1" styleClass="title" text="Settings" />
+            <HBox prefHeight="50.0" prefWidth="600.0" />
+         </children></VBox>
    </children>
 </StackPane>

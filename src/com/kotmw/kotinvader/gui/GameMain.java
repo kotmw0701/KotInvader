@@ -206,6 +206,7 @@ public class GameMain extends Stage {
                         break;
 //                    case F1:
 //                        cover.nextLevel(count++, event1 -> {});
+//                        break;
 //                    case ESCAPE:
 //                        container.pause();
                     default:

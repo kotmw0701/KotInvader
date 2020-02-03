@@ -110,7 +110,7 @@ public class GameContainer extends Pane {
         this.limitCount = 0;
         this.negateCount = 0;
 
-//        if (level > 10) stockLine = level - 10;
+        if (level > 10) stockLine = level - 10;
 
         timerCreate();
     }
@@ -343,7 +343,7 @@ public class GameContainer extends Pane {
     private List<BlockSet> createTochica(int level) {
         List<BlockSet> tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            Tochica tochica = new Tochica(i*80+460, 400, level < 5 ? 20 : 20 - (level%5*4));
+            Tochica tochica = new Tochica(i*80+460, 400, level <= 5 ? 20 : level >= 10 ? 1 : 20 - level%5*4);
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
@@ -351,7 +351,7 @@ public class GameContainer extends Pane {
     }
 
     private Floor createFloor(int level) {
-        Floor floor = new Floor((level < 5 ? level : 4)*100, 520, 600-((level < 5 ? level : 4)*100), level < 5 ? 40 : 40 - (level%5*6));
+        Floor floor = new Floor((level <= 5 ? level : 4)*100, 520, 600-((level <= 5 ? level : 4)*100), level <= 5 ? 40 : level >= 10 ? 10 : 40 - level%5*6);
         floor.setBlocks(this);
         return floor;
     }
