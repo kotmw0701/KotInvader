@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
-<Pane xmlns:fx="http://javafx.com/fxml/1" id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8.0.131" fx:controller="com.kotmw.kotinvader.TitleController">
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<StackPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kotmw.kotinvader.TitleController">
    <children>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="35.0">
+      <VBox alignment="CENTER" fillWidth="false" spacing="35.0">
          <children>
             <Label fx:id="title" styleClass="title" text="Space Invader" />
-            <Pane fx:id="start" prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#onStart" text="Start">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-            </Pane>
-            <Pane fx:id="settings" prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#onSettings" text="Settings">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-            </Pane>
-            <Pane fx:id="exit" prefHeight="50.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#onExit" text="Exit">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-            </Pane>
+            <Button fx:id="start" defaultButton="true" mnemonicParsing="false" onAction="#onStart" prefHeight="50.0" prefWidth="300.0">
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
+               <graphic>
+                  <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
+                     <children>
+                        <Rectangle fx:id="startBack" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
+                        <Label prefWidth="300.0" text="■ Game Start">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+            <Button fx:id="settings" mnemonicParsing="false" onAction="#onSettings" prefHeight="50.0" prefWidth="300.0">
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
+               <graphic>
+                  <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
+                     <children>
+                        <Rectangle fx:id="settingsBack" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
+                        <Label prefWidth="300.0" text="■ Settings">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+            <Button fx:id="exit" mnemonicParsing="false" onAction="#onExit" prefHeight="50.0" prefWidth="300.0">
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
+               <graphic>
+                  <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
+                     <children>
+                        <Rectangle fx:id="exitBack" fill="WHITE" height="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
+                        <Label prefWidth="300.0" text="■ Exit">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
          </children>
       </VBox>
+      <VBox visible="false" />
    </children>
-</Pane>
+</StackPane>

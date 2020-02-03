@@ -20,20 +20,28 @@
 }
 
 .button {
-    -fx-pref-height: 50px;
-    -fx-pref-width: 200px;
+    -fx-cursor: hand;
     -fx-font-size: 20px;
-    -fx-text-fill: white;
-    -fx-border-color: white;
-    -fx-padding: 2px 0 0 0;
-    -fx-border-width: 0 0 2px 0;
     -fx-background-color: transparent;
+    -fx-padding: 1px 0;
     /*transparent*/
 }
 
 .button:hover {
-    -fx-padding: 0;
+    -fx-border-color: white;
     -fx-border-width: 2px 0;
+}
+
+.button .label {
+    -fx-text-fill: white;
+}
+
+.button:hover .label {
+    -fx-text-fill: black;
+}
+
+.button .baseBack {
+    -fx-background-color: #222222;
 }
 
 .title {
