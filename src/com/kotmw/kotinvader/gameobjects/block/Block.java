@@ -14,6 +14,7 @@ public class Block extends Rectangle {
         this.setTranslateX(x);
         this.setTranslateY(y);
 
+        if (hitPoint < 1) hitPoint = 1;
         this.baseHitPoint = hitPoint;
         this.hitPoint = hitPoint;
     }

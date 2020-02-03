@@ -7,7 +7,7 @@ public class Floor extends BlockSet {
     private final double reach = 10.0;
 
     public Floor(double x, double y, int widthCount, int hitPoint) {
-        super(x, y, widthCount, 0, hitPoint);
+        super(x, y, widthCount, 0, Math.max(hitPoint, 10));
     }
 
     public boolean hasFloor(Entity entity) {

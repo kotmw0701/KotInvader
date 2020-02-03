@@ -90,6 +90,12 @@ public class GameContainer extends Pane {
         ufoTimeline.play();
     }
 
+    /*
+    Level 0 ~ 4   : インベーダーが下りてくるのみ
+    Level 5 ~ 9  : フィールド縮小 + インベーダーの横移動範囲縮小
+    Level 10 ~ 14 : Tochica + Floorの耐久減少
+    Level 15 ~    : 追加インベーダー
+     */
     private void initGame(int level) {
         if (timeline != null) timeline.stop();
         this.getChildren().stream()
@@ -110,7 +116,7 @@ public class GameContainer extends Pane {
         this.limitCount = 0;
         this.negateCount = 0;
 
-        if (level > 10) stockLine = level - 10;
+        if (level >= 15) stockLine = level - 14;
 
         timerCreate();
     }
@@ -273,11 +279,11 @@ public class GameContainer extends Pane {
                                 }
                             }
 
-                            if (invaderCount < 50)
-                                invaderSpeed -= (beforeCount - invaderCount);
+//                            if (invaderCount < 50)
+//                                invaderSpeed -= (beforeCount - invaderCount);
                             if (invaderCount == 0) {
                                 if (stockLine-- > 0) {
-                                    addInvader(3, this.abobes, GameMain.MAIN_X/2-158);
+                                    this.abobes = addInvader(3, this.abobes, GameMain.MAIN_X/2-158);
                                     invaderSpeed += 11;
                                 }
                                 else clear();
@@ -343,15 +349,19 @@ public class GameContainer extends Pane {
     private List<BlockSet> createTochica(int level) {
         List<BlockSet> tochicaList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            Tochica tochica = new Tochica(i*80+460, 400, level <= 5 ? 20 : level >= 10 ? 1 : 20 - level%5*4);
+            Tochica tochica = new Tochica(i*80+460, 400, level < 9 ? 20 : 20 - (level - 9) * 4);
             tochica.setBlocks(this);
             tochicaList.add(tochica);
         }
+        System.out.println();
         return tochicaList;
     }
 
     private Floor createFloor(int level) {
-        Floor floor = new Floor((level <= 5 ? level : 4)*100, 520, 600-((level <= 5 ? level : 4)*100), level <= 5 ? 40 : level >= 10 ? 10 : 40 - level%5*6);
+        int blankSize = 0;
+        if (level >= 5 && level < 9) blankSize = (level - 4)*100;
+        else if (level >= 9) blankSize = 4*100;
+        Floor floor = new Floor(blankSize, 520, 600-blankSize, (level < 9 ? 40 : 40 - (level - 9) * 6));
         floor.setBlocks(this);
         return floor;
     }
