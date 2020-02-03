@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,12 +27,10 @@ public class TitleController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Button[] buttons = new Button[]{start, settings, exit};//Buttons
-        Rectangle[] rectangles = new Rectangle[]{startBack, settingsBack, exitBack};
         ParallelTransition buttonParallel = new ParallelTransition();
         for (int p = 0; p < 3; p++) {
             Button button = buttons[p];
             button.setOpacity(0.0);
-            rectangles[p].setScaleX(0.0);
             TranslateTransition translate = new TranslateTransition(Duration.seconds(0.3), button);
             translate.setFromX(-40.0);
             translate.setToX(0.0);
@@ -41,52 +40,53 @@ public class TitleController implements Initializable {
             fadeIn.setToValue(1.0);
             buttonParallel.getChildren().addAll(
                     new SequentialTransition(new PauseTransition(Duration.seconds(0.2*p)), new ParallelTransition(fadeIn, translate)));
+            TranslateTransition backTranslate = new TranslateTransition(Duration.seconds(0.1));
+            backTranslate.setInterpolator(Interpolator.EASE_OUT);
+            ScaleTransition scale = new ScaleTransition(Duration.seconds(0.1));
+            scale.setInterpolator(Interpolator.EASE_OUT);
+            ParallelTransition parallel = new ParallelTransition(backTranslate, scale);
             button.setOnMouseEntered(event -> {
-                Rectangle rectangle;
+                parallel.stop();
                 switch (((Button)event.getSource()).getId()) {
                     case "start":
-                        rectangle = startBack;
+                        backTranslate.setNode(startBack);
                         break;
                     case "settings":
-                        rectangle = settingsBack;
+                        backTranslate.setNode(settingsBack);
                         break;
                     case "exit":
-                        rectangle = exitBack;
+                        backTranslate.setNode(exitBack);
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + ((Button) event.getSource()).getId());
                 }
-                TranslateTransition backTranslate = new TranslateTransition(Duration.seconds(0.3), rectangle);
                 backTranslate.setFromX(-150);
                 backTranslate.setToX(0.0);
-                ScaleTransition scale = new ScaleTransition(Duration.seconds(0.3), rectangle);
+                scale.setNode(backTranslate.getNode());
                 scale.setFromX(0.0);
                 scale.setToX(1.0);
-                ParallelTransition parallel = new ParallelTransition(backTranslate, scale);
                 parallel.play();
             });
             button.setOnMouseExited(event -> {
-                Rectangle rectangle;
+                parallel.stop();
                 switch (((Button)event.getSource()).getId()) {
                     case "start":
-                        rectangle = startBack;
+                        backTranslate.setNode(startBack);
                         break;
                     case "settings":
-                        rectangle = settingsBack;
+                        backTranslate.setNode(settingsBack);
                         break;
                     case "exit":
-                        rectangle = exitBack;
+                        backTranslate.setNode(exitBack);
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + ((Button) event.getSource()).getId());
                 }
-                TranslateTransition backTranslate = new TranslateTransition(Duration.seconds(0.3), rectangle);
                 backTranslate.setFromX(0.0);
                 backTranslate.setToX(-150);
-                ScaleTransition scale = new ScaleTransition(Duration.seconds(0.3), rectangle);
+                scale.setNode(backTranslate.getNode());
                 scale.setFromX(1.0);
                 scale.setToX(0.0);
-                ParallelTransition parallel = new ParallelTransition(backTranslate, scale);
                 parallel.play();
             });
         }
