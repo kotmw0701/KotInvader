@@ -22,7 +22,7 @@ public class PlayStatus {
 
     public PlayStatus() {
         this.cannon = new Cannon(GameMain.MAIN_X/2-15, 500);
-        this.remain = 0;
+        this.remain = 3;
         this.killData = new ArrayList<>();
     }
 
