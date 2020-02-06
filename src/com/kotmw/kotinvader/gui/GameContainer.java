@@ -156,7 +156,7 @@ public class GameContainer extends Pane {
                                     case INVADER:
                                         if (frameCounter % 25 == 0) {
                                             Invader invader = (Invader) entity;
-                                            if (invader.isActive() && Math.random() > 0.98) {
+                                            if (invader.isActive() && Math.random() > 0.95) {
                                                 Missile missile = invader.shoot();
                                                 if (missile != null) getChildren().add(missile);
                                             }
@@ -234,6 +234,13 @@ public class GameContainer extends Pane {
                                 }
                             });
 
+//                            getChildren().stream().filter(node -> node instanceof Enemy).forEach(node -> {
+//                                Enemy enemy = (Enemy) node;
+//                                if (!enemy.isAlive()) {
+//                                    this.floats.explosion(enemy.getTranslateX(), enemy.getTranslateY());
+//                                }
+//                            });
+
                             int beforeCount = getInvaderCount();
                             getChildren().removeIf(e -> e instanceof Entity && !((Entity)e).isAlive());
                             int invaderCount = getInvaderCount();
@@ -279,8 +286,8 @@ public class GameContainer extends Pane {
                                 }
                             }
 
-//                            if (invaderCount < 50)
-//                                invaderSpeed -= (beforeCount - invaderCount);
+                            if (invaderCount < 50)
+                                invaderSpeed -= (beforeCount - invaderCount);
                             if (invaderCount == 0) {
                                 if (stockLine-- > 0) {
                                     this.abobes = addInvader(3, this.abobes, GameMain.MAIN_X/2-158);
@@ -299,8 +306,11 @@ public class GameContainer extends Pane {
     }
 
     private void addScore(Entity killed, int amount, boolean bonus, boolean rainbow) {
-        if (killed instanceof Enemy)
-            amount = amount == 0 ? ((Enemy)killed).getScore() : amount;
+        if (killed instanceof Enemy) {
+            Enemy enemy = (Enemy) killed;
+            this.player.addKillData(enemy);
+            amount = amount == 0 ? enemy.getScore() : amount;
+        }
         else if (amount == 0) return;
         this.player.addScore(amount);
         if (bonus) {
@@ -339,7 +349,7 @@ public class GameContainer extends Pane {
 
     private void gameOver() {
         this.timeline.stop();
-        this.cover.showResult();
+        this.cover.showResult(this.player);
     }
 
     /*
@@ -378,7 +388,7 @@ public class GameContainer extends Pane {
                 else if (y == 4) invader = new Invader(xPoint-4, yPoint, aboveInvader, true, 1);
                 else invader = new Invader(xPoint-2, yPoint, aboveInvader, 2);
                 aboveInvader = invader;
-                this.floats.invaderDebug(invader);
+//                this.floats.invaderDebug(invader);
                 this.getChildren().add(invader);
             }
         }
@@ -400,7 +410,7 @@ public class GameContainer extends Pane {
             double yPoint = 60;
             Invader invader = nextAbobes[x] = new Invader(xPoint-adjust, -10, type);
             abobes[x].setAboveInvader(invader);
-            this.floats.invaderDebug(invader);
+//            this.floats.invaderDebug(invader);
             this.getChildren().add(invader);
 
             TranslateTransition fall = new TranslateTransition(Duration.seconds(0.5), invader);

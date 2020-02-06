@@ -1,14 +1,20 @@
 package com.kotmw.kotinvader.gui;
 
+import com.kotmw.kotinvader.PlayStatus;
+import com.kotmw.kotinvader.gameobjects.entity.Entity;
+import com.kotmw.kotinvader.gameobjects.entity.EntityType;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,7 +32,11 @@ public class CoverPane extends StackPane {
         this.getChildren().add(freePane = new Pane());
     }
 
-    public void showResult() {
+    public void Operation() {
+
+    }
+
+    public void showResult(PlayStatus playStatus) {
         BorderPane container = new BorderPane();
         container.getStyleClass().add("result");
         container.setCursor(Cursor.DEFAULT);
@@ -36,7 +46,31 @@ public class CoverPane extends StackPane {
         Label top = new Label("Game Over");
         BorderPane.setAlignment(top, Pos.CENTER);
 
-        VBox scoreData = new VBox(); //460, 546
+        VBox scoreData = new VBox();
+        scoreData.setAlignment(Pos.CENTER);
+        scoreData.setSpacing(30);
+        scoreData.getStyleClass().add("score");
+        for (int type = 1; type <= 3; type++) {
+            Image image = new Image(
+                    getClass().getResource(String.format(EntityType.INVADER.getPath(), type)).toExternalForm(),
+                    128,
+                    32,
+                    true,
+                    false
+            );
+            ImageView imageView = new ImageView(image);
+            long data = playStatus.getKillInvaders(type);
+            imageView.setViewport(new Rectangle2D(0, 0, imageView.getImage().getWidth()/2, 32));
+            Label label = new Label(String.format("x %-3d = %d ", data, type * 10 * data));
+            VBox vBox = new VBox(imageView);
+            vBox.setPrefWidth(64.0);
+            vBox.setAlignment(Pos.CENTER);
+            HBox hBox = new HBox(vBox, label);
+            hBox.setPadding(new Insets(0, 0, 0, 100));
+            hBox.setSpacing(50);
+            hBox.setAlignment(Pos.CENTER_LEFT);
+            scoreData.getChildren().add(hBox);
+        }
 
         HBox menu = new HBox();
         menu.setAlignment(Pos.CENTER_RIGHT);
@@ -44,7 +78,6 @@ public class CoverPane extends StackPane {
         Button title = new Button("Title"), exit = new Button("Exit");
         title.setOnAction(event -> root.close());
         exit.setOnAction(event -> System.exit(0));
-
         menu.getChildren().addAll(title, exit);
 
         container.setTop(top);

@@ -99,7 +99,13 @@
 }
 
 .result .button {
+    -fx-text-fill : white;
     -fx-pref-width: 100px;
+    -fx-border-width: 2px 0;
+}
+
+.score .label {
+    -fx-font-size: 32px;
 }
 
 .levelTitle {

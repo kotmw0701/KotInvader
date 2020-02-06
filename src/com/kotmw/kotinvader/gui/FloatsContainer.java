@@ -4,6 +4,7 @@ import com.kotmw.kotinvader.gameobjects.entity.Invader;
 import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -73,5 +74,15 @@ public class FloatsContainer extends Pane {
         invader.activeProperty().addListener((a, b, newValue) -> { if (newValue) rectangle.setStroke(Color.RED);});
         rectangle.opacityProperty().bind(invader.opacityProperty());
         this.getChildren().add(rectangle);
+    }
+
+    public void explosion(double x, double y) {
+        ImageView imageView = new ImageView(getClass().getResource("/resources/Explosion.png").toExternalForm());
+        imageView.setTranslateX(x);
+        imageView.setTranslateY(y);
+        this.getChildren().add(imageView);
+        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(0.3));
+        pauseTransition.setOnFinished(event -> this.getChildren().remove(imageView));
+        pauseTransition.play();
     }
 }

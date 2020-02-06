@@ -1,13 +1,13 @@
 package com.kotmw.kotinvader;
 
-import com.kotmw.kotinvader.gameobjects.entity.Cannon;
+import com.kotmw.kotinvader.gameobjects.entity.*;
 import com.kotmw.kotinvader.gui.GameMain;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.Objects;
+import java.util.*;
 
 public class PlayStatus {
 
@@ -18,9 +18,12 @@ public class PlayStatus {
     private IntegerProperty remainProperty;
     private StringProperty scoreProperty;
 
+    private List<Enemy> killData;
+
     public PlayStatus() {
-        cannon = new Cannon(GameMain.MAIN_X/2-15, 500);
-        remain = 3;
+        this.cannon = new Cannon(GameMain.MAIN_X/2-15, 500);
+        this.remain = 0;
+        this.killData = new ArrayList<>();
     }
 
     public Cannon getCannon() {
@@ -70,5 +73,19 @@ public class PlayStatus {
         score += amount;
         if (Objects.nonNull(scoreProperty)) scoreProperty.set(String.format("%07d", score));
         return score;
+    }
+
+    public void addKillData(Enemy enemy) {
+        this.killData.add(enemy);
+    }
+
+    public long getKillUfos() {
+        return this.killData.stream().filter(enemy -> enemy instanceof UFO).count();
+    }
+
+    public long getKillInvaders(int invaderType) {
+        return this.killData.stream()
+                .filter(enemy -> enemy instanceof Invader && ((Invader)enemy).getInvaderType() == invaderType)
+                .count();
     }
 }

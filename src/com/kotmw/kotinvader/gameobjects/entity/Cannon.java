@@ -4,7 +4,6 @@ import com.kotmw.kotinvader.gameobjects.entity.missiles.CannonMissile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Missile;
 import com.kotmw.kotinvader.gameobjects.entity.missiles.Shooter;
 import javafx.animation.FadeTransition;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
