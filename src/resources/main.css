@@ -48,21 +48,12 @@
     -fx-font-size: 50px;
 }
 
-.left {
-    -fx-pref-width: 100px;
-    -fx-pref-height: 50px;
-    -fx-background-color: black;
-    -fx-border-color: white;
-    -fx-border-width: 0 2px 0 0;
+.aboutContent .label, .aboutContent .hyperlink {
+    -fx-font-size: 24px;
 }
 
-.right {
-    -fx-pref-width: 100px;
-    -fx-pref-height: 50px;
-    -fx-background-color: black;
-    -fx-border-color: white;
-    -fx-border-width: 0 0 0 2px;
-    -fx-translate-x: 100px;
+.copyright {
+    -fx-font-family: sans-serif;
 }
 
 .info {
@@ -111,24 +102,4 @@
 .levelTitle {
     -fx-font-size: 72px;
 
-}
-
-.testClass {
-    -fx-background-color: transparent;
-}
-
-.testClass2 {
-    -fx-background-color: lawngreen;
-}
-
-.test1 {
-    -fx-background-color: red;
-}
-
-.test2 {
-    -fx-background-color: green;
-}
-
-.test3 {
-    -fx-background-color: blue;
 }

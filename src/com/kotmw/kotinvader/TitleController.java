@@ -6,28 +6,37 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TitleController implements Initializable {
 
     @FXML
+    private VBox main, about;
+    @FXML
     private Label title;
     @FXML
-    private Button start, settings, exit;
+    private Button startButton, settingsButton, aboutButton, exitButton, returnButton;
     @FXML
-    private Rectangle startBack, settingsBack, exitBack;
+    private Rectangle startBack, settingsBack, aboutBack, exitBack, returnBack;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Button[] buttons = new Button[]{start, settings, exit};//Buttons
+        exitButton.setOnAction(event -> System.exit(0));
+        Button[] buttons = new Button[]{startButton, settingsButton, aboutButton, exitButton, returnButton};//Buttons
         ParallelTransition buttonParallel = new ParallelTransition();
-        for (int p = 0; p < 3; p++) {
+        for (int p = 0; p < 5; p++) {
             Button button = buttons[p];
             button.setOpacity(0.0);
             TranslateTransition translate = new TranslateTransition(Duration.seconds(0.3), button);
@@ -47,14 +56,20 @@ public class TitleController implements Initializable {
             button.setOnMouseEntered(event -> {
                 parallel.stop();
                 switch (((Button)event.getSource()).getId()) {
-                    case "start":
+                    case "startButton":
                         backTranslate.setNode(startBack);
                         break;
-                    case "settings":
+                    case "settingsButton":
                         backTranslate.setNode(settingsBack);
                         break;
-                    case "exit":
+                    case "aboutButton":
+                        backTranslate.setNode(aboutBack);
+                        break;
+                    case "exitButton":
                         backTranslate.setNode(exitBack);
+                        break;
+                    case "returnButton":
+                        backTranslate.setNode(returnBack);
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + ((Button) event.getSource()).getId());
@@ -69,14 +84,20 @@ public class TitleController implements Initializable {
             button.setOnMouseExited(event -> {
                 parallel.stop();
                 switch (((Button)event.getSource()).getId()) {
-                    case "start":
+                    case "startButton":
                         backTranslate.setNode(startBack);
                         break;
-                    case "settings":
+                    case "settingsButton":
                         backTranslate.setNode(settingsBack);
                         break;
-                    case "exit":
+                    case "aboutButton":
+                        backTranslate.setNode(aboutBack);
+                        break;
+                    case "exitButton":
                         backTranslate.setNode(exitBack);
+                        break;
+                    case "returnButton":
+                        backTranslate.setNode(returnBack);
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + ((Button) event.getSource()).getId());
@@ -115,8 +136,35 @@ public class TitleController implements Initializable {
     public void onSettings(ActionEvent actionEvent) {
     }
 
-    public void onExit(ActionEvent actionEvent) {
-        System.exit(0);
+    public void onAbout(ActionEvent actionEvent) {
+        main.setVisible(false);
+        about.setVisible(true);
     }
 
+    public void onReturn(ActionEvent actionEvent) {
+        main.setVisible(true);
+        about.setVisible(false);
+    }
+
+    public void onLink(ActionEvent actionEvent) {
+        String url = "";
+        switch (((Hyperlink)actionEvent.getSource()).getText()) {
+            case "GitHub":
+                url = "https://github.com/kotmw0701/KotInvader";
+                break;
+            case "kotmw.com":
+                url = "https://kotmw.com";
+                break;
+            case "@rabikotmw":
+                url = "https://twitter.com/intent/user?user_id=2277744186";
+                break;
+            default:
+                break;
+        }
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 }

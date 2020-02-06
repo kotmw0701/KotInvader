@@ -3,13 +3,13 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
-<StackPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="/resources/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kotmw.kotinvader.TitleController">
+<?import javafx.scene.shape.*?>
+<StackPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../resources/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kotmw.kotinvader.TitleController">
    <children>
-      <VBox alignment="CENTER" fillWidth="false" spacing="35.0">
+      <VBox fx:id="main" alignment="CENTER" fillWidth="false" spacing="30.0">
          <children>
             <Label fx:id="title" styleClass="title" text="Space Invader" />
-            <Button fx:id="start" defaultButton="true" mnemonicParsing="false" onAction="#onStart" prefHeight="50.0" prefWidth="300.0">
+            <Button fx:id="startButton" defaultButton="true" mnemonicParsing="false" onAction="#onStart" prefHeight="50.0" prefWidth="300.0">
                <padding>
                   <Insets bottom="1.0" top="1.0" />
                </padding>
@@ -26,10 +26,7 @@
                   </StackPane>
                </graphic>
             </Button>
-            <Button fx:id="settings" mnemonicParsing="false" onAction="#onSettings" prefHeight="50.0" prefWidth="300.0">
-               <padding>
-                  <Insets bottom="1.0" top="1.0" />
-               </padding>
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#onSettings" prefHeight="50.0" prefWidth="300.0">
                <graphic>
                   <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
                      <children>
@@ -42,8 +39,28 @@
                      </children>
                   </StackPane>
                </graphic>
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
             </Button>
-            <Button fx:id="exit" mnemonicParsing="false" onAction="#onExit" prefHeight="50.0" prefWidth="300.0">
+            <Button fx:id="aboutButton" mnemonicParsing="false" onAction="#onAbout" prefHeight="50.0" prefWidth="300.0">
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
+               <graphic>
+                  <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
+                     <children>
+                        <Rectangle fx:id="aboutBack" fill="WHITE" height="40.0" scaleX="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="-150.0" width="300.0" />
+                        <Label prefWidth="300.0" text="■ About">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+            </Button>
+            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0">
                <padding>
                   <Insets bottom="1.0" top="1.0" />
                </padding>
@@ -62,10 +79,53 @@
             </Button>
          </children>
       </VBox>
-      <VBox alignment="TOP_CENTER" visible="false">
+      <VBox fx:id="about" alignment="TOP_CENTER" spacing="10.0" visible="false">
          <children>
-            <Label fx:id="title1" styleClass="title" text="Settings" />
-            <HBox prefHeight="50.0" prefWidth="600.0" />
+            <Label styleClass="title" text="About" />
+            <VBox alignment="TOP_CENTER" prefHeight="226.0" prefWidth="600.0" spacing="10.0" styleClass="aboutContent">
+               <children>
+                  <Label prefHeight="42.0" text="Author : kotmw0701" />
+                  <HBox alignment="CENTER" prefWidth="600.0">
+                     <children>
+                        <Label text="SourceCode :" />
+                        <Hyperlink focusTraversable="false" onAction="#onLink" text="GitHub" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefWidth="600.0">
+                     <children>
+                        <Label text="WebSite :" />
+                        <Hyperlink focusTraversable="false" onAction="#onLink" text="kotmw.com" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefWidth="600.0">
+                     <children>
+                        <Label text="Twitter :" />
+                        <Hyperlink focusTraversable="false" onAction="#onLink" text="\@rabikotmw" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+            <Label styleClass="copyright" text="スペースインベーダーのデザイン及び著作権は株式会社タイトーに帰属します" />
+            <Button fx:id="returnButton" focusTraversable="false" mnemonicParsing="false" onAction="#onReturn" prefHeight="50.0" prefWidth="300.0">
+               <graphic>
+                  <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0" styleClass="baseBack">
+                     <children>
+                        <Rectangle fx:id="returnBack" fill="WHITE" height="40.0" scaleX="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="-150.0" width="300.0" />
+                        <Label prefWidth="300.0" text="■ Back">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </graphic>
+               <padding>
+                  <Insets bottom="1.0" top="1.0" />
+               </padding>
+            </Button>
          </children></VBox>
    </children>
 </StackPane>
